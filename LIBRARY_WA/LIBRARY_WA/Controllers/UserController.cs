@@ -11,51 +11,52 @@ namespace LIBRARY_WA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly UserContext _context;
 
-        public UsersController(UserContext context)
+        public UserController(UserContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/User
         [HttpGet]
-        public IEnumerable<User> GetUser()
+        public IEnumerable<User> GetUser([FromBody] User user)
         {
+
             return _context.User;
         }
 
-        // GET: api/Users/5
+        // GET: api/User/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser([FromRoute] int id)
+        public  IEnumerable<User> GetUser([FromRoute] string id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
-            var user = await _context.User.FindAsync(id);
+            //var user = await _context.User.FindAsync(id);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
+            //if (user == null)
+            //{
+            //    return NotFound();
+            //}
 
-            return Ok(user);
+            return _context.User;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/User/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser([FromRoute] int id, [FromBody] User user)
+        public async Task<IActionResult> PutUser([FromRoute] string id, [FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.Id)
+            if (id != user.userId)
             {
                 return BadRequest();
             }
@@ -81,7 +82,7 @@ namespace LIBRARY_WA.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/User
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] User user)
         {
@@ -93,12 +94,12 @@ namespace LIBRARY_WA.Controllers
             _context.User.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction("GetUser", new { id = user.userId }, user);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/User/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] int id)
+        public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)
             {
@@ -117,9 +118,9 @@ namespace LIBRARY_WA.Controllers
             return Ok(user);
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(string id)
         {
-            return _context.User.Any(e => e.Id == id);
+            return _context.User.Any(e => e.userId == id);
         }
     }
 }

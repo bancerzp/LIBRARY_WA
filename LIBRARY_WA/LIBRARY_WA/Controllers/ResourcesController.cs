@@ -22,28 +22,29 @@ namespace LIBRARY_WA.Data
 
         // GET: api/Resources
         [HttpGet]
-        public IEnumerable<Resource> GetResource()
+        public IEnumerable<Resource> GetResource([FromBody] Resource resource)
         {
             return _context.Resource;
         }
 
         // GET: api/Resources/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetResource([FromRoute] int id)
+        public  IEnumerable<Resource> GetResource([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
-            var resource = await _context.Resource.FindAsync(id);
+            //var resource = await _context.Resource.FindAsync(id);
 
-            if (resource == null)
-            {
-                return NotFound();
-            }
+            //if (resource == null)
+            //{
+            //    return NotFound();
+            //}
 
-            return Ok(resource);
+            //return Ok(resource);
+            return _context.Resource;
         }
 
         // PUT: api/Resources/5

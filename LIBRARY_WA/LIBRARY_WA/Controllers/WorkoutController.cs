@@ -15,13 +15,14 @@ namespace LIBRARY_WA.Controllers
     {
         private readonly WorkoutContext _context;
 
+        //konstruktor
         public WorkoutController(WorkoutContext context)
         {
             _context = context;
         }
 
         // GET: api/Workout
-        [HttpGet]
+        [HttpGet("{id}{}{}{}{}")]
         public IEnumerable<Workout> GetWorkout()
         {
             return _context.Workout;

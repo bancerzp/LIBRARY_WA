@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.EntityFrameworkCore.Extensions;
 
 namespace LIBRARY_WA
 {
@@ -36,17 +37,20 @@ namespace LIBRARY_WA
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+
+
             services.AddDbContext<WorkoutContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("WorkoutContext")));
+                    options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
+
+           
+
+            services.AddDbContext<ResourceContext>(options =>
+                    options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
 
             services.AddDbContext<UserContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UserContext")));
 
-            services.AddDbContext<ResourceContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ResourceContext")));
-
-            services.AddDbContext<PersonContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("PersonContext")));
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,17 +8,15 @@ namespace LIBRARY_WA.Models
 {
     public class User
     {
-        [Required]
-        public String personId { get; set; }
-        [Required(ErrorMessage = "Pole login nie może być puste")]
+        public String userId { get; set; }
         public String login { get; set; }
-
-        [Required(ErrorMessage = "Pole hasło nie może być puste")]
-        [DataType(DataType.Password)]
         public String password { get; set; }
-        public String pesel { get; set; }
 
         public String userType { get; set; }
-        public Person person { get; set; }
+        public String fullName { get; set; }
+        public String date_of_birth { get; set; }
+        public String phone_number { get; set; }
+        public String email { get; set; }
+        public String address { get; set; }
     }
 }
