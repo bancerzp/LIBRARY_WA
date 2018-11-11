@@ -1,0 +1,47 @@
+<p>
+  add-resource works!
+</p>
+
+<h2>Dodaj użytkownika</h2>
+<form [formGroup]="addResourceForm" (ngSubmit)="addResource()">
+  <div class="form-group">
+    <label for="bookId">Id. książki</label>
+    <input type="text" formControlName="bookId" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="ISBN">Imię i nazwisko</label>
+    <input type="text" formControlName="ISBN" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="title">E-mail</label>
+    <input type="text" formControlName="title" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="authorFullName">Data urodzenia</label>
+    <input type="text" formControlName="authorFullName" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="year">Numer telefonu</label>
+    <input type="text" formControlName="year" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="language">Typ użytkownika</label>
+    <input type="text" formControlName="language" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="type">Typ</label>
+    <input type="text" formControlName="type" class="form-control" disabled="disabled" />
+  </div>
+
+  <div class="form-group">
+    <button [disabled]="loading " class="btn btn-primary">Dodaj</button>
+    <button [disabled]="loading " class="btn btn-primary" ngOnClick()="clearForm()">Wyczyść</button>
+
+  </div>
+</form>

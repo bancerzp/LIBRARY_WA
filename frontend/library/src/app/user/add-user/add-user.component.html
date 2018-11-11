@@ -1,0 +1,44 @@
+<h2>Dodaj użytkownika</h2>
+<form [formGroup]="addUserForm" (ngSubmit)="addUser()">
+  <div class="form-group">
+    <label for="login: ">Login</label>
+    <input type="text" formControlName="login" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="userFullname">Imię i nazwisko</label>
+    <input type="text" formControlName="userFullname" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="email">E-mail</label>
+    <input type="email" formControlName="email" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="birthDate">Data urodzenia</label>
+    <input type="date" formControlName="email" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="phoneNumber">Numer telefonu</label>
+    <input type="tel" formControlName="phoneNumber" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="type">Typ użytkownika</label>
+    <input type="radio" formControlName="type" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="password">Hasło</label>
+    <input type="text" formControlName="type" class="form-control" disabled="disabled" />
+  </div>
+
+  <div class="form-group">
+    <button [disabled]="loading " class="btn btn-primary">Zapisz</button>
+    <button [disabled]="loading " class="btn btn-primary" ngOnClick()="clearForm()">Wyczyść</button>
+    <!--  <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+  -->
+  </div>
+</form>

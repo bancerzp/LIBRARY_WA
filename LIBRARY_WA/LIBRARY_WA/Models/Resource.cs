@@ -22,10 +22,7 @@ namespace LIBRARY_WA.Models
 
         [ScaffoldColumn(false)]
         [StringLength(40)]
-        public string authorFirstName { get; set; }
-
-        [StringLength(40)]
-        public string authorSurname { get; set; }
+        public string authorFullName { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy.MMM.dd}")]
@@ -36,6 +33,7 @@ namespace LIBRARY_WA.Models
 
         public string language { get; set; }
 
+        public string type { get; set; }
 
     }
 }
