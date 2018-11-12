@@ -10,6 +10,11 @@ export class UserService {
     this.headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
   }
 
+  public isLogged(user) {
+    // Get all jogging data
+    return this.http.get(this.accessPointUrl +'/IsLogged',user { headers: this.headers });
+  }
+
   public get() {
     // Get all jogging data
     return this.http.get(this.accessPointUrl, { headers: this.headers });
@@ -20,10 +25,14 @@ export class UserService {
   }
 
   public remove(payload) {
-    return this.http.delete(this.accessPointUrl + '/' + payload.id, { headers: this.headers });
+    return this.http.delete(this.accessPointUrl + '/' + payload.id ,{ headers: this.headers });
   }
 
   public update(payload) {
     return this.http.put(this.accessPointUrl + '/' + payload.id, payload, { headers: this.headers });
   }
+
+ // public login(user) {
+   // return this.http.get(this.accessPointUrl + '/login', user, { headers: this.headers });
+  //}
 }

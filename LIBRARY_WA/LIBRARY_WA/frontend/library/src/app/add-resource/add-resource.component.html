@@ -7,9 +7,9 @@
   <div class="form-group">
     <label for="bookId">Id. książki</label>
     <input type="text" formControlName="bookId" class="form-control" />
-  </div>
+ <!-- </div>
 
-  <div class="form-group">
+  <div class="form-group">-->
     <label for="ISBN">Imię i nazwisko</label>
     <input type="text" formControlName="ISBN" class="form-control" />
   </div>
@@ -41,7 +41,6 @@
 
   <div class="form-group">
     <button [disabled]="loading " class="btn btn-primary">Dodaj</button>
-    <button [disabled]="loading " class="btn btn-primary" ngOnClick()="clearForm()">Wyczyść</button>
-
+    <button [disabled]="loading " class="btn btn-primary" ng-Click="clearForm()">Wyczyść</button>
   </div>
 </form>

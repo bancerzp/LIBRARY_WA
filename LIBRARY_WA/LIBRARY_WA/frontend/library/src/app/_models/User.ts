@@ -12,6 +12,9 @@ export class User {
   email: String;
     address: String;
  // }
+  constructor() {
+
+  }
 }
 
        

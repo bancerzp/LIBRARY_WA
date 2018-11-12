@@ -9,24 +9,42 @@ using LIBRARY_WA.Models;
 
 namespace LIBRARY_WA.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
     {
         private readonly UserContext _context;
+        private readonly LibraryContext context;
 
-        public UserController(UserContext context)
+        public UserController(LibraryContext context)
         {
-            _context = context;
+            this._context = context.userContext;
+            this.context = context;
         }
 
-       
+
 
         // GET: api/User
         [HttpGet]
+        public String IsLogged([FromBody] User user)
+        {
+            //rom p in context.Professors
+            // select p.Name).ToList()
+           if( _context.User.Where(u => user.login == u.login && user.password == u.password).FirstOrDefault()!=null)
+            {
+                return _context.User.Where(u => user.login == u.login && user.password == u.password).FirstOrDefault().userType;
+            }
+            else
+            {
+                return "g";
+            }
+        }
+
+        [HttpGet]
         public IEnumerable<User> GetUser([FromBody] User user)
         {
-           
+          //rom p in context.Professors
+           // select p.Name).ToList()
 
             return _context.User;
         }

@@ -3,34 +3,34 @@
 </p>
 
 <h2>Dodaj użytkownika</h2>
-<form [formGroup]="searchResourceForm" (ngSubmit)="searchResource()">
+<form [formGroup]="searchResourceForm" >
   <div class="form-group">
     <label for="bookId">Id. książki</label>
     <input type="text" formControlName="bookId" class="form-control" />
   </div>
 
   <div class="form-group">
-    <label for="ISBN">Imię i nazwisko</label>
+    <label for="ISBN">ISBN</label>
     <input type="text" formControlName="ISBN" class="form-control" />
   </div>
 
   <div class="form-group">
-    <label for="title">E-mail</label>
+    <label for="title">Tytuł</label>
     <input type="text" formControlName="title" class="form-control" />
   </div>
 
   <div class="form-group">
-    <label for="authorFullName">Data urodzenia</label>
+    <label for="authorFullName">Autor</label>
     <input type="text" formControlName="authorFullName" class="form-control" />
   </div>
 
   <div class="form-group">
-    <label for="year">Numer telefonu</label>
+    <label for="year">Rok wydania</label>
     <input type="text" formControlName="year" class="form-control" />
   </div>
 
   <div class="form-group">
-    <label for="language">Typ użytkownika</label>
+    <label for="language">Język</label>
     <input type="text" formControlName="language" class="form-control" />
   </div>
 
@@ -40,13 +40,13 @@
   </div>
 
   <div class="form-group">
-    <button [disabled]="loading " class="btn btn-primary">Wyszukaj</button>
-    <button [disabled]="loading " class="btn btn-primary" ngOnClick()="clearForm()">Wyczyść</button>
+    <button [disabled]="loading " class="btn btn-primary"(ngSubmit)="searchResource()">Wyszukaj</button>
+    <button [disabled]="loading " class="btn btn-primary" ng-Click="clearForm()">Wyczyść</button>
 
   </div>
 </form>
 
-<!--
+
 <table *ngIf="areResources()">
  <tr>
      <th *ngFor="let name of column">
@@ -65,4 +65,4 @@
      </tr>
    </tbody>
 </table>
-    -->
+

@@ -13,5 +13,5 @@ using LIBRARY_WA.Models;
         }
 
         public DbSet<Resource> Resource { get; set; }
-     public DbSet<LIBRARY_WA.Models.User> User { get; set; }
+        public DbSet<User> User { get; set; }
 }

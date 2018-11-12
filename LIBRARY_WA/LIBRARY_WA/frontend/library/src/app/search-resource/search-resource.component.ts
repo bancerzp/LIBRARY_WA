@@ -14,9 +14,9 @@ export class SearchResourceComponent implements OnInit {
   @Output() newClicked = new EventEmitter<any>();
   @Output() editClicked = new EventEmitter<any>();
   //@Input()
-  resultData: Resource[];
 
-
+  resultData: Resource[];// = [{ BookId: 'test', title: 'test', ISBN: 'test', authorFullName: 'test', releaseDate: 'test', year: 'test', language: 'test'  type: 'test'}];
+  
   searchResourceForm: FormGroup;
   column: String[] = ["Id. książki", "ISBN", "Tytuł", "Autor", "Rok wydania", "Język wydania", "Rodzaj"];
   columnAddReader:String[] =["Zarezerwuj"]
@@ -30,7 +30,7 @@ export class SearchResourceComponent implements OnInit {
   ) {
    // resourceService.get().subscribe((data: any) => this.resultData = data);
   }
- 
+ /*
   public deleteRecord(record) {
     this.recordDeleted.emit(record);
   }
@@ -43,7 +43,7 @@ export class SearchResourceComponent implements OnInit {
   public newRecord() {
     this.newClicked.emit();
   }
-
+  */
   areResources() {
     return this.resultData.length != 0;
   }
@@ -54,15 +54,17 @@ export class SearchResourceComponent implements OnInit {
   //      this.resourceData = products['records']
   //    );
  // }
-
+ 
 
   ngOnInit() {
 
     //pobierz wszystkie typy książki
     //pobierz wszystkie języki
+   // this.resultData=[{ BookId: 'test', title: 'test', ISBN: 'test', authorFullName: 'test', releaseDate: 'test', year: 'test', language: 'test'  type: 'test' }];
+
     var names = this.column;
     this.searchResourceForm = this.formBuilder.group({
-    id: 'idd',
+    id:'',// this.resultData.length,
     ISBN: ['', Validators.pattern("^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0 - 9X]{ 13}$ | 97[89][0 - 9]{ 10}$ | (?= (?: [0 - 9] + [- ]){ 4})[- 0 - 9]{ 17 } $)(?: 97[89][- ] ?) ? [0 - 9]{ 1, 5 } [- ] ? [0 - 9] + [- ] ? [0 - 9] + [- ] ? [0 - 9X]$")],
     title: 'full',
     authorFullName: [''],
@@ -70,6 +72,9 @@ export class SearchResourceComponent implements OnInit {
     language: '',
   });
   }
+
+
+  searchResource() { }
 
   clearForm() {
     this.searchResourceForm.reset();
