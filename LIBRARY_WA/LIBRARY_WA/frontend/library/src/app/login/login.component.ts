@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   user: User;
   valid: boolean;
+  loginData: User;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,32 +28,31 @@ export class LoginComponent implements OnInit {
     private userService: UserService) { }
 
   ngOnInit() {
-    var valid = true;
+    this.valid = true;
     this.user = null;
     this.loginForm = this.formBuilder.group({
       login: ['', Validators.required],
       password: ['', Validators.required],
-      check:['']
+      check: ['']
     });
-    this.loginForm.setValue({check:'g'});
   }
 
   onClickForm() {
     this.loginForm.get('login').markAsPristine();
     this.loginForm.get('password').markAsPristine();
   }
- 
+
 
 
   //f czyli fałszywy login/hasło
   login() {
-    var loginData: User = { login: this.loginForm.get('login').value, password: this.loginForm.get('password').value  };
-     this.userService.isLogged()
-     .subscribe(user =>
-      this.user = user['records']
+    this.loginData = { login: this.loginForm.get('login').value, password: this.loginForm.get('password').value };
+    this.userService.isLogged()
+      .subscribe(user =>
+        this.user = user['records']
       this.submitted = true;
     if this.user == null{
-      valid = false;
+      this.valid = false;
       return;
     }
   }
