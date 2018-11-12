@@ -5,9 +5,6 @@ import { Http } from '@angular/http';
 //import { createConnection } from 'net';
 //import { createConnection } from 'mysql';
 //import * as mysql from 'mysql';
-//#region
-declare function addUserScript(): any;
-//#endregion
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',

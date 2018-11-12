@@ -1,5 +1,5 @@
 import { Component, OnInit, NgModule } from '@angular/core';
-import { appRoutes } from '../app.module'
+import { AppModule, appRoutes } from '../app.module'
 import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-user',
@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./user.component.css']
   
 })
-  @NgModule({    imports: [RouterModule.forChild(appRoutes)]
+  @NgModule({    imports: [RouterModule.forRoot(appRoutes)]
   })
   export class UserComponent implements OnInit {
 

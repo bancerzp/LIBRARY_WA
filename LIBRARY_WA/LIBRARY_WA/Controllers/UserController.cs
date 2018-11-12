@@ -20,10 +20,13 @@ namespace LIBRARY_WA.Controllers
             _context = context;
         }
 
+       
+
         // GET: api/User
         [HttpGet]
         public IEnumerable<User> GetUser([FromBody] User user)
         {
+           
 
             return _context.User;
         }
@@ -43,7 +46,6 @@ namespace LIBRARY_WA.Controllers
             //{
             //    return NotFound();
             //}
-
             return _context.User;
         }
 
@@ -90,7 +92,7 @@ namespace LIBRARY_WA.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+        
             _context.User.Add(user);
             await _context.SaveChangesAsync();
 

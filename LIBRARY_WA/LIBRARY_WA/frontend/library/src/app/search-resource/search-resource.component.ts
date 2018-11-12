@@ -2,6 +2,7 @@ import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Http } from '@angular/http';
 import { ResourceService } from '../_services/resource.service';
+import { Resource } from '../_models/resource';
 @Component({
   selector: 'app-search-resource',
   templateUrl: './search-resource.component.html',
@@ -12,20 +13,24 @@ export class SearchResourceComponent implements OnInit {
   @Output() recordDeleted = new EventEmitter<any>();
   @Output() newClicked = new EventEmitter<any>();
   @Output() editClicked = new EventEmitter<any>();
-  @Input() resourceData: Array<any>;
+  //@Input()
+  resultData: Resource[];
+
 
   searchResourceForm: FormGroup;
   column: String[] = ["Id. książki", "ISBN", "Tytuł", "Autor", "Rok wydania", "Język wydania", "Rodzaj"];
   columnAddReader:String[] =["Zarezerwuj"]
   columnAddLibrarian: String[] = ["Zarezerwuj","Edytuj","Usuń"]
 
+
   constructor(
     private formBuilder: FormBuilder,
     private http: Http,
     private resourceService: ResourceService,
-   ) { }
-
-
+  ) {
+   // resourceService.get().subscribe((data: any) => this.resultData = data);
+  }
+ 
   public deleteRecord(record) {
     this.recordDeleted.emit(record);
   }
@@ -40,7 +45,7 @@ export class SearchResourceComponent implements OnInit {
   }
 
   areResources() {
-    return this.resourceData.length != 0;
+    return this.resultData.length != 0;
   }
 
   //ngOnInit() {

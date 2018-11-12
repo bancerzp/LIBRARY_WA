@@ -1,4 +1,4 @@
-<h2>Login</h2>
+<h2>Szukaj użytkownika</h2>
 <form [formGroup]="searchUserForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label for="userId">Id użytkownika</label>
@@ -13,9 +13,7 @@
   <div class="form-group">
     <label for="email">E-mail</label>
     <input type="text" formControlName="email" class="form-control" />
-    <div class="invalid-feedback"> <!-- *ngIf="this.email.dirty && this.email.invalid && this.email.touched" > -->
-      <div class="alert alert-danger" role="alert">Błędny format email</div>
-    </div>
+   
   </div>
   <div class="form-group">
     <label for="login">Login</label>

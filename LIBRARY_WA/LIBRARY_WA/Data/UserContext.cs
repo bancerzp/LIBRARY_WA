@@ -10,6 +10,7 @@ using LIBRARY_WA.Models;
         public UserContext (DbContextOptions<UserContext> options)
             : base(options)
         {
+
         }
 
         public DbSet<LIBRARY_WA.Models.User> User { get; set; }

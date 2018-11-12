@@ -32,7 +32,7 @@ const appRoutes: Routes = [
 
   ],
   imports: [
-    RouterModule.forChild(appRoutes),
+  //RouterModule.forChild(appRoutes),
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
@@ -40,4 +40,4 @@ const appRoutes: Routes = [
     HttpClientModule
   ],
 })
-export class AppModule { }
+export class UserModule { }

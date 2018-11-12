@@ -43,12 +43,11 @@ namespace LIBRARY_WA
                     options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
 
            
-
             services.AddDbContext<ResourceContext>(options =>
                     options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
 
             services.AddDbContext<UserContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("UserContext")));
+                    options.UseMySQL(Configuration.GetConnectionString("UserContext")));
 
           
         }
