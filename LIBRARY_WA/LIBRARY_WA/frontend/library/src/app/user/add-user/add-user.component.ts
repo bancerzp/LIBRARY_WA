@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Http } from '@angular/http';
 import { User } from '../../_models/User';
@@ -14,9 +14,9 @@ import { UserService } from '../../_services/user.service';
 
 })
 export class AddUserComponent implements OnInit {
-
+  @Output() user = new EventEmitter<User>();
   addUserForm: FormGroup;
-  user: User;
+ // user: User;
   loading = false;
   submitted = false;
   returnUrl: string;
@@ -28,11 +28,12 @@ export class AddUserComponent implements OnInit {
 
 
   ngOnInit() {
+    this.submitted = false;
     var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.addUserForm = this.formBuilder.group({
-      login: 'looogin',
+      login: '',
       email: ['', Validators.pattern("/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i")],
-      fullname: 'full',
+      fullname: '',
       dateOfBirth: [''],
       phoneNumber: ['', Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}")],
       type: '',
@@ -46,11 +47,20 @@ export class AddUserComponent implements OnInit {
   }
 
   addUser() {
-    this.user = this.addUserForm.value();
-    this.userService.addUser(this.user)
-      .subscribe(user =>
-        this.user = user['records']);
+    if (this.addUserForm.invalid) {
+      return;
+    }
+   
+    var m = this.user;
+    this.userService.addUser(m);//.subscribe(
+    //  joggingRecord => this.joggingData.push(jogging))
+    
 
+
+ //   this.user = this.addUserForm.value();
+   // this.userService.addUser(m);
+  //    .subscribe(user =>
+    //    this.user = user['records']);
     this.submitted = true;
   }
 }

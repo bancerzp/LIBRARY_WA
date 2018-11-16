@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Cors;
 
 namespace LIBRARY_WA.Controllers
 {
-    [Route("api/[controller]/[action]")]
     [EnableCors("CorsPolicy")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -27,30 +27,30 @@ namespace LIBRARY_WA.Controllers
 
 
         // GET: api/User
-        [HttpGet("{user}")]
+        [HttpPost]
         [EnableCors("CorsPolicy")]
         public String IsLogged([FromBody] User user)
         {
-            //rom p in context.Professors
-            // select p.Name).ToList()
-           if( _context.User.Where(u => user.login == u.login && user.password == u.password).FirstOrDefault()!=null)
-            {
-                return _context.User.Where(u => user.login == u.login && user.password == u.password).FirstOrDefault().userType;
-            }
-            else
-            {
-                return "g";
-            }
+          //  _context.User.Add(null, "admin', 'admin', '', '', '', '', '1989-12-09', '', '');
+            //if (_context.User.Where(u => user.login == u.login && user.password == u.password).FirstOrDefault() != null)
+            //{
+            //    return "istnieje";//_context.User.Where(u => user.login == u.login && user.password == u.password).FirstOrDefault();
+            //}
+            //else
+            //{
+            //    return "nie istnieje";//new Models.User();
+            //}
+            return "done";
         }
 
-        [HttpGet]
-        public IEnumerable<User> GetUser([FromBody] User user)
-        {
-          //rom p in context.Professors
-           // select p.Name).ToList()
+        //[HttpGet]
+        //public IEnumerable<User> GetUser([FromBody] User user)
+        //{
+        //  //rom p in context.Professors
+        //   // select p.Name).ToList()
 
-            return _context.User;
-        }
+        //    return _context.User;
+        //}
 
         // GET: api/User/5
         [HttpGet("{id}")]

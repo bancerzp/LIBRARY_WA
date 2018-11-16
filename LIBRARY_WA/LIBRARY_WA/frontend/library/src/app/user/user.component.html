@@ -4,37 +4,46 @@
 
 
 <ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="nav-link waves-light" routerLink="/app-search-user" routerLinkActive="active" href="#searchUser">Wyszukaj użytkownika</a>
-  </li>
+ 
+    <li class="nav-item">
+      <a class="nav-link waves-light" routerLink="/app-search-user" routerLinkActive="active" href="#searchUser">Wyszukaj użytkownika</a>
+    </li>
   <li class="nav-item">
     <a class="nav-link waves-light" routerLink="/app-add-user" routerLinkActive="active" href="#addUser">Dodaj użytkownika</a>
   </li>
 </ul>
-<div class="jumbotron">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-9 offset-sm-1">
-        <router-outlet></router-outlet>
+  <div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9 offset-sm-1">
+          <div class="tab-content">
+            <div class="tab-pane active">
+              <router-outlet></router-outlet>
+            </div>
+          </div>
+        
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!--<div class="jumbotron">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-9 offset-sm-1">
-        <router-outlet></router-outlet>
+ 
+
+
+  <!--<div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9 offset-sm-1">
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </div>
-  </div>
-</div>-->
-<!--
+  </div>-->
+  <!--
 
 
-    class="nav-link waves-light" routerLink="" routerLinkActive="active" href="#"
-    Wyświetlają się dane użytkownika
-    historia wypożyczeń
+      class="nav-link waves-light" routerLink="" routerLinkActive="active" href="#"
+      Wyświetlają się dane użytkownika
+      historia wypożyczeń
 
 
--->
+  -->

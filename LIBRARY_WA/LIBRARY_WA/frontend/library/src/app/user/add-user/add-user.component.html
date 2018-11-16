@@ -1,38 +1,46 @@
 <h2>Dodaj użytkownika</h2>
 <form [formGroup]="addUserForm" (ngSubmit)="addUser()">
+
   <div class="form-group">
     <label for="login: ">Login</label>
-    <input type="text" formControlName="login" class="form-control"  [(ng-model)]="addUserForm.login"/>
+    <input type="text" formControlName="login" class="form-control" [(ngModel)]="user.login" />
+    <div class="alert alert-danger " *ngIf="sumbitted && addUserForm.get('password').hasError('required') && addUserForm.get('password').dirty">Pole login nie może byc puste</div>
   </div>
 
   <div class="form-group">
     <label for="email">E-mail</label>
-    <input type="email" formControlName="email" class="form-control" [(ng-model)]="addUserForm.email"/>
-  </div>
+    <input type="email" formControlName="email" class="form-control" [(ngModel)]="user.email" />
+   </div>
 
   <div class="form-group">
     <label for="fullname">Imię i nazwisko</label>
-    <input type="text" formControlName="fullname" class="form-control" [(ng-model)]="addUserForm.fullname"/>
+    <input type="text" formControlName="fullname" class="form-control" [(ngModel)]="user.fullname" />
+    <div class="alert alert-danger " *ngIf="sumbitted && addUserForm.get('fullname').hasError('required') && addUserForm.get('fullname').dirty">Pole imię i nazwisko nie może byc puste</div>
+
   </div>
 
   <div class="form-group">
     <label for="dateOfBirth">Data urodzenia</label>
-    <input type="date" formControlName="dateOfBirth" class="form-control" [(ng-model)]="addUserForm.dateOfBirth"/>
+    <input type="date" formControlName="dateOfBirth" class="form-control" [(ngModel)]="user.dateOfBirth" />
+    <div class="alert alert-danger " *ngIf="sumbitted && addUserForm.get('dateOfBirth').hasError('required') ">Pole data urodzenia nie może byc puste</div>
   </div>
 
   <div class="form-group">
     <label for="phoneNumber">Numer telefonu</label>
-    <input type="tel" formControlName="phoneNumber" class="form-control" [(ng-model)]="addUserForm.phoneNumber"/>
+    <input type="tel" formControlName="phoneNumber" class="form-control" [(ngModel)]="user.phoneNumber" placeholder="format. 000-000-000"/>
+    <div class="alert alert-danger " *ngIf="sumbitted && addUserForm.get('phoneNumber').hasError('required') && addUserForm.get('phoneNumber').hasError('required')">Pole email lub telefon muszą być wypełnione</div>
+    <div class="alert alert-danger " *ngIf="!sumbitted && addUserForm.get('phoneNumber').hasError('pattern') && addUserForm.get('phoneNumber').dirty && addUserForm.get('phoneNumber').touched">Nieprawidłowy format numeru telefonu</div>
   </div>
 
   <div class="form-group">
     <label for="type">Typ użytkownika</label>
-    <input type="radio" formControlName="type" class="form-control" [(ng-model)]="addUserForm.type"/>
+    <input type="radio" formControlName="type" class="form-control" [(ngModel)]="user.type" />
+    <div class="alert alert-danger " *ngIf="sumbitted && addUserForm.get('password').hasError('required') && addUserForm.get('password').dirty">Typ użytkownika nie może byc pusty</div>
   </div>
 
   <div class="form-group">
     <label for="password">Hasło</label>
-    <input type="text" formControlName="type" class="form-control" disabled="disabled" [(ng-model)]="addUserForm.login"/>
+    <input type="text" formControlName="type" class="form-control" disabled="disabled" [(ngModel)]="user.password"/>
   </div>
 
   <div class="form-group">

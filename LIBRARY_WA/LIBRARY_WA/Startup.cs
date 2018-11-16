@@ -30,7 +30,7 @@ namespace LIBRARY_WA
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin() //WithOrigins("http://localhost:4200")
+                    builder => builder.AllowAnyOrigin()//WithOrigins("http://localhost:4200")
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
@@ -45,7 +45,10 @@ namespace LIBRARY_WA
                     options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
 
             services.AddDbContext<UserContext>(options =>
-                    options.UseMySQL(Configuration.GetConnectionString("UserContext")));
+                    options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
+
+            services.AddDbContext<LibraryContext>(options =>
+                    options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
 
 
         }
@@ -63,7 +66,7 @@ namespace LIBRARY_WA
             }
 
             app.UseHttpsRedirection();
-            app.UseCors("CorsPolicy");
+            app.UseCors(b => b.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());//("http://localhost:4200"));
             app.UseMvc();
         }
     }

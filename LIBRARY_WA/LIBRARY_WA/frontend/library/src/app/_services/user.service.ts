@@ -7,13 +7,14 @@ export class UserService {
   private accessPointUrl: string = 'https://localhost:5001/api/user';
 
   constructor(private http: HttpClient) {
-    this.headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*'});
+    this.headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8'});
   
   }
 
   public isLogged(user) {
+    
     // Get all jogging data
-    return this.http.get(this.accessPointUrl + '/IsLogged', { headers: this.headers, withCredentials: true });
+    return this.http.post(this.accessPointUrl + '/IsLogged',user, { headers: this.headers });//, withCredentials: true });
   }
 
   public get() {
