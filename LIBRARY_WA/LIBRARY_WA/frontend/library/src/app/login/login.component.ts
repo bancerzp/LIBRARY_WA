@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { UserService } from '../_services/user.service';
+import { User } from '../_models/User';
 //import { AlertService, AuthenticationService } from '../_services';
 
 @Component({
@@ -46,12 +47,16 @@ export class LoginComponent implements OnInit {
 
   //f czyli fałszywy login/hasło
   login() {
-    this.loginData = { login: this.loginForm.get('login').value, password: this.loginForm.get('password').value };
-    this.userService.isLogged()
-      .subscribe(user =>
-        this.user = user['records']
+   // this.loginData = new User();//{ userId login: this.loginForm.get('login').value, password: this.loginForm.get('password').value };
+   // this.loginData.login = this.loginForm.get('login').value;
+   // this.loginData.password = this.loginForm.get('password').value;
+
+    this.userService.isLogged(this.loginData)
+     .subscribe(user =>
+     this.user = user['records']);
+
       this.submitted = true;
-    if this.user == null{
+    if (this.user == null){
       this.valid = false;
       return;
     }

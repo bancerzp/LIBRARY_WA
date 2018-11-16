@@ -19,4 +19,4 @@ export class Resource {
     private  language: String,
     private  type: String) {}
   }
-}
+

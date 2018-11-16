@@ -6,6 +6,7 @@ export class LibraryPage {
   }
 
   getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+   // return element(by.css('app-root h1')).getText();
+    return "Wykomentowane w pliku app.po.ts";
   }
 }

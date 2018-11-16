@@ -1,20 +1,27 @@
 export class User {
-  //constructor() {
-  userId: String;
+  constructor(
+    userId: String,
+    login: String,
+    password: String,
+    userType: String,
+    fullName: String,
+    dateOfBirth: Date,
+    phoneNumber: String,
+    email: String,
+    address: String,)
+  { }
+  Constructor() {
+
+  }
+ /* userId: String;
   login: String;
   password: String;
-  pesel: String;
   userType: String;
-  person: String;
   fullName: String;
   dateOfBirth: Date;
   phoneNumber: String;
   email: String;
-    address: String;
- // }
-  constructor() {
-
-  }
+  address: String;*/
 }
 
        

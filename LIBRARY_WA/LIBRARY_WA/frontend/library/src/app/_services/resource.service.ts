@@ -6,7 +6,7 @@ import { Resource } from '../_models/resource';
 @Injectable()
 export class ResourceService {
   private headers: HttpHeaders;
-  private accessPointUrl: string = 'http://localhost:53877/api/resource';
+  private accessPointUrl: string = 'https://localhost:5001/api/resource';
   public resources: Resource[];
  
   // Get list of products from remote server.

@@ -30,26 +30,24 @@ namespace LIBRARY_WA
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder.AllowAnyOrigin() //WithOrigins("http://localhost:4200")
                     .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
+                    .AllowAnyHeader());
             });
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-
 
             services.AddDbContext<WorkoutContext>(options =>
                     options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
 
-           
+
             services.AddDbContext<ResourceContext>(options =>
                     options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
 
             services.AddDbContext<UserContext>(options =>
                     options.UseMySQL(Configuration.GetConnectionString("UserContext")));
 
-          
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

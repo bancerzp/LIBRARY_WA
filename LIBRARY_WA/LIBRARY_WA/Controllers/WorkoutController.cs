@@ -22,7 +22,7 @@ namespace LIBRARY_WA.Controllers
         }
 
         // GET: api/Workout
-        [HttpGet("{id}{}{}{}{}")]
+        [HttpGet("{id}")]
         public IEnumerable<Workout> GetWorkout()
         {
             return _context.Workout;

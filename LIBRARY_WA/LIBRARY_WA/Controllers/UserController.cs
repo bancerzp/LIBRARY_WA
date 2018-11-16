@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LIBRARY_WA.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace LIBRARY_WA.Controllers
 {
     [Route("api/[controller]/[action]")]
+    [EnableCors("CorsPolicy")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -25,7 +27,8 @@ namespace LIBRARY_WA.Controllers
 
 
         // GET: api/User
-        [HttpGet]
+        [HttpGet("{user}")]
+        [EnableCors("CorsPolicy")]
         public String IsLogged([FromBody] User user)
         {
             //rom p in context.Professors
@@ -104,7 +107,7 @@ namespace LIBRARY_WA.Controllers
 
         // POST: api/User
         [HttpPost]
-        public async Task<IActionResult> PostUser([FromBody] User user)
+        public async Task<IActionResult> addUser([FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
