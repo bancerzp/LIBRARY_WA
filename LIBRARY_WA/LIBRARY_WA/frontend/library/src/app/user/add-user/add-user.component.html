@@ -21,20 +21,20 @@
 
   <div class="form-group">
     <label for="dateOfBirth">Data urodzenia</label>
-    <input type="date" formControlName="dateOfBirth" class="form-control" [(ngModel)]="user.dateOfBirth" />
+    <input type="date" formControlName="dateOfBirth" class="form-control" [(ngModel)]="user.date_of_birth" />
     <div class="alert alert-danger " *ngIf="sumbitted && addUserForm.get('dateOfBirth').hasError('required') ">Pole data urodzenia nie może byc puste</div>
   </div>
 
   <div class="form-group">
     <label for="phoneNumber">Numer telefonu</label>
-    <input type="tel" formControlName="phoneNumber" class="form-control" [(ngModel)]="user.phoneNumber" placeholder="format. 000-000-000"/>
+    <input type="tel" formControlName="phoneNumber" class="form-control" [(ngModel)]="user.phone_number" placeholder="format. 000-000-000"/>
     <div class="alert alert-danger " *ngIf="sumbitted && addUserForm.get('phoneNumber').hasError('required') && addUserForm.get('phoneNumber').hasError('required')">Pole email lub telefon muszą być wypełnione</div>
     <div class="alert alert-danger " *ngIf="!sumbitted && addUserForm.get('phoneNumber').hasError('pattern') && addUserForm.get('phoneNumber').dirty && addUserForm.get('phoneNumber').touched">Nieprawidłowy format numeru telefonu</div>
   </div>
 
   <div class="form-group">
     <label for="type">Typ użytkownika</label>
-    <input type="radio" formControlName="type" class="form-control" [(ngModel)]="user.type" />
+    <input type="radio" formControlName="type" class="form-control" [(ngModel)]="user.user_type" />
     <div class="alert alert-danger " *ngIf="sumbitted && addUserForm.get('password').hasError('required') && addUserForm.get('password').dirty">Typ użytkownika nie może byc pusty</div>
   </div>
 

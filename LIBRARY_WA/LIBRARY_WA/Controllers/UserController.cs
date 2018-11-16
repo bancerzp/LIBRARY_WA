@@ -18,29 +18,29 @@ namespace LIBRARY_WA.Controllers
         private readonly UserContext _context;
         private readonly LibraryContext context;
 
-        public UserController(LibraryContext context)
+        public UserController(UserContext context)
         {
-            this._context = context.userContext;
-            this.context = context;
+            this._context = context;//.UserContext;
+         //   this.context = context;
         }
 
 
 
         // GET: api/User
         [HttpPost]
-        [EnableCors("CorsPolicy")]
-        public String IsLogged([FromBody] User user)
+        public String IsLogged([FromBody] User userData)
         {
-          //  _context.User.Add(null, "admin', 'admin', '', '', '', '', '1989-12-09', '', '');
-            //if (_context.User.Where(u => user.login == u.login && user.password == u.password).FirstOrDefault() != null)
-            //{
-            //    return "istnieje";//_context.User.Where(u => user.login == u.login && user.password == u.password).FirstOrDefault();
-            //}
-            //else
-            //{
-            //    return "nie istnieje";//new Models.User();
-            //}
-            return "done";
+            //  _context.User.Add(null, "admin', 'admin', '', '', '', '', '1989-12-09', '', '');
+
+            if (_context.User.Where(u => u.login=="admin").First()!=null)// u => u.login==userData.login && u.password== userData.password).FirstOrDefault() != null)
+            {
+                return "istnieje";//_context.User.Where(u => user.login == u.login && user.password == u.password).FirstOrDefault();
+            }
+            else
+            {
+                return "nie istnieje";//new Models.User();
+            }
+          //  return "done";
         }
 
         //[HttpGet]
@@ -72,14 +72,14 @@ namespace LIBRARY_WA.Controllers
 
         // PUT: api/User/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser([FromRoute] string id, [FromBody] User user)
+        public async Task<IActionResult> PutUser([FromRoute] Int32 id, [FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.userId)
+            if (id.ToString() == user.user_Id.ToString())
             {
                 return BadRequest();
             }
@@ -117,7 +117,7 @@ namespace LIBRARY_WA.Controllers
             _context.User.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.userId }, user);
+            return CreatedAtAction("GetUser", new { id = user.user_Id }, user);
         }
 
         // DELETE: api/User/5
@@ -141,9 +141,9 @@ namespace LIBRARY_WA.Controllers
             return Ok(user);
         }
 
-        private bool UserExists(string id)
+        private bool UserExists(Int32 id)
         {
-            return _context.User.Any(e => e.userId == id);
+            return _context.User.Any(e => e.user_Id.ToString() == id.ToString());
         }
     }
 }

@@ -11,7 +11,7 @@ public class LibraryContext : DbContext
              : base(options)
     {
     }
-    public UserContext userContext { get; set; }
+    public UserContext UserContext { get; set; }
     public DbSet<Resource> Resource { get; set; }
     public DbSet<User> User { get; set; }
 }

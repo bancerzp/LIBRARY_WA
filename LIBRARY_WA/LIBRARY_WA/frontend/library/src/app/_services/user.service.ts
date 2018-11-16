@@ -22,8 +22,8 @@ export class UserService {
     return this.http.get(this.accessPointUrl, { headers: this.headers, withCredentials: true });
   }
 
-  public addUser(user) {
-    return this.http.post(this.accessPointUrl, user, { headers: this.headers, withCredentials: true });
+  public addUser(payload) {
+    return this.http.post(this.accessPointUrl, payload, { headers: this.headers, withCredentials: true });
   }
 
   public remove(payload) {

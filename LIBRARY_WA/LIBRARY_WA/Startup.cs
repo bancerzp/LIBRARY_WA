@@ -38,17 +38,16 @@ namespace LIBRARY_WA
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<WorkoutContext>(options =>
-                    options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
-
+                    options.UseMySql(Configuration.GetConnectionString("LibraryDatabase")));
 
             services.AddDbContext<ResourceContext>(options =>
-                    options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
+                    options.UseMySql(Configuration.GetConnectionString("LibraryDatabase")));
 
             services.AddDbContext<UserContext>(options =>
-                    options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
+                    options.UseMySql(Configuration.GetConnectionString("LibraryDatabase")));
 
             services.AddDbContext<LibraryContext>(options =>
-                    options.UseMySQL(Configuration.GetConnectionString("LibraryDatabase")));
+                    options.UseMySql(Configuration.GetConnectionString("LibraryDatabase")));
 
 
         }

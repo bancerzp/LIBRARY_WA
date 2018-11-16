@@ -10,11 +10,11 @@ export class Resource {
     type: String;
     */
   constructor(
-    private BookId: String,
+    private book_id: String,
     private title: String,
     private ISBN: String,
-    private authorFullName: String,
-    private releaseDate: String,
+    private author_FullName: String,
+    private release_Date: String,
     private year: String,
     private  language: String,
     private  type: String) {}
