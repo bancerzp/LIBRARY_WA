@@ -16,10 +16,11 @@ import { UserService } from '../../_services/user.service';
 export class AddUserComponent implements OnInit {
   @Output() user = new EventEmitter<User>();
   addUserForm: FormGroup;
- // user: User;
   loading = false;
   submitted = false;
   returnUrl: string;
+  ifExists: boolean[];
+  maxDate = new Date().toString();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,14 +32,15 @@ export class AddUserComponent implements OnInit {
     this.submitted = false;
     var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.addUserForm = this.formBuilder.group({
-      login: '',
-      email: ['', Validators.pattern("/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i")],
-      fullname: '',
-      dateOfBirth: [''],
-      phoneNumber: ['', Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}")],
-      type: '',
+      login: ['', Validators.required],
+      email: ['', [Validators.email, Validators.required]],
+      fullname: ['', Validators.required],
+      date_Of_Birth: ['', Validators.required],
+      phone_Number: ['', [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"),Validators.required]],
+      type: ['', Validators.required],
       password: '',
-      address: '',
+      address: ['', Validators.required],
+      is_Valid: [true],
     });
   }
 
@@ -47,13 +49,19 @@ export class AddUserComponent implements OnInit {
   }
 
   addUser() {
-    if (this.addUserForm.invalid) {
-      return;
-    }
+  //  var result=this.userService.ifUserExists(this.user);
+   
+  //  if (this.addUserForm.invalid) {
+   //   this.submitted = true;
+   //   return;
+   // }
+
    
     var m = this.user;
-    this.userService.addUser(m);//.subscribe(
-    //  joggingRecord => this.joggingData.push(jogging))
+    this.userService.addUser(m).subscribe(
+      data => { alert("Użytkownik dodany poprawnie") },
+      Error => { alert("Błąd dodawania użytkownika") });
+  
     
 
 

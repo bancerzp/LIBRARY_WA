@@ -56,16 +56,17 @@ export class LoginComponent implements OnInit {
    // this.loginData.password = this.loginForm.get('password').value;
     
     this.userService.isLogged(this.logedUser)
-      .subscribe(userData => this.test = userData.toString());
-   //     this.user = new User(userData["userId"], userData["login"], userData["password"], userData["userType"], userData["fullName"], userData["dateOfBirth"], userData["phoneNumber"], userData["email"], userData["address"]));
-      this.submitted = true;
+      .subscribe(userData => this.user = new User(userData["user_Id"], "","","","",new Date(),"","","",true));
+   // new User(userData["user_Id"], userData["login"], userData["password"], userData["user_Type"], userData["fullName"], userData["date_Of_Birth"], userData["phone_Number"], userData["email"], userData["address"], userData["is_Valid"]));
+
+    this.submitted = true;
     if (this.user === null) {
       this.valid = false;
-      this.router.navigate(['home']);
+      this.router.navigate(['app-home']);
       return;
     }
     else {
-      this.logedUser.emit(this.user);
+     // this.logedUser.emit(this.user);
     //  this.router.navigate(['home']);
     }
   }

@@ -22,8 +22,17 @@ export class UserService {
     return this.http.get(this.accessPointUrl, { headers: this.headers, withCredentials: true });
   }
 
-  public addUser(payload) {
-    return this.http.post(this.accessPointUrl, payload, { headers: this.headers, withCredentials: true });
+  public addUser(user) {
+    return this.http.post(this.accessPointUrl, user, { headers: this.headers, withCredentials: true });
+  }
+
+  public ifUserExists(user) {
+    // Get all jogging data
+    var result = ["", ""];
+    this.http.get(this.accessPointUrl + '/IfEmailxists/' + user.email, { headers: this.headers, withCredentials: true }).subscribe(result => result[0] = result.toString());
+
+    this.http.get(this.accessPointUrl + '/IfLoginExists/' + user.login, { headers: this.headers, withCredentials: true }).subscribe(result => result[1] = result.toString());
+    return result;
   }
 
   public remove(payload) {

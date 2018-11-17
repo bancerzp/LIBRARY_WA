@@ -15,10 +15,10 @@ namespace LIBRARY_WA.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserContext _context;
-        private readonly LibraryContext context;
+       // private readonly UserContext _context;
+        private readonly LibraryContext _context;
 
-        public UserController(UserContext context)
+        public UserController(LibraryContext context)
         {
             this._context = context;//.UserContext;
          //   this.context = context;
@@ -28,17 +28,17 @@ namespace LIBRARY_WA.Controllers
 
         // GET: api/User
         [HttpPost]
-        public String IsLogged([FromBody] User userData)
+        public User IsLogged([FromBody] User userData)
         {
             //  _context.User.Add(null, "admin', 'admin', '', '', '', '', '1989-12-09', '', '');
 
-            if (_context.User.Where(u => u.login=="admin").First()!=null)// u => u.login==userData.login && u.password== userData.password).FirstOrDefault() != null)
+            if (_context.User.Where(u => u.login==userData.login && u.password== userData.password).FirstOrDefault() != null)
             {
-                return "istnieje";//_context.User.Where(u => user.login == u.login && user.password == u.password).FirstOrDefault();
+                return _context.User.Where(u => userData.login == u.login && userData.password == u.password).FirstOrDefault();
             }
             else
             {
-                return "nie istnieje";//new Models.User();
+                return new Models.User();
             }
           //  return "done";
         }
@@ -51,6 +51,19 @@ namespace LIBRARY_WA.Controllers
 
         //    return _context.User;
         //}
+
+        [HttpGet("{email}")]
+        public Boolean IfEmailExists([FromBody] String email)
+        {
+            return _context.User.Where(u => u.email == email).Count() > 0;
+           
+        }
+
+        [HttpGet("{login}")]
+        public Boolean IfLoginExists([FromBody] String login)
+        {
+            return _context.User.Where(u => u.login == login).Count() > 0;
+        }
 
         // GET: api/User/5
         [HttpGet("{id}")]
@@ -107,16 +120,25 @@ namespace LIBRARY_WA.Controllers
 
         // POST: api/User
         [HttpPost]
-        public async Task<IActionResult> addUser([FromBody] User user)
+        public async Task<IActionResult> AddUser([FromBody] User user)
         {
-            if (!ModelState.IsValid)
+         //   if (!ModelState.IsValid)
+       //     {
+         //       return BadRequest(ModelState);
+        //    }
+            if (_context.User.Where(c => c.login == user.login).Count() > 0)
             {
-                return BadRequest(ModelState);
+                return Ok("Podany login jest już zajęty");
+              //  return BadRequest("Podany login jest już zajęty");
             }
-        
+            if (_context.User.Where(c => c.email == user.email).Count() > 0)
+            {
+                return Ok("Email już istnieje w bazie danych");
+             //   return BadRequest("Email już istnieje w bazie danych");
+            }
+
             _context.User.Add(user);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetUser", new { id = user.user_Id }, user);
         }
 
@@ -124,6 +146,9 @@ namespace LIBRARY_WA.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {
+
+            //jeśli ma wypożyczone książki to komunikat, że nie można usunąć użytkownika bo ma niewyszystkie książki oddane, 
+            //a jesli usunięty to zmienia isValid na false
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
