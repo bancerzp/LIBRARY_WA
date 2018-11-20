@@ -126,16 +126,16 @@ namespace LIBRARY_WA.Controllers
        //     {
          //       return BadRequest(ModelState);
         //    }
-            if (_context.User.Where(c => c.login == user.login).Count() > 0)
-            {
-                return Ok("Podany login jest już zajęty");
+        //    if (_context.User.Where(c => c.login == user.login).Count() > 0)
+        //    {
+       //         return Ok("Podany login jest już zajęty");
               //  return BadRequest("Podany login jest już zajęty");
-            }
-            if (_context.User.Where(c => c.email == user.email).Count() > 0)
-            {
-                return Ok("Email już istnieje w bazie danych");
-             //   return BadRequest("Email już istnieje w bazie danych");
-            }
+        //    }
+        //    if (_context.User.Where(c => c.email == user.email).Count() > 0)
+        //    {
+        //        return Ok("Email już istnieje w bazie danych");
+        //     //   return BadRequest("Email już istnieje w bazie danych");
+        //    }
 
             _context.User.Add(user);
             await _context.SaveChangesAsync();

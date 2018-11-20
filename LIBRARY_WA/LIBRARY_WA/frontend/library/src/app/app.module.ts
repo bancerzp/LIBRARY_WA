@@ -24,6 +24,10 @@ import { SearchUserComponent } from './user/search-user/search-user.component';
 import { SearchResourceComponent } from './search-resource/search-resource.component';
 import { GridJoggingComponentComponent } from './grid-jogging-component/grid-jogging-component.component';
 import { UserComponent } from './user/user.component';
+import { BookBookingModule } from './user-account/details/book-booking/book-booking.module';
+import { BookBorrowModule } from './user-account/details/book-borrow/book-borrow.module';
+import { CurrentBorrowModule } from './user-account/details/current-borrow/current-borrow.module';
+import { UserDataModule } from './user-account/details/user-data/user-data.module';
 
 export const appRoutes: Routes = [
   {
@@ -32,12 +36,20 @@ export const appRoutes: Routes = [
   },
   {
     path: 'app-user',
-    component: UserComponent
+    component: UserComponent,
+    children: [
+      {
+        
+        path: 'app-add-user',
+        component: AddUserComponent
+     
+      },
+      {
+        path: 'app-search-user',
+        component: SearchUserComponent
+      }]
   },
-  {
-    path: 'app-add-user',
-    component: AddUserComponent
-  },
+  
   {
     path: 'app-add-resource',
     component: AddResourceComponent
@@ -46,17 +58,35 @@ export const appRoutes: Routes = [
     path: 'app-search-resource',
     component: SearchResourceComponent
   },
-  {
-    path: 'app-search-user',
-    component: SearchUserComponent
-  },
+
   {
     path: 'app-home',
     component: HomeComponent
   },
   {
     path: 'app-user-account',
-    component: UserAccountComponent
+    component: UserAccountComponent,
+    children: [
+      {
+
+        path: 'app-book-booking',
+        component: BookBookingModule
+
+      },
+      {
+        path: 'app-book-borrow',
+        component: BookBorrowModule
+      }
+    {
+
+      path: 'app-current-borrow',
+      component: CurrentBorrowModule
+
+      },
+      {
+        path: 'app-user-data',
+        component: UserDataModule
+      }]
   },
   {
     path: '',

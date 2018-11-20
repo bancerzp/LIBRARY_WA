@@ -27,16 +27,13 @@ export class AddUserComponent implements OnInit {
     private http: Http,
     private userService: UserService) { }
 
-
-  ngOnInit() {
-    this.submitted = false;
-    var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
+  createForm() {
     this.addUserForm = this.formBuilder.group({
       login: ['', Validators.required],
       email: ['', [Validators.email, Validators.required]],
       fullname: ['', Validators.required],
       date_Of_Birth: ['', Validators.required],
-      phone_Number: ['', [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"),Validators.required]],
+      phone_Number: ['', [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
       type: ['', Validators.required],
       password: '',
       address: ['', Validators.required],
@@ -44,8 +41,14 @@ export class AddUserComponent implements OnInit {
     });
   }
 
+  ngOnInit() {
+    this.submitted = false;
+    var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
+    this.createForm();
+  }
+
   clearForm() {
-    this.addUserForm.reset();
+    this.createForm();
   }
 
   addUser() {
@@ -55,15 +58,10 @@ export class AddUserComponent implements OnInit {
    //   this.submitted = true;
    //   return;
    // }
-
-   
     var m = this.user;
     this.userService.addUser(m).subscribe(
       data => { alert("Użytkownik dodany poprawnie") },
       Error => { alert("Błąd dodawania użytkownika") });
-  
-    
-
 
  //   this.user = this.addUserForm.value();
    // this.userService.addUser(m);
