@@ -27,7 +27,7 @@ import { UserComponent } from './user/user.component';
 import { BookBookingModule } from './user-account/details/book-booking/book-booking.module';
 import { BookBorrowModule } from './user-account/details/book-borrow/book-borrow.module';
 import { CurrentBorrowModule } from './user-account/details/current-borrow/current-borrow.module';
-import { UserDataModule } from './user-account/details/user-data/user-data.module';
+import { UserPIModule } from './user-account/details/user-pi/user-pi.module';
 
 export const appRoutes: Routes = [
   {
@@ -76,7 +76,7 @@ export const appRoutes: Routes = [
       {
         path: 'app-book-borrow',
         component: BookBorrowModule
-      }
+      },
     {
 
       path: 'app-current-borrow',
@@ -84,8 +84,12 @@ export const appRoutes: Routes = [
 
       },
       {
-        path: 'app-user-data',
-        component: UserDataModule
+        path: 'app-user-pi',
+        component: UserPIModule
+      },
+    {
+        path: '',
+      component: CurrentBorrowModule
       }]
   },
   {
@@ -106,8 +110,12 @@ export const appRoutes: Routes = [
     UserAccountComponent,
     SearchUserComponent,
     SearchResourceComponent,
+    CurrentBorrowModule,
     GridJoggingComponentComponent,
-    UserComponent   
+    UserComponent,
+    UserPIModule,
+    BookBookingModule,
+    BookBorrowModule
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

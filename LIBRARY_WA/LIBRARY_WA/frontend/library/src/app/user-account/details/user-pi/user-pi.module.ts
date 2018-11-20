@@ -2,8 +2,8 @@ import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-current-borrow',
-  templateUrl: './current-borrow.component.html'
+  selector: 'app-user-pi',
+  templateUrl: './user-pi.component.html'
 })
 
 @NgModule({
@@ -12,4 +12,4 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ]
 })
-export class CurrentBorrowModule { }
+export class UserPIModule { }

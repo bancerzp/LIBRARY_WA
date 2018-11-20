@@ -1,27 +1,37 @@
 <p>
-  user-account works!
+  Konto użytkownika
 </p>
-
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="nav-link " routerLink="/app-user-account/app-current-borrow" routerLinkActive="active" href="current-borrow">Aktualne wypożyczenia</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" routerLink="/app-user-account/app-book-booking" routerLinkActive="active" href="book-booking">Rezerwacje</a>
+    <a class="nav-link" routerLink="/app-user-account/app-book-booking" routerLinkActive="active" href="book-booking">Rezerwacje<br /></a>
   </li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/app-user-account/app-book-borrow" routerLinkActive="active" href="book-borrow">Historia wypożyczeń</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" routerLink="/app-user-account/app-user-data" routerLinkActive="active" href="user-data">Dane użytkownika</a>
+    <a class="nav-link" routerLink="/app-user-account/app-user-pi" routerLinkActive="active" href="user-pi">Dane użytkownika</a>
   </li>
-
 </ul>
-<router-outlet></router-outlet>
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9 offset-sm-1">
+        <div class="tab-content">
+          <div class="tab-pane active">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!--
     Wyświetlają się dane użytkownika
-    historia wypożyczeń
+    historia wypożyczeń itd
 
 
 -->

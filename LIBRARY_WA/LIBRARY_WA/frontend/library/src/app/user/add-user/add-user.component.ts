@@ -19,7 +19,8 @@ export class AddUserComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  ifExists: boolean[];
+  ifEmailExists: any;
+  ifLoginExists: any;
   maxDate = new Date().toString();
 
   constructor(
@@ -28,28 +29,45 @@ export class AddUserComponent implements OnInit {
     private userService: UserService) { }
 
   createForm() {
+    this.ifLoginExists = false;
     this.addUserForm = this.formBuilder.group({
-      login: ['', Validators.required],
+      login: ['', [Validators.required]],//, Validators.minLength(5), Validators.maxLength(10)]],//Validators.pattern("[/S]*"),
       email: ['', [Validators.email, Validators.required]],
-      fullname: ['', Validators.required],
+      fullname: ['', [Validators.required]], //, Validators.pattern("\S")
       date_Of_Birth: ['', Validators.required],
-      phone_Number: ['', [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
+      phone_Number: ['',[Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
       type: ['', Validators.required],
       password: '',
-      address: ['', Validators.required],
-      is_Valid: [true],
+      address: ['', Validators.required], //, Validators.pattern("/^\S*$/")
+      is_Valid: [true]
     });
   }
 
   ngOnInit() {
     this.submitted = false;
-    var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
+    //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.createForm();
   }
 
   clearForm() {
     this.createForm();
   }
+
+  checkDate() {
+
+   /*
+      if (this.addUserForm.value("date_of_birth") > Date.now()) {
+        this.addUserForm.get(""date_of_birth"").setValue([], Date.now());
+        return false;
+      }
+    }
+    else {
+
+      return true;
+    }
+    */
+  }
+
 
   addUser() {
   //  var result=this.userService.ifUserExists(this.user);
@@ -59,7 +77,7 @@ export class AddUserComponent implements OnInit {
    //   return;
    // }
     var m = this.user;
-    this.userService.addUser(m).subscribe(
+    this.userService.AddUser(m).subscribe(
       data => { alert("Użytkownik dodany poprawnie") },
       Error => { alert("Błąd dodawania użytkownika") });
 
@@ -69,4 +87,13 @@ export class AddUserComponent implements OnInit {
     //    this.user = user['records']);
     this.submitted = true;
   }
+
+  checkEmail() {
+    this.userService.IfEmailExists(this.addUserForm.get("email").value).subscribe(answear => this.ifEmailExists = answear.toString());
+  }
+  checkLogin() {
+    this.userService.IfLoginExists(this.addUserForm.get("login").value).subscribe(answear => this.ifLoginExists = answear.toString);
+
+  }
+
 }

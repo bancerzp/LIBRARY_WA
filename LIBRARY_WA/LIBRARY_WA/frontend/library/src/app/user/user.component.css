@@ -1,4 +1,11 @@
 .nav-item {
-  width: 25%;
+  width: 50%;
   font-size: medium;
+  background-color: antiquewhite;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+
+}
+.nav-tabs .nav-item .nav-link.active {
+  background-color: coral;
 }

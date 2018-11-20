@@ -11,7 +11,7 @@ export class UserService {
   
   }
 
-  public isLogged(user) {
+  public IsLogged(user) {
     
     // Get all jogging data
     return this.http.post(this.accessPointUrl + '/IsLogged',user, { headers: this.headers });//, withCredentials: true });
@@ -22,17 +22,16 @@ export class UserService {
     return this.http.get(this.accessPointUrl, { headers: this.headers, withCredentials: true });
   }
 
-  public addUser(user) {
-    return this.http.post(this.accessPointUrl, user, { headers: this.headers, withCredentials: true });
+  public AddUser(user) {
+    return this.http.post(this.accessPointUrl +'/AddUser', user, { headers: this.headers});
   }
 
-  public ifUserExists(user) {
-    // Get all jogging data
-    var result = ["", ""];
-    this.http.get(this.accessPointUrl + '/IfEmailxists/' + user.email, { headers: this.headers, withCredentials: true }).subscribe(result => result[0] = result.toString());
+  public IfLoginExists(login) {
+    return this.http.get(this.accessPointUrl + '/IfEmailxists/' + login, { headers: this.headers });
+  }
 
-    this.http.get(this.accessPointUrl + '/IfLoginExists/' + user.login, { headers: this.headers, withCredentials: true }).subscribe(result => result[1] = result.toString());
-    return result;
+  public IfEmailExists(email) {
+    return this.http.get(this.accessPointUrl + '/IfEmailExists/' + email, { headers: this.headers});
   }
 
   public remove(payload) {
