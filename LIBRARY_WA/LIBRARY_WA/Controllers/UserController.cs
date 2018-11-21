@@ -53,10 +53,10 @@ namespace LIBRARY_WA.Controllers
         //}
 
         [HttpGet("{email}")]
-        public Boolean IfEmailExists([FromBody] String email)
+        public IEnumerable<User> IfEmailExists([FromRoute] String email)
         {
-            return _context.User.Where(u => u.email == email).Count() > 0;
-           
+            return _context.User.Where(u => u.email == email);
+
         }
 
         [HttpGet("{login}")]

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LIBRARY_WA.Models;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace LIBRARY_WA.Data
 {
@@ -22,9 +23,15 @@ namespace LIBRARY_WA.Data
 
         // GET: api/Resources
         [HttpGet]
-        public IEnumerable<Resource> GetResource([FromBody] Resource resource)
+        public List<String> GetAuthor()
         {
-            return _context.Resource;
+            return _context.Resource.Select(a => a.authorFullName).Distinct().ToList();
+        }
+
+        [HttpGet]
+        public List<String> GetBookType()
+        {
+            return _context.Resource.Select(a => a.type).Distinct().ToList();
         }
 
         // GET: api/Resources/5

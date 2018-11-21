@@ -18,10 +18,16 @@ export class ResourceService {
     this.headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
   }
 
-  public get() {
-    // Get all jogging dataferfe
-    return this.http.get(this.accessPointUrl, { headers: this.headers });
+  public GetAuthor() {
+    
+    return this.http.get(this.accessPointUrl+"/GetAuthor", { headers: this.headers });
   }
+
+  public GetBookType() {
+    
+    return this.http.get(this.accessPointUrl +"/GetBookType", { headers: this.headers });
+  }
+
 
   public add(payload) {
     return this.http.post(this.accessPointUrl, payload, { headers: this.headers });

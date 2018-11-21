@@ -6,10 +6,10 @@
 <form [formGroup]="addResourceForm" (ngSubmit)="addResource()">
   <div class="form-group">
     <label for="bookId">Id. książki</label>
-    <input type="text" formControlName="bookId" class="form-control" />
- <!-- </div>
+    <input type="text" formControlName="book_Id" class="form-control" />
+    <!-- </div>
 
-  <div class="form-group">-->
+     <div class="form-group">-->
     <label for="ISBN">ISBN</label>
     <input type="text" formControlName="ISBN" class="form-control" />
   </div>
@@ -38,6 +38,15 @@
     <label for="type">Typ</label>
     <input type="text" formControlName="type" class="form-control" disabled="disabled" />
   </div>
+  <div class="form-group">
+    <select ng-model="selected" ng-init="selected='March'" ng-repeat="author in author">
+      <option value="{{author}}">{{author}}</option>
+    </select>
+  <h3>You have selected : {{selected}}</h3>
+</div>
+
+
+
 
   <div class="form-group">
     <button [disabled]="loading " class="btn btn-primary">Dodaj</button>

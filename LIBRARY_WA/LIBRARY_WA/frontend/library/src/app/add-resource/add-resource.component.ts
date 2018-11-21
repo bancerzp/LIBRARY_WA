@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '../_services/resource.service';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { Http } from '@angular/http';
 @Component({
   selector: 'app-add-resource',
@@ -11,6 +11,8 @@ import { Http } from '@angular/http';
 export class AddResourceComponent implements OnInit {
   addResourceForm: FormGroup;
   column: String[] = ["Id. książki", "ISBN", "Tytuł", "Autor", "Rok wydania", "Język wydania", "Rodzaj"];
+  public author=["1","2"];
+  public type = [];
 
   constructor(private formBuilder: FormBuilder,
     private http: Http,
@@ -23,7 +25,7 @@ export class AddResourceComponent implements OnInit {
     //pobierz wszystkie języki
    
     this.addResourceForm = this.formBuilder.group({
-      id: 'idd',
+      book_id: 'idd',
       ISBN: ['', Validators.pattern("^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0 - 9X]{ 13}$ | 97[89][0 - 9]{ 10}$ | (?= (?: [0 - 9] + [- ]){ 4})[- 0 - 9]{ 17 } $)(?: 97[89][- ] ?) ? [0 - 9]{ 1, 5 } [- ] ? [0 - 9] + [- ] ? [0 - 9] + [- ] ? [0 - 9X]$")],
       title: 'full',
       authorFullName: [''],
@@ -33,6 +35,15 @@ export class AddResourceComponent implements OnInit {
   }
   addResource() {
 
+  }
+
+
+  getType() {
+  //  return this.resourceService.GetBookType().pipe(
+  };
+
+  getAuthor() {
+    //  return this.resourceService.GetAuthor().subscribe(authors => this.author = authors);
   }
   clearForm() {}
 }

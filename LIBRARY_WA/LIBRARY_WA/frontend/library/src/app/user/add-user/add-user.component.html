@@ -3,7 +3,7 @@
 
   <div class="form-group">
     <label for="login: ">Login</label>
-    <input type="text" formControlName="login" class="form-control" [(ngModel)]="user.login" ng-change="checkLogin()" />
+    <input type="text" formControlName="login" class="form-control" [(ngModel)]="user.login" ng-change="checkLoginExistsInDB()" />
     <div class="alert alert-danger " *ngIf="(sumbitted && (addUserForm.get('login').hasError('required') || addUserForm.get('login').hasError('pattern')))
               ||(addUserForm.get('login').hasError('required') && addUserForm.get('login').dirty && addUserForm.get('login').touched) || (addUserForm.get('login').hasError('required') && addUserForm.get('login').touched)">Pole login nie może byc puste</div>
    
@@ -16,12 +16,13 @@
 
   </div>
 
-    <div class="form-group">
-      <label for="email">E-mail</label>
-      <input type="email" formControlName="email" class="form-control" [(ngModel)]="user.email" />
-      <div class="alert alert-danger " *ngIf="(sumbitted && addUserForm.get('email').hasError('required'))||(addUserForm.get('email').hasError('required')  && addUserForm.get('email').touched)">Pole email nie może być puste</div>
-      <div class="alert alert-danger " *ngIf="!sumbitted && addUserForm.get('email').hasError('email') && addUserForm.get('email').dirty && addUserForm.get('email').touched">Nieprawidłowy format email</div>
-    </div>
+  <div class="form-group">
+    <label for="email">E-mail</label>
+    <input type="email" formControlName="email" class="form-control" [(ngModel)]="user.email" ng-change="checkEmailExistsInDB()"/>
+    <div class="alert alert-danger " *ngIf="(sumbitted && addUserForm.get('email').hasError('required'))||(addUserForm.get('email').hasError('required')  && addUserForm.get('email').touched)">Pole email nie może być puste</div>
+    <div class="alert alert-danger " *ngIf="!sumbitted && addUserForm.get('email').hasError('email') && addUserForm.get('email').dirty && addUserForm.get('email').touched">Nieprawidłowy format email</div>
+    <div class="alert alert-danger " *ngIf="addUserForm.get('email').hasError('emailTaken') && addUserForm.get('email').touched">Podany email już jest przypisany do użytkownika</div>
+  </div>
 
     <div class="form-group">
       <label for="fullname">Imię i nazwisko</label>
