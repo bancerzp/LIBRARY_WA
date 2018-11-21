@@ -1,8 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormsModule, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormsModule, FormBuilder, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { Http } from '@angular/http';
 import { User } from '../../_models/User';
 import { UserService } from '../../_services/user.service';
+import { map } from 'rxjs/operators';
 
 //import { createConnection } from 'net';
 //import { createConnection } from 'mysql';
@@ -31,8 +32,8 @@ export class AddUserComponent implements OnInit {
   createForm() {
     this.ifLoginExists = false;
     this.addUserForm = this.formBuilder.group({
-      login: ['', [Validators.required]],//, Validators.minLength(5), Validators.maxLength(10)]],//Validators.pattern("[/S]*"),
-      email: ['', [Validators.email, Validators.required]],
+      login: ['', [Validators.required], this.checkLoginExistsInDB.bind(this)],//, Validators.minLength(5), Validators.maxLength(10)]],//Validators.pattern("[/S]*"),
+      email: ['', [Validators.email, Validators.required], this.checkEmailExistsInDB.bind(this)],
       fullname: ['', [Validators.required]], //, Validators.pattern("\S")
       date_Of_Birth: ['', Validators.required],
       phone_Number: ['',[Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
@@ -50,6 +51,7 @@ export class AddUserComponent implements OnInit {
   }
 
   clearForm() {
+    console.log("wyczyszczone");
     this.createForm();
   }
 
@@ -71,7 +73,7 @@ export class AddUserComponent implements OnInit {
 
   addUser() {
   //  var result=this.userService.ifUserExists(this.user);
-   
+    console.log("add");
   //  if (this.addUserForm.invalid) {
    //   this.submitted = true;
    //   return;
@@ -88,12 +90,15 @@ export class AddUserComponent implements OnInit {
     this.submitted = true;
   }
 
-  checkEmail() {
-    this.userService.IfEmailExists(this.addUserForm.get("email").value).subscribe(answear => this.ifEmailExists = answear.toString());
-  }
-  checkLogin() {
-    this.userService.IfLoginExists(this.addUserForm.get("login").value).subscribe(answear => this.ifLoginExists = answear.toString);
 
-  }
+  checkEmailExistsInDB(control: FormControl) {
+    return this.userService.IfEmailExists(control.value).pipe(
+      map(((res: any[]) => res.filter(user => user.email == control.value).length == 0 ? { 'emailTaken': false } : { 'emailTaken': true })))
+  };
 
-}
+  checkLoginExistsInDB(control: FormControl) {
+    return this.userService.IfLoginExists(control.value).pipe(
+      map(((res: any[]) => res.filter(user=>user.login==control.value).length == 0 ? { 'loginTaken': false } : { 'loginTaken': true })))
+  };
+    }
+

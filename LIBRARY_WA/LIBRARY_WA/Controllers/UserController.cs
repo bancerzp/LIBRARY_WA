@@ -60,9 +60,9 @@ namespace LIBRARY_WA.Controllers
         }
 
         [HttpGet("{login}")]
-        public Boolean IfLoginExists([FromBody] String login)
+        public IEnumerable<User> IfLoginExists([FromRoute] String login)
         {
-            return _context.User.Where(u => u.login == login).Count() > 0;
+            return _context.User.Where(u => u.login == login);
         }
 
         // GET: api/User/5

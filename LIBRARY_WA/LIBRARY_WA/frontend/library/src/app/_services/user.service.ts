@@ -27,7 +27,7 @@ export class UserService {
   }
 
   public IfLoginExists(login) {
-    return this.http.get(this.accessPointUrl + '/IfEmailxists/' + login, { headers: this.headers });
+    return this.http.get(this.accessPointUrl + '/IfLoginExists/' + login, { headers: this.headers });
   }
 
   public IfEmailExists(email) {
