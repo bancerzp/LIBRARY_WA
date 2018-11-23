@@ -49,7 +49,7 @@ namespace LIBRARY_WA.Data
 
         // GET: api/Books/5
         [HttpGet]
-        public  IEnumerable<Book> GetBook()
+        public  IEnumerable<Book> SearchBook()
         {
             return _context.Book;
         }
@@ -91,13 +91,13 @@ namespace LIBRARY_WA.Data
 
         // POST: api/Books
         [HttpPost]
-        public async Task<IActionResult> PostBook([FromBody] Book book)
+        public async Task<IActionResult> AddBook([FromBody] Book book)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            book.is_available = true;
             _context.Book.Add(book);
             await _context.SaveChangesAsync();
 

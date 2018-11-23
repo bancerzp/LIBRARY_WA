@@ -1,6 +1,6 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Http } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { BookService } from '../_services/book.service';
 import { Book } from '../_models/book';
 import { map } from 'rxjs/operators';
@@ -20,8 +20,7 @@ export class SearchBookComponent implements OnInit {
 
   bookData: Book[] = []; // [{ book_id: 'test', title: 'test', ISBN: 'test', author_fullname: 'test', year: 'test', language: 'test',  type: 'test',description: 'test'}];
   public author = [];
-  public bookType: Book[] = [{ book_id: 'test', title: 'test', ISBN: 'test', author_fullname: 'test', year: 'test', language: 'test', type: 'test', description: 'test', is_available: true }, { book_id: 'test', title: 'test', ISBN: 'test', author_fullname: 'test', year: 'test', language: 'test', type: 'test2', description: 'test', is_available: true }];
-
+  public bookType = ['1',"2"];
   public language = [];
   public values =[];
   searchBookForm: FormGroup;
@@ -68,7 +67,7 @@ export class SearchBookComponent implements OnInit {
     //pobierz wszystkie typy książki
     //pobierz wszystkie języki
    // this.resultData=[{ BookId: 'test', title: 'test', ISBN: 'test', authorFullName: 'test', releaseDate: 'test', year: 'test', language: 'test'  type: 'test' }];
-    this.GetBookType();
+  //  this.GetBookType();
     this.GetAuthor();
     this.GetLanguage();
 
@@ -81,12 +80,13 @@ export class SearchBookComponent implements OnInit {
     year: [''],
     language: '',
     type: '',
-  });
+    });
+    this.SearchBook();
   }
 
 
   SearchBook() {
-    var searchForm = this.book;
+  /*  var searchForm = this.book;
     for (const field in this.searchBookForm.controls) {
       if (field.toString().replace(" ", "").length == 0) {
         this.values.push('%');
@@ -94,15 +94,23 @@ export class SearchBookComponent implements OnInit {
       else {
       this.values.push("%"+field.toString()+"%");
     }
-    }
+    }*/
  
- 
-    return this.bookService.SearchBook().pipe(
+
+    return this.bookService.SearchBook()
+      .map((response: Response) => response.json().data)
+      .filter((book:Book) => book.book_id == "1")
+      .subscribe((data:Book[]) =>
+        this.bookData=(data));
+     
+ /*.pipe(
       map((res: Book[]) => res.filter(book => (book.book_id == this.values[0] && book.ISBN == this.values[1]
         && book.title == this.values[2] && book.author_fullname == this.values[3] && book.year == this.values[4]
         && book.language == this.values[5] && book.type == this.values[6]))))
       .toPromise()
-      .then(response => this.bookData = response);
+      .then(response => this.bookData = response);*/
+
+   //   subscribe((authors: any[]) => this.bookData = authors);
   }
   
 

@@ -19,12 +19,11 @@
     <input type="text" formControlName="title" class="form-control" />
   </div>
 
-
   <div class="form-group">
     <label for="author_fullname">Imię i nazwisko autora</label>
     <input type="text" list="author" formControlName="author_fullname" class="form-control" [(ngModel)]="book.author" />
     <datalist id="author">
-      <option ng-repeat="author in author" value="{{author}}">{{author}}</option>
+      <option *ngFor="let author of author" value="{{author}}">{{author}}</option>
     </datalist>
   </div>
 
@@ -37,25 +36,23 @@
     <label for="language">Język</label>
     <input type="text" list="language" formControlName="language" class="form-control" [(ngModel)]="book.language" />
     <datalist id="language">
-      <option ng-repeat="language in language" value="{{language}}">{{language}}</option>
+      <option *ngFor="let language of language" value="{{language}}">{{language}}</option>
     </datalist>
   </div>
 
   <div class="form-group">
     <label for="type">Typ</label>
-    <input type="text" list="type" formControlName="type" class="form-control" [(ngModel)]="book.type" />
-    <datalist id="type" ng-repeat="typ in bookType" >
-
-      <option value="{{typ.type}}">{{typ.type}}</option>
+    <input type="text" list="bookType" formControlName="type" class="form-control" [(ngModel)]="book.type" />
+    <datalist id="bookType" >
+      <option *ngFor="let bookTyp of bookType" value="{{bookTyp}}">{{bookTyp}}</option>
     </datalist>
   </div>
 
   <div class="form-group">
     <button [disabled]="loading " class="btn btn-primary" (ngSubmit)="SearchBook()">Wyszukaj</button>
-
   </div>
 </form>
-<button [disabled]="loading " class="btn btn-primary" ng-Click="clearForm()">Wyczyść</button>
+<button [disabled]="loading " class="btn btn-primary" ng-Click="ClearForm()">Wyczyść</button>
 
 <table *ngIf="areBooks()">
   <tr>

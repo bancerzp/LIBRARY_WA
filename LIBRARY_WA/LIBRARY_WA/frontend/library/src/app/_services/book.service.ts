@@ -30,18 +30,18 @@ export class BookService {
   public GetLanguage() {
     return this.http.get(this.accessPointUrl + "/GetLanguage", { headers: this.headers });
   }
-
+  
   public SearchBook() {
-    return this.http.get(this.accessPointUrl + "/GetBook", { headers: this.headers });
+    return this.http.get(this.accessPointUrl + "/SearchBook", { headers: this.headers });
   }
   
   public IfISBNExists(ISBN) {
     return this.http.get(this.accessPointUrl + '/IfISBNExists/' + ISBN, { headers: this.headers });
   }
 
-
+ 
   public AddBook(book) {
-    return this.http.post(this.accessPointUrl + "/PostBook", book, { headers: this.headers });
+    return this.http.post(this.accessPointUrl + "/AddBook", book, { headers: this.headers });
   }
 
 

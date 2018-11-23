@@ -16,7 +16,7 @@ export class AddBookComponent implements OnInit {
   addBookForm: FormGroup;
   column: String[] = ["Id. książki", "ISBN", "Tytuł", "Autor", "Rok wydania", "Język wydania", "Rodzaj"];
   public author=[];
-  public type = [];
+  public bookType = [];
   public language = [];
   @Output() book = new EventEmitter<Book>();
   submitted: boolean;
@@ -69,7 +69,7 @@ export class AddBookComponent implements OnInit {
     return this.bookService.GetAuthor().subscribe((authors: any[]) => this.author = authors);
   }
   GetBookType() {
-    return this.bookService.GetBookType().subscribe((types: any[]) => this.type = types);
+    return this.bookService.GetBookType().subscribe((types: any[]) => this.bookType = types);
   };
 
   GetLanguage() {
