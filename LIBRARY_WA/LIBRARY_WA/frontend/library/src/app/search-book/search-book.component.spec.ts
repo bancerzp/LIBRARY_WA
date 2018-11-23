@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { AddResourceComponent } from './add-resource.component';
+import { SearchBookComponent } from './search-book.component';
 
-describe('AddResourceComponent', () => {
-  let component: AddResourceComponent;
-  let fixture: ComponentFixture<AddResourceComponent>;
+describe('SearchBookComponent', () => {
+  let component: SearchBookComponent;
+  let fixture: ComponentFixture<SearchBookComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddResourceComponent ]
+      declarations: [ SearchBookComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddResourceComponent);
+    fixture = TestBed.createComponent(SearchBookComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

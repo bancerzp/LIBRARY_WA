@@ -40,7 +40,7 @@ namespace LIBRARY_WA
             services.AddDbContext<WorkoutContext>(options =>
                     options.UseMySql(Configuration.GetConnectionString("LibraryDatabase")));
 
-            services.AddDbContext<ResourceContext>(options =>
+            services.AddDbContext<BookContext>(options =>
                     options.UseMySql(Configuration.GetConnectionString("LibraryDatabase")));
 
             services.AddDbContext<UserContext>(options =>

@@ -6,34 +6,32 @@ using System.Threading.Tasks;
 
 namespace LIBRARY_WA.Models
 {
-    public class Resource
+    public class Book
     {
-        [Required]
-        public int Id { get; set; }
+        [Key]
+        public Int32 book_id { get; set; }
 
-        public string BookId { get; set; }
-
-        [StringLength(100)]
+        [MaxLength(50)]
         public string title { get; set; }
 
         [RegularExpression(@"\d{13}", ErrorMessage = "Niepoprawny format numer ISBN")]
         [StringLength(13)]
         public string ISBN { get; set; }
-
-        [ScaffoldColumn(false)]
-        [StringLength(40)]
+        
+        [MaxLength(100)]
         public string author_fullname { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy.MMM.dd}")]
-        public DateTime releaseDate { get; set; }
 
         [RegularExpression(@"\d{4}", ErrorMessage = "Niepoprawny format roku wydania książki")]
         public String year { get; set; }
 
+        [MaxLength(20)]
         public string language { get; set; }
-
+        [MaxLength(30)]
         public string type { get; set; }
 
+        [MaxLength(300)]
+        public string description { get; set; }
+
+        public Boolean is_available { get; set; }
     }
 }

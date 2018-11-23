@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using LIBRARY_WA.Models;
 
-    public class ResourceContext : DbContext
+    public class BookContext : DbContext
     {
-        public ResourceContext (DbContextOptions<ResourceContext> options)
+        public BookContext (DbContextOptions<BookContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Resource> Resource { get; set; }
+        public DbSet<Book> Book { get; set; }
         public DbSet<User> User { get; set; }
 }

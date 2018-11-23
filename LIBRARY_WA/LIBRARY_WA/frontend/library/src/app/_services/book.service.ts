@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Resource } from '../_models/resource';
+import { Book } from '../_models/book';
 
 @Injectable()
-export class ResourceService {
+export class BookService {
+   
   private headers: HttpHeaders;
-  private accessPointUrl: string = 'https://localhost:5001/api/resource';
-  public resources: Resource[];
+  private accessPointUrl: string = 'https://localhost:5001/api/book';
+  public books: Book[];
  
-  readResources(Resource): Observable<any> {
+  readBooks(Book): Observable<any> {
     return this.http.get(this.accessPointUrl, { headers: this.headers });
   }
 
@@ -27,16 +28,23 @@ export class ResourceService {
   }
 
   public GetLanguage() {
-    return this.http.get(this.accessPointUrl + "/GetLanguageee", { headers: this.headers });
+    return this.http.get(this.accessPointUrl + "/GetLanguage", { headers: this.headers });
+  }
+
+  public SearchBook() {
+    return this.http.get(this.accessPointUrl + "/GetBook", { headers: this.headers });
+  }
+  
+  public IfISBNExists(ISBN) {
+    return this.http.get(this.accessPointUrl + '/IfISBNExists/' + ISBN, { headers: this.headers });
   }
 
 
-
-
-
-  public add(payload) {
-    return this.http.post(this.accessPointUrl, payload, { headers: this.headers });
+  public AddBook(book) {
+    return this.http.post(this.accessPointUrl + "/PostBook", book, { headers: this.headers });
   }
+
+
 
   public remove(payload) {
     return this.http.delete(this.accessPointUrl + '/' + payload.id, { headers: this.headers });

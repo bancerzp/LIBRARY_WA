@@ -7,7 +7,7 @@ import { Routes, RouterModule } from '@angular/router';
 //services
 import { WorkoutService } from './_services/workout.service';
 import { UserService } from './_services/user.service';
-import { ResourceService } from './_services/resource.service';
+import { BookService } from './_services/book.service';
 
 import { HttpClientModule } from '@angular/common/http';
 import { DecimalPipe } from '@angular/common';
@@ -15,13 +15,13 @@ import { DatePipe } from '@angular/common';
 
 //components
 import { AppComponent } from './app.component';
-import { AddResourceComponent } from './add-resource/add-resource.component';
+import { AddBookComponent } from './add-book/add-book.component';
 import { AddUserComponent } from './user/add-user/add-user.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { UserAccountComponent } from './user-account/user-account.component';
 import { SearchUserComponent } from './user/search-user/search-user.component';
-import { SearchResourceComponent } from './search-resource/search-resource.component';
+import { SearchBookComponent } from './search-book/search-book.component';
 import { GridJoggingComponentComponent } from './grid-jogging-component/grid-jogging-component.component';
 import { UserComponent } from './user/user.component';
 import { BookBookingModule } from './user-account/details/book-booking/book-booking.module';
@@ -51,12 +51,12 @@ export const appRoutes: Routes = [
   },
   
   {
-    path: 'app-add-resource',
-    component: AddResourceComponent
+    path: 'app-add-book',
+    component: AddBookComponent
   },
   {
-    path: 'app-search-resource',
-    component: SearchResourceComponent
+    path: 'app-search-book',
+    component: SearchBookComponent
   },
 
   {
@@ -102,14 +102,14 @@ export const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    AddResourceComponent,
+    AddBookComponent,
     AddUserComponent,
-    AddResourceComponent,
+    AddBookComponent,
     HomeComponent,
     LoginComponent,
     UserAccountComponent,
     SearchUserComponent,
-    SearchResourceComponent,
+    SearchBookComponent,
     CurrentBorrowModule,
     GridJoggingComponentComponent,
     UserComponent,
@@ -125,7 +125,7 @@ export const appRoutes: Routes = [
     HttpModule,
     HttpClientModule
   ],
-  providers: [WorkoutService,UserService, ResourceService],
+  providers: [WorkoutService,UserService, BookService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

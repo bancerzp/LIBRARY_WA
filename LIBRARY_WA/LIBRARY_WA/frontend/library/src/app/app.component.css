@@ -1,8 +1,12 @@
 .nav-item {
-  font-size:x-large;
-   color:red;
+  font-size:medium;
+  color:coral;
 }
 
+.nav-link {
+  font-size: x-large;
+  color: red;
+}
 
 li .glyphicon {
   margin-right: 10px;

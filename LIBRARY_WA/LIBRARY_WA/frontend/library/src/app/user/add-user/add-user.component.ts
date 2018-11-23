@@ -32,7 +32,7 @@ export class AddUserComponent implements OnInit {
   createForm() {
     this.ifLoginExists = false;
     this.addUserForm = this.formBuilder.group({
-      login: ['', [Validators.required], this.checkLoginExistsInDB.bind(this)],//, Validators.minLength(5), Validators.maxLength(10)]],//Validators.pattern("[/S]*"),
+      login: ['', [Validators.required, this.checkLoginExistsInDB.bind(this), Validators.minLength(5), Validators.maxLength(10)]],//Validators.pattern("[/S]*"),
       email: ['', [Validators.email, Validators.required], this.checkEmailExistsInDB.bind(this)],
       fullname: ['', [Validators.required]], //, Validators.pattern("\S")
       date_Of_Birth: ['', Validators.required],
