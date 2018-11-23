@@ -9,7 +9,6 @@ export class ResourceService {
   private accessPointUrl: string = 'https://localhost:5001/api/resource';
   public resources: Resource[];
  
-  // Get list of products from remote server.
   readResources(Resource): Observable<any> {
     return this.http.get(this.accessPointUrl, { headers: this.headers });
   }
@@ -19,14 +18,20 @@ export class ResourceService {
   }
 
   public GetAuthor() {
-    
-    return this.http.get(this.accessPointUrl+"/GetAuthor", { headers: this.headers });
+    return this.http.get(this.accessPointUrl + "/GetAuthor", { headers: this.headers });
+  }
+  
+  public GetBookType() {
+
+    return this.http.get(this.accessPointUrl + "/GetBookType", { headers: this.headers });
   }
 
-  public GetBookType() {
-    
-    return this.http.get(this.accessPointUrl +"/GetBookType", { headers: this.headers });
+  public GetLanguage() {
+    return this.http.get(this.accessPointUrl + "/GetLanguageee", { headers: this.headers });
   }
+
+
+
 
 
   public add(payload) {

@@ -22,7 +22,7 @@ namespace LIBRARY_WA.Models
 
         [ScaffoldColumn(false)]
         [StringLength(40)]
-        public string authorFullName { get; set; }
+        public string author_fullname { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy.MMM.dd}")]

@@ -7,31 +7,38 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LIBRARY_WA.Models;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.AspNetCore.Cors;
 
 namespace LIBRARY_WA.Data
 {
-    [Route("api/[controller]")]
+    [EnableCors("CorsPolicy")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ResourcesController : ControllerBase
+    public class ResourceController : ControllerBase
     {
         private readonly ResourceContext _context;
 
-        public ResourcesController(ResourceContext context)
+        public ResourceController(ResourceContext context)
         {
             _context = context;
         }
 
-        // GET: api/Resources
+        // GET: api/Resource
         [HttpGet]
         public List<String> GetAuthor()
         {
-            return _context.Resource.Select(a => a.authorFullName).Distinct().ToList();
+            return _context.Resource.Select(a => a.author_fullname).Distinct().ToList();
         }
 
         [HttpGet]
         public List<String> GetBookType()
         {
             return _context.Resource.Select(a => a.type).Distinct().ToList();
+        }
+
+        public List<String> GetLanguage()
+        {
+            return _context.Resource.Select(a => a.language).Distinct().ToList();
         }
 
         // GET: api/Resources/5
