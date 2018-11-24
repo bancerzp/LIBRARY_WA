@@ -18,13 +18,14 @@ export class SearchBookComponent implements OnInit {
   @Output() editClicked = new EventEmitter<any>();
   //@Input()
 
+  clicked: boolean;
   bookData: Book[] = []; // [{ book_id: 'test', title: 'test', ISBN: 'test', author_fullname: 'test', year: 'test', language: 'test',  type: 'test',description: 'test'}];
   public author = [];
-  public bookType = ['1',"2"];
+  public bookType = [];
   public language = [];
   public values =[];
   searchBookForm: FormGroup;
-  column: String[] = ["Id. książki", "ISBN", "Tytuł", "Autor", "Rok wydania", "Język wydania", "Rodzaj"];
+  column: String[] = ["Id. książki", "Tytuł", "ISBN",  "Autor", "Rok wydania", "Język wydania", "Rodzaj"];
   columnAddReader:String[] =["Zarezerwuj"]
   columnAddLibrarian: String[] = ["Zarezerwuj","Edytuj","Usuń","Dodaj egzemplarz"]
 
@@ -63,11 +64,10 @@ export class SearchBookComponent implements OnInit {
  
 
   ngOnInit() {
-
+    this.clicked = true;
     //pobierz wszystkie typy książki
     //pobierz wszystkie języki
-   // this.resultData=[{ BookId: 'test', title: 'test', ISBN: 'test', authorFullName: 'test', releaseDate: 'test', year: 'test', language: 'test'  type: 'test' }];
-  //  this.GetBookType();
+    this.GetBookType();
     this.GetAuthor();
     this.GetLanguage();
 
@@ -84,40 +84,26 @@ export class SearchBookComponent implements OnInit {
     this.SearchBook();
   }
 
-
   SearchBook() {
-  /*  var searchForm = this.book;
-    for (const field in this.searchBookForm.controls) {
-      if (field.toString().replace(" ", "").length == 0) {
+    this.clicked = true;
+    var searchForm = this.book;
+   
+    Object.keys(this.searchBookForm.controls).forEach((name) => {
+      var s = this.searchBookForm.controls[name].value;
+      if (s.replace(" ", "").replace("'","").length == 0) {
         this.values.push('%');
-    }
+      }
       else {
-      this.values.push("%"+field.toString()+"%");
-    }
-    }*/
- 
+        this.values.push(s.replace("'",""));
+      }
+    });
 
-    return this.bookService.SearchBook()
-      .map((response: Response) => response.json().data)
-      .filter((book:Book) => book.book_id == "1")
-      .subscribe((data:Book[]) =>
-        this.bookData=(data));
-     
- /*.pipe(
-      map((res: Book[]) => res.filter(book => (book.book_id == this.values[0] && book.ISBN == this.values[1]
-        && book.title == this.values[2] && book.author_fullname == this.values[3] && book.year == this.values[4]
-        && book.language == this.values[5] && book.type == this.values[6]))))
-      .toPromise()
-      .then(response => this.bookData = response);*/
-
-   //   subscribe((authors: any[]) => this.bookData = authors);
+    return this.bookService.SearchBook(this.values).subscribe((data:Book[]) => this.bookData=data)
   }
-  
 
   clearForm() {
     this.searchBookForm.reset();
   }
-
 
   GetAuthor() {
     return this.bookService.GetAuthor().subscribe((authors: any[]) => this.author = authors);
@@ -129,5 +115,21 @@ export class SearchBookComponent implements OnInit {
   GetLanguage() {
     return this.bookService.GetLanguage().subscribe((languages: any[]) => this.language = languages);
   };
+
+
+  UpdateBook() {
+
+  }
+
+  DeleteBook() {
+
+  }
+
+  AddVolume() {
+
+  }
+
+  readOneProduct(id) { }
+
 }
 //tu tez przekazac zmienna czy jest ktos zalogowany

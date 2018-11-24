@@ -41,16 +41,22 @@ export class AddBookComponent implements OnInit {
       language: [Validators.required, Validators.maxLength(20)],
       type: ['', [Validators.required, Validators.maxLength(30)]],
       description: ['', [Validators.maxLength(300)]],
+      add_volume:[],
       is_available:true,
     });
   }
 
   AddBook() {
     var m = this.book;
+    var id
     this.bookService.AddBook(m).subscribe(
-        data => { alert("Książka została dodana poprawnie") },
-        Error => { alert("Błąd dodawania książki")+Error });
-
+        (data:Book) => { id=data.book_id },
+        Error => { alert("Błąd dodawania książki") });
+      if (this.addBookForm.get("add_volume")) {
+        this.bookService.AddVolume(id).subscribe(
+          data => { alert("Książka została dodana poprawnie") },
+          Error => { alert("Błąd dodawania książki") });
+      }
       //   this.user = this.addUserForm.value();
       // this.userService.addUser(m);
       //    .subscribe(user =>

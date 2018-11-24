@@ -62,8 +62,35 @@ namespace LIBRARY_WA.Controllers
         [HttpGet("{login}")]
         public IEnumerable<User> IfLoginExists([FromRoute] String login)
         {
-            return _context.User.Where(u => u.login == login);
+            return _context.User.Where(u => u.login == login.Replace("'",""));
         }
+
+
+        [HttpGet]
+        public IEnumerable<User> SearchUser([FromHeader] String[] search) { 
+            String[] name = { "user_id", "login", "fullname", "date_of_birth", "phone_number", "email" };
+            String sql = "Select * from User where 1=1 ";
+            for (int i = 0; i < search.Length; i++)
+            {
+                if (search[i] != "%")
+                {
+                    if (name[i] == "fullname")
+                    {
+                        sql += "and " + name[i] + "like('%" + search[i] + "%') ";
+                    }
+                    else
+                    {
+                    sql += "and " + name[i] + "='" + search[i] + "' ";
+                    }
+                }
+            }
+            return _context.User.FromSql(sql);
+
+
+        }
+
+
+
 
         // GET: api/User/5
         [HttpGet("{id}")]

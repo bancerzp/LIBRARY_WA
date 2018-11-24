@@ -1,5 +1,5 @@
 <h2>Szukaj użytkownika</h2>
-<form [formGroup]="searchUserForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="searchUserForm" (ngSubmit)="searchUser()">
   <div class="form-group">
     <label for="userId">Id użytkownika</label>
     <input type="text" formControlName="userId" class="form-control" />
@@ -13,7 +13,7 @@
   <div class="form-group">
     <label for="email">E-mail</label>
     <input type="text" formControlName="email" class="form-control" />
-   
+
   </div>
   <div class="form-group">
     <label for="login">Login</label>
@@ -25,3 +25,23 @@
     -->
   </div>
 </form>
+
+
+<table class="searchResult w3-hoverable" *ngIf="clicked">
+  <tr>
+    <th *ngFor="let name of column">
+      {{name}}
+    </th>
+  </tr>
+  <tbody>
+    <tr *ngFor="let bookInfo of bookData">
+      <td>{{ bookInfo.book_id  }}</td>
+      <td>{{ bookInfo.title  }}</td>
+      <td>{{ bookInfo.ISBN  }}</td>
+      <td>{{ bookInfo.author_fullname }}</td>
+      <td>{{ bookInfo.year }}</td>
+      <td>{{ bookInfo.language  }}</td>
+      <td>{{ bookInfo.type  }}</td>
+    </tr>
+  </tbody>
+</table>

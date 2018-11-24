@@ -31,19 +31,22 @@ export class BookService {
     return this.http.get(this.accessPointUrl + "/GetLanguage", { headers: this.headers });
   }
   
-  public SearchBook() {
-    return this.http.get(this.accessPointUrl + "/SearchBook", { headers: this.headers });
+  public SearchBook(book) {
+
+    return this.http.get(this.accessPointUrl + "/SearchBook", { headers: this.headers, params:book});
   }
   
   public IfISBNExists(ISBN) {
     return this.http.get(this.accessPointUrl + '/IfISBNExists/' + ISBN, { headers: this.headers });
   }
-
  
   public AddBook(book) {
     return this.http.post(this.accessPointUrl + "/AddBook", book, { headers: this.headers });
   }
 
+  public AddVolume(id) {
+    return this.http.post(this.accessPointUrl + "/AddVolume"+id, { headers: this.headers });
+  }
 
 
   public remove(payload) {

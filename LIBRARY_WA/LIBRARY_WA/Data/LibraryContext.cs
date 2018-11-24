@@ -14,4 +14,5 @@ public class LibraryContext : DbContext
  //   public UserContext UserContext { get; set; }
     public DbSet<Book> Resource { get; set; }
     public DbSet<User> User { get; set; }
+    public DbSet<Volume> Volume { get; set; }
 }

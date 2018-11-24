@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit {
       return;
     }
     else {
+      this.logedUser.emit(this.user);
       this.router.navigate(['app-home']);
      // this.logedUser.emit(this.user);
     //  this.router.navigate(['home']);

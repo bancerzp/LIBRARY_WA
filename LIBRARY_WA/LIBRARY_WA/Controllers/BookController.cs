@@ -48,10 +48,19 @@ namespace LIBRARY_WA.Data
         }
 
         // GET: api/Books/5
-        [HttpGet]
-        public  IEnumerable<Book> SearchBook()
+        [HttpGet]//"{book_id}/{ISBN}/{title}/{author_fullname}/{year}/{language}/{type}")]
+        public  IEnumerable<Book> SearchBook([FromHeader] String[] search )
         {
-            return _context.Book;
+            String[] name= { "book_id","title", "ISBN", "author_fullname", "year", "language", "type" };
+            String sql= "Select * from Book where 1=1 ";
+            for(int i = 0; i < search.Length; i++)
+            {
+                if (search[i] != "%")
+                {
+                    sql += "and " + name[i] + "='" + search[i] + "'";
+                }
+            }
+            return _context.Book.FromSql(sql);
         }
 
         // PUT: api/Book/5
@@ -97,11 +106,11 @@ namespace LIBRARY_WA.Data
             {
                 return BadRequest(ModelState);
             }
-            book.is_available = true;
+          //  book.is_available = true;
             _context.Book.Add(book);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBook", new { id = book.book_id }, book);
+            return CreatedAtAction("AddBook", new { id = book.book_id }, book);
         }
 
         // DELETE: api/Books/5

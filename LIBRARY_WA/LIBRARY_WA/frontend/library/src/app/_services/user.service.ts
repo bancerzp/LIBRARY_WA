@@ -8,17 +8,13 @@ export class UserService {
 
   constructor(private http: HttpClient) {
     this.headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8'});
-  
   }
 
   public IsLogged(user) {
-    
-    // Get all jogging data
     return this.http.post(this.accessPointUrl + '/IsLogged',user, { headers: this.headers });//, withCredentials: true });
   }
 
   public get() {
-    // Get all jogging data
     return this.http.get(this.accessPointUrl, { headers: this.headers, withCredentials: true });
   }
 
@@ -33,6 +29,19 @@ export class UserService {
   public IfEmailExists(email) {
     return this.http.get(this.accessPointUrl + '/IfEmailExists/' + email, { headers: this.headers});
   }
+
+  public SearchUser(user) {
+
+    return this.http.get(this.accessPointUrl + "/SearchBook", { headers: this.headers, params: user });
+  }
+
+
+
+
+
+
+
+
 
   public remove(payload) {
     return this.http.delete(this.accessPointUrl + '/' + payload.id, { headers: this.headers, withCredentials: true });

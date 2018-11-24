@@ -73,7 +73,7 @@ export class AddUserComponent implements OnInit {
 
   addUser() {
   //  var result=this.userService.ifUserExists(this.user);
-    console.log("add");
+   
   //  if (this.addUserForm.invalid) {
    //   this.submitted = true;
    //   return;

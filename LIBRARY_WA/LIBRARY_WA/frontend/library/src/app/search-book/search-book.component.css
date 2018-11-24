@@ -2,3 +2,38 @@
   width: 70%;
   padding-left: 30%
 }
+.searchResult {
+  border: 1px solid ;
+  border-radius: 10px;
+  border-color:brown;
+  border-bottom-style:groove;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+  max-width: calc(100% - 2em);
+  margin: 1em auto;
+  overflow: hidden;
+  width: 120%;
+}
+tr :hover{
+  background-color:grey;
+}
+
+table {
+  width: 120%;
+  background-color: white;
+}
+
+
+td, th {
+  color: blue;
+  padding: 10px;
+}
+
+td {
+  text-align: center;
+  vertical-align: middle;
+}
+th {
+  background-color: antiquewhite;
+  font-weight: 300;
+}
+

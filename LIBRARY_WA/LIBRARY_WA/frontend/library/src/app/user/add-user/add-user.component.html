@@ -6,7 +6,6 @@
     <input type="text" formControlName="login" class="form-control" [(ngModel)]="user.login" ng-change="checkLoginExistsInDB()" />
     <div class="alert alert-danger " *ngIf="(sumbitted && (addUserForm.get('login').hasError('required') || addUserForm.get('login').hasError('pattern')))
               ||(addUserForm.get('login').hasError('required') && addUserForm.get('login').dirty && addUserForm.get('login').touched) || (addUserForm.get('login').hasError('required') && addUserForm.get('login').touched)">Pole login nie może byc puste</div>
-   
     <div class="alert alert-danger " *ngIf="addUserForm.get('login').hasError('loginTaken') && addUserForm.get('login').touched">Login jest już zajęty</div>
 
 

@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="frontend\library\src\app\_models\rent.ts" />
+    <None Remove="frontend\library\src\app\_models\Rent_H.ts" />
+    <None Remove="frontend\library\src\app\_models\reservation.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -20,6 +26,12 @@
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.8" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="frontend\library\src\app\_models\Rent.ts" />
+    <TypeScriptCompile Include="frontend\library\src\app\_models\Rent_H.ts" />
+    <TypeScriptCompile Include="frontend\library\src\app\_models\Reservation.ts" />
   </ItemGroup>
 
 </Project>

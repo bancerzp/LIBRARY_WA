@@ -21,7 +21,7 @@
 
   <div class="form-group">
     <label for="author_fullname">Imię i nazwisko autora</label>
-    <input type="text" list="author" formControlName="author_fullname" class="form-control" [(ngModel)]="book.author" />
+    <input type="text" list="author" formControlName="author_fullname" class="form-control" [(ngModel)]="book.author_fullname" />
     <datalist id="author">
       <option *ngFor="let author of author" value="{{author}}">{{author}}</option>
     </datalist>
@@ -52,9 +52,11 @@
     <button [disabled]="loading " class="btn btn-primary" (ngSubmit)="SearchBook()">Wyszukaj</button>
   </div>
 </form>
-<button [disabled]="loading " class="btn btn-primary" ng-Click="ClearForm()">Wyczyść</button>
+<button [disabled]="loading " class="btn btn-primary" ng-Click="SearchBook()">Wyczyść</button>
 
-<table *ngIf="areBooks()">
+
+
+<table  class="searchResult w3-hoverable" *ngIf="clicked">
   <tr>
     <th *ngFor="let name of column">
       {{name}}
@@ -62,14 +64,25 @@
   </tr>
   <tbody>
     <tr *ngFor="let bookInfo of bookData">
-      <td>{{ bookInfo.bookId  }}</td>
-      <td>{{ bookInfo.ISBN  }}</td>
+      <td>{{ bookInfo.book_id  }}</td>
       <td>{{ bookInfo.title  }}</td>
+      <td>{{ bookInfo.ISBN  }}</td>
       <td>{{ bookInfo.author_fullname }}</td>
       <td>{{ bookInfo.year }}</td>
       <td>{{ bookInfo.language  }}</td>
       <td>{{ bookInfo.type  }}</td>
+      <!-- read one product button -->
+      <td>
+        <a (click)="UpdateBook(bookInfo.book_id)" class='btn btn-info m-r-5px'>
+          <span class='glyphicon glyphicon-edit'></span> Edytuj
+        </a>
+        <a (click)="DeleteBook(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
+          <span class='glyphicon glyphicon-remove'></span> Usuń
+        </a>
+        <a (click)="AddVolume(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
+          <span class='glyphicon glyphicon-remove'></span> Dodaj egzemplarz
+        </a>
+      </td>
     </tr>
   </tbody>
 </table>
-
