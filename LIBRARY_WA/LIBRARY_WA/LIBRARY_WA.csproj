@@ -6,8 +6,9 @@
 
   <ItemGroup>
     <None Remove="frontend\library\src\app\_models\rent.ts" />
-    <None Remove="frontend\library\src\app\_models\Rent_H.ts" />
+    <None Remove="frontend\library\src\app\_models\Renth.ts" />
     <None Remove="frontend\library\src\app\_models\reservation.ts" />
+    <None Remove="frontend\library\src\app\_models\Volume.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,8 +31,9 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="frontend\library\src\app\_models\Rent.ts" />
-    <TypeScriptCompile Include="frontend\library\src\app\_models\Rent_H.ts" />
+    <TypeScriptCompile Include="frontend\library\src\app\_models\Renth.ts" />
     <TypeScriptCompile Include="frontend\library\src\app\_models\Reservation.ts" />
+    <TypeScriptCompile Include="frontend\library\src\app\_models\Volume.ts" />
   </ItemGroup>
 
 </Project>

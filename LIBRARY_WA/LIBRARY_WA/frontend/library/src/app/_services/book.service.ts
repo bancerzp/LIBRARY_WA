@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Book } from '../_models/book';
+import { Volume } from '../_models/Volume';
 
 @Injectable()
 export class BookService {
@@ -33,7 +34,7 @@ export class BookService {
   
   public SearchBook(book) {
 
-    return this.http.get(this.accessPointUrl + "/SearchBook", { headers: this.headers, params:book});
+    return this.http.get(this.accessPointUrl + "/SearchBook", { headers: this.headers, params: {'book': book }});
   }
   
   public IfISBNExists(ISBN) {
@@ -42,10 +43,6 @@ export class BookService {
  
   public AddBook(book) {
     return this.http.post(this.accessPointUrl + "/AddBook", book, { headers: this.headers });
-  }
-
-  public AddVolume(id) {
-    return this.http.post(this.accessPointUrl + "/AddVolume"+id, { headers: this.headers });
   }
 
 

@@ -10,7 +10,7 @@
       </button>
       <a class="navbar-brand" href="#home" style="height:200%">
         <div id="logo">
-          <div class="glyphicon glyphicon-book" style="font-size:70px"></div>
+          <div class="glyphicon glyphicon-book" style="font-size:70px;color:black"></div>
         </div>
         <div id="clock">
           21:06:00
@@ -57,12 +57,12 @@
       </md-menu>
     </div>
      -->
-
+    {{nn}}
     <div class="jumbotron">
       <div class="container">
         <div class="row">
           <div class="col-lg-9 offset-sm-1">
-            <router-outlet></router-outlet>
+            <router-outlet (countChanged)="countChangedHandler($event)"></router-outlet>
           </div>
         </div>
       </div>

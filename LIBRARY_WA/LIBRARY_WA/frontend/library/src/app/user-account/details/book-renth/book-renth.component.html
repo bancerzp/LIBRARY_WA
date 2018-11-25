@@ -1,0 +1,20 @@
+
+<title>book-renth</title>
+
+<table class="renthTable w3-hoverable" >
+  <tr>
+    <th *ngFor="let name of column">
+      {{name}}
+    </th>
+  </tr>
+  <tbody>
+    <tr *ngFor="let renthInfo of renth">
+      <td>{{ renthInfo.RENT_ID_H  }}</td>
+      <td>{{ renthInfo.ISBN  }}</td>
+      <td>{{ renthInfo.TITLE  }}</td>
+      <td>{{ renthInfo.VOLUME_ID }}</td>
+      <td>{{ renthInfo.START_DATE }}</td>
+      <td>{{ renthInfo.END_DATE  }}</td>
+    </tr>
+  </tbody>
+</table>

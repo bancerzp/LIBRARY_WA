@@ -14,6 +14,7 @@ import { ComboBoxComponent } from 'ng2-combobox';
 })
 export class AddBookComponent implements OnInit {
   addBookForm: FormGroup;
+  id: number;
   column: String[] = ["Id. książki", "ISBN", "Tytuł", "Autor", "Rok wydania", "Język wydania", "Rodzaj"];
   public author=[];
   public bookType = [];
@@ -34,29 +35,25 @@ export class AddBookComponent implements OnInit {
 
     this.addBookForm = this.formBuilder.group({
       ISBN: ['', [Validators.pattern("[0-9]{13}"),
-        Validators.required, this.CheckISBNExistsInDB.bind(this)]],
+        Validators.required], this.CheckISBNExistsInDB.bind(this)],
       title: ['', [Validators.required, Validators.maxLength(50)]],
       author_fullname: ['', [Validators.required, Validators.maxLength(100)]],
       year: ['', [Validators.pattern("[1-9][0-9]{3}"),Validators.required]],
       language: [Validators.required, Validators.maxLength(20)],
       type: ['', [Validators.required, Validators.maxLength(30)]],
       description: ['', [Validators.maxLength(300)]],
-      add_volume:[],
       is_available:true,
     });
   }
 
   AddBook() {
     var m = this.book;
-    var id
-    this.bookService.AddBook(m).subscribe(
-        (data:Book) => { id=data.book_id },
-        Error => { alert("Błąd dodawania książki") });
-      if (this.addBookForm.get("add_volume")) {
-        this.bookService.AddVolume(id).subscribe(
-          data => { alert("Książka została dodana poprawnie") },
-          Error => { alert("Błąd dodawania książki") });
-      }
+    this.id = 0;
+    var added=this.bookService.AddBook(m).subscribe(
+      (data: Book) => { this.id = Number(data.book_id), alert("Książka dodana poprawnie " +this.id)},
+      Error => { alert("Błąd dodawania książki") });
+
+
       //   this.user = this.addUserForm.value();
       // this.userService.addUser(m);
       //    .subscribe(user =>
@@ -68,8 +65,8 @@ export class AddBookComponent implements OnInit {
 
   CheckISBNExistsInDB(control: FormControl) {
     return this.bookService.IfISBNExists(control.value).pipe(
-      map(((res: any[]) => res.filter(book => book.ISBN == control.value).length == 0 ? { 'ISBNTaken': false } : { 'ISBNTaken': true })))
-  };
+      map(((res: any[]) => res.filter(book => book.ISBN == control.value).length == 0 ? { 'ISBNTaken': false } : { 'ISBNTaken': true })));
+  }
 
   GetAuthor() {
     return this.bookService.GetAuthor().subscribe((authors: any[]) => this.author = authors);

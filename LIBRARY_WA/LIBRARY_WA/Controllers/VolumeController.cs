@@ -30,26 +30,47 @@ namespace LIBRARY_WA.Controllers
         }
 
 
-         [HttpPost("{id}")]
-          public async Task<IActionResult> AddVolume([FromRoute] String id)
+         [HttpPost]
+          public async Task<IActionResult> AddVolume([FromBody] Volume volume)
           {
               if (!ModelState.IsValid)
               {
                   return BadRequest(ModelState);
               }
-              //  book.is_available = true;
-              _context.Volume.Add(new Volume(null, Int32.Parse(id),true));
-              await _context.SaveChangesAsync();
+            //  book.is_available = true;
+            _context.Volume.Add(volume);
+            await _context.SaveChangesAsync();
 
-              return CreatedAtAction("AddVolume", new { id = id }, true);
-          }
+            return CreatedAtAction("GetVolume", new { id = volume.volume_id }, volume);
+        }
 
-   
+        public async Task<IActionResult> ReserveVolume([FromBody] Volume volume)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //  book.is_available = true;
+            _context.Volume.Add(volume);
+            await _context.SaveChangesAsync();
 
+            return CreatedAtAction("GetVolume", new { id = volume.volume_id }, volume);
+        }
 
+        public async Task<IActionResult> DeleteVolume([FromBody] Volume volume)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //  book.is_available = true;
+            _context.Volume.Add(volume);
+            await _context.SaveChangesAsync();
 
+            return CreatedAtAction("GetVolume", new { id = volume.volume_id }, volume);
+        }
 
-
+        
 
         // GET: api/Volumes/5
         [HttpGet("{id}")]

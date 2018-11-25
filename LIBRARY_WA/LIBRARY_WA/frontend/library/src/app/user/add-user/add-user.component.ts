@@ -30,10 +30,10 @@ export class AddUserComponent implements OnInit {
     private userService: UserService) { }
 
   createForm() {
-    this.ifLoginExists = false;
+    
     this.addUserForm = this.formBuilder.group({
-      login: ['', [Validators.required, this.checkLoginExistsInDB.bind(this), Validators.minLength(5), Validators.maxLength(10)]],//Validators.pattern("[/S]*"),
-      email: ['', [Validators.email, Validators.required], this.checkEmailExistsInDB.bind(this)],
+      login: ['', [Validators.required], this.CheckLoginExistsInDB.bind(this)],//, Validators.minLength(5), Validators.maxLength(10)]],//Validators.pattern("[/S]*"),
+      email: ['', [Validators.email, Validators.required], this.CheckEmailExistsInDB.bind(this)],
       fullname: ['', [Validators.required]], //, Validators.pattern("\S")
       date_Of_Birth: ['', Validators.required],
       phone_Number: ['',[Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
@@ -54,23 +54,7 @@ export class AddUserComponent implements OnInit {
     console.log("wyczyszczone");
     this.createForm();
   }
-
-  checkDate() {
-
-   /*
-      if (this.addUserForm.value("date_of_birth") > Date.now()) {
-        this.addUserForm.get(""date_of_birth"").setValue([], Date.now());
-        return false;
-      }
-    }
-    else {
-
-      return true;
-    }
-    */
-  }
-
-
+  
   addUser() {
   //  var result=this.userService.ifUserExists(this.user);
    
@@ -91,14 +75,14 @@ export class AddUserComponent implements OnInit {
   }
 
 
-  checkEmailExistsInDB(control: FormControl) {
+  CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(
       map(((res: any[]) => res.filter(user => user.email == control.value).length == 0 ? { 'emailTaken': false } : { 'emailTaken': true })))
   };
 
-  checkLoginExistsInDB(control: FormControl) {
+  CheckLoginExistsInDB(control: FormControl) {
     return this.userService.IfLoginExists(control.value).pipe(
-      map(((res: any[]) => res.filter(user=>user.login==control.value).length == 0 ? { 'loginTaken': false } : { 'loginTaken': true })))
+      map(((res: any[]) => res.filter(user=> user.login == control.value).length == 0 ? { 'loginTaken': false } : { 'loginTaken': true })))
   };
     }
 

@@ -37,9 +37,7 @@ namespace LIBRARY_WA
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddDbContext<WorkoutContext>(options =>
-                    options.UseMySql(Configuration.GetConnectionString("LibraryDatabase")));
-
+           
             services.AddDbContext<BookContext>(options =>
                     options.UseMySql(Configuration.GetConnectionString("LibraryDatabase")));
 

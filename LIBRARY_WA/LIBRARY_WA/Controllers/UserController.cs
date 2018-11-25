@@ -24,14 +24,25 @@ namespace LIBRARY_WA.Controllers
          //   this.context = context;
         }
 
+        // POST: api/User
+        [HttpPost]
+        public async Task<IActionResult> AddUser([FromBody] User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetUser", new { id = user.user_Id }, user);
+        }
 
 
         // GET: api/User
         [HttpPost]
         public User IsLogged([FromBody] User userData)
         {
-            //  _context.User.Add(null, "admin', 'admin', '', '', '', '', '1989-12-09', '', '');
-
             if (_context.User.Where(u => u.login==userData.login && u.password== userData.password).FirstOrDefault() != null)
             {
                 return _context.User.Where(u => userData.login == u.login && userData.password == u.password).FirstOrDefault();
@@ -40,29 +51,30 @@ namespace LIBRARY_WA.Controllers
             {
                 return new Models.User();
             }
-          //  return "done";
         }
 
-        //[HttpGet]
-        //public IEnumerable<User> GetUser([FromBody] User user)
-        //{
-        //  //rom p in context.Professors
-        //   // select p.Name).ToList()
+        [HttpGet("{id}")]
+        public IEnumerable<User> GetUser([FromRoute] Int32 id)
+        {
+            //rom p in context.Professors
+            // select p.Name).ToList()
 
-        //    return _context.User;
-        //}
+            return _context.User.Where(a=>a.user_Id==id);
+        }
 
         [HttpGet("{email}")]
         public IEnumerable<User> IfEmailExists([FromRoute] String email)
         {
-            return _context.User.Where(u => u.email == email);
+            String email2 = email.Replace("'", "");
+            return _context.User.Where(u => u.email == email2);
 
         }
 
         [HttpGet("{login}")]
         public IEnumerable<User> IfLoginExists([FromRoute] String login)
         {
-            return _context.User.Where(u => u.login == login.Replace("'",""));
+            String login2 = login.Replace("'", "");
+            return _context.User.Where(u => u.login == login2);
         }
 
 
@@ -89,7 +101,24 @@ namespace LIBRARY_WA.Controllers
 
         }
 
+        //----------------------userdata
+      
+        [HttpGet("{id}")]
+        public IEnumerable<Rent> GetRent()
+        {
+            return _context.Rent;
+        }
+        [HttpGet("{id}")]
+        public IEnumerable<Reservation> GetReservation()
+        {
+            return _context.Reservation;
+        }
 
+        [HttpGet("{id}")]
+        public IEnumerable<Renth> GetRenth()
+        {
+            return _context.Renth;
+        }
 
 
         // GET: api/User/5
@@ -110,6 +139,16 @@ namespace LIBRARY_WA.Controllers
             return _context.User;
         }
 
+
+
+
+
+
+
+
+
+
+        //----------------------------
         // PUT: api/User/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser([FromRoute] Int32 id, [FromBody] User user)
@@ -145,20 +184,7 @@ namespace LIBRARY_WA.Controllers
             return NoContent();
         }
 
-        // POST: api/User
-        [HttpPost]
-        public async Task<IActionResult> AddUser([FromBody] User user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("GetUser", new { id = user.user_Id }, user);
-        }
-
+       
         // DELETE: api/User/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] string id)

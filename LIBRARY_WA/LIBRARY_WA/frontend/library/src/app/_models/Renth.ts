@@ -1,12 +1,11 @@
-export class Reservation {
+export class Renth {
 
-  RESERVATION_ID: Int32Array;
+  RENT_ID_H: Int32Array;
   BOOK_ID: Int32Array;
   user_id: Int32Array;
   ISBN: String;
   TITLE: String;
   VOLUME_ID: Int32Array;
   START_DATE: Date;
-  EXPIRE_DATE: Date;
-  IS_ACTIVE: Boolean;
+  END_DATE: Date;
 }

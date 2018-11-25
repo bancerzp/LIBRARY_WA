@@ -106,17 +106,16 @@ h1 {
 }
 
 #container {
-  width: 85%;
+  width: 90%;
   height: 95%;
   margin:0% 8% 0% 8%;
- 
   background-color: lavender;
 }
 
 .container {
   padding-right: 1px;
-  margin-right: auto;
-  margin-left: auto;
+  margin-right: 0px;
+  margin-left: 0px;
 }
 
 .body-content {
@@ -185,4 +184,45 @@ h1 {
 }
 
 
+
+.form-group {
+  width: 70%;
+  padding-left: 30%
+}
+
+.searchResult, .renthTable, .rentTable, .reservationTable {
+  border: 1px solid;
+  border-radius: 10px;
+  border-color: brown;
+  border-bottom-style: groove;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+  margin: 5px;
+  overflow: hidden;
+  width: 120%;
+}
+
+tr :hover {
+  background-color: grey;
+}
+
+table {
+  width: 120%;
+  background-color: white;
+}
+
+
+td, th {
+  color: blue;
+  padding: 10px;
+}
+
+td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+th {
+  background-color: antiquewhite;
+  font-weight: 300;
+}
 

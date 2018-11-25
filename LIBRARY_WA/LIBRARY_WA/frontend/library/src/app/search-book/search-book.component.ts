@@ -18,14 +18,15 @@ export class SearchBookComponent implements OnInit {
   @Output() editClicked = new EventEmitter<any>();
   //@Input()
 
-  clicked: boolean;
+  submitted: boolean;
   bookData: Book[] = []; // [{ book_id: 'test', title: 'test', ISBN: 'test', author_fullname: 'test', year: 'test', language: 'test',  type: 'test',description: 'test'}];
   public author = [];
   public bookType = [];
   public language = [];
-  public values =[];
+  public values = [];
+  public action = [];
   searchBookForm: FormGroup;
-  column: String[] = ["Id. książki", "Tytuł", "ISBN",  "Autor", "Rok wydania", "Język wydania", "Rodzaj"];
+  column: String[] = ["Id. książki", "Tytuł", "ISBN",  "Autor", "Rok wydania", "Język wydania", "Rodzaj","Akcje"];
   columnAddReader:String[] =["Zarezerwuj"]
   columnAddLibrarian: String[] = ["Zarezerwuj","Edytuj","Usuń","Dodaj egzemplarz"]
 
@@ -64,16 +65,18 @@ export class SearchBookComponent implements OnInit {
  
 
   ngOnInit() {
-    this.clicked = true;
-    //pobierz wszystkie typy książki
-    //pobierz wszystkie języki
+   // this.recordDeleted.emit("Wydarzenie wyemitowane");
+    //w zależności od typu użytkownika różne akcje
+    this.action = this.columnAddLibrarian;
+    this.submitted = false;
+    //pobranie wartości do list rozwijanych
     this.GetBookType();
     this.GetAuthor();
     this.GetLanguage();
 
     var names = this.column;
     this.searchBookForm = this.formBuilder.group({
-    book_id:'',
+    book_id:'1',
     ISBN: [''],
     title: '',
     author_fullname: [''],
@@ -85,8 +88,7 @@ export class SearchBookComponent implements OnInit {
   }
 
   SearchBook() {
-    this.clicked = true;
-    var searchForm = this.book;
+    this.submitted = true;
    
     Object.keys(this.searchBookForm.controls).forEach((name) => {
       var s = this.searchBookForm.controls[name].value;
@@ -131,5 +133,9 @@ export class SearchBookComponent implements OnInit {
 
   readOneProduct(id) { }
 
+
+  rentBook(bookId,userId) {
+
+  }
 }
 //tu tez przekazac zmienna czy jest ktos zalogowany

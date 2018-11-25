@@ -1,2 +1,69 @@
+<h2>Dane użytkownika</h2>
+<form [formGroup]="updateUserForm">
 
-    <title>book-booking</title>
+  <div class="form-group">
+    <label for="login: ">Login</label>
+    <input type="text" formControlName="login" class="form-control" [(ngModel)]="user.login" disabled="disabled" />
+  </div>
+
+  <div class="form-group">
+    <label for="email">E-mail</label>
+    <input type="email" formControlName="email" class="form-control" [(ngModel)]="user.email" ng-change="checkEmailExistsInDB()" />
+    <div class="alert alert-danger " *ngIf="(sumbitted && updateUserForm.get('email').hasError('required'))||(updateUserForm.get('email').hasError('required')  && updateUserForm.get('email').touched)">Pole email nie może być puste</div>
+    <div class="alert alert-danger " *ngIf="!sumbitted && updateUserForm.get('email').hasError('email') && updateUserForm.get('email').dirty && updateUserForm.get('email').touched">Nieprawidłowy format email</div>
+    <div class="alert alert-danger " *ngIf="updateUserForm.get('email').hasError('emailTaken') && updateUserForm.get('email').touched">Podany email już jest przypisany do użytkownika</div>
+  </div>
+
+  <div class="form-group">
+    <label for="fullname">Imię i nazwisko</label>
+    <input type="text" formControlName="fullname" class="form-control" [(ngModel)]="user.fullname" />
+    <div class="alert alert-danger " *ngIf="(sumbitted && (updateUserForm.get('fullname').hasError('required') || updateUserForm.get('fullname').hasError('pattern'))) || (updateUserForm.get('fullname').hasError('required') && updateUserForm.get('fullname').dirty)">Pole imię i nazwisko nie może byc puste</div>
+  </div>
+
+  <div class="form-group">
+    <label for="date_Of_Birth">Data urodzenia</label>
+    <input type="date" formControlName="date_Of_Birth" class="form-control" [(ngModel)]="user.date_of_birth" max="{{maxDate | date:'yyyy-MM-dd'}}" />
+    <div class="alert alert-danger " *ngIf="sumbitted && updateUserForm.get('date_Of_Birth').hasError('required') ">Pole data urodzenia nie może byc puste</div>
+  </div>
+
+  <div class="form-group">
+    <label for="phone_Number">Numer telefonu</label>
+    <input type="tel" formControlName="phone_Number" class="form-control" [(ngModel)]="user.phone_number" placeholder="format. 000-000-000" />
+    <div class="alert alert-danger " *ngIf="(sumbitted && updateUserForm.get('phone_Number').hasError('required')) || (updateUserForm.get('phone_Number').hasError('required') && updateUserForm.get('phone_Number').dirty)">Pole telefon musi być wypełnione</div>
+    <div class="alert alert-danger " *ngIf="!sumbitted && updateUserForm.get('phone_Number').hasError('pattern') && updateUserForm.get('phone_Number').dirty && updateUserForm.get('phone_Number').touched">Nieprawidłowy format numeru telefonu</div>
+  </div>
+
+  <div class="form-group">
+    <label for="address">Adres</label>
+    <input type="text" formControlName="address" class="form-control" [(ngModel)]="user.address" />
+    <div class="alert alert-danger " *ngIf="(sumbitted && (updateUserForm.get('address').hasError('required') || updateUserForm.get('address').hasError('required'))) || (updateUserForm.get('address').hasError('required') && updateUserForm.get('address').dirty)">Pole email lub telefon muszą być wypełnione</div>
+  </div>
+
+  <div class="form-group">
+    <label for="type">Typ użytkownika:</label><br />
+    <input type="radio" formControlName="type" [(ngModel)]="user.user_type" value="r" disabled="disabled">Czytelnik
+    <input type="radio" formControlName="type" [(ngModel)]="user.user_type" value="l" disabled="disabled">Bibliotekarz
+  </div>
+
+  <div class="form-group">
+    <label for="password">Hasło</label>
+    <input type="password" formControlName="type" class="form-control" disabled="disabled" [(ngModel)]="user.password" />
+  </div>
+
+  <div class="form-group">
+    <label for="password">Nowe hasło</label>
+    <input type="text" formControlName="type" class="form-control" disabled="disabled" [(ngModel)]="user.password" />
+    <button (ngSubmit)="NewPassword()" class="btn btn-primary">Resetuj hasło</button>
+    <p>Aby dokończyć resetowanie hasła należy kliknąć 'Zapisz'</p>
+  </div>
+
+  <!-- <div class="radio-group">
+     <label for="password">Powtórz hasło</label>
+     <input type="text" formControlName="type" class="form-control" disabled="disabled" [(ngModel)]="user.password" />
+   </div>
+   -->
+  <div class="form-group">
+    <button type="submit" (ngSubmit)="updateUser()" [disabled]="loading || !updateUserForm.valid" class="btn btn-primary">Zapisz</button>
+  </div>
+</form>
+

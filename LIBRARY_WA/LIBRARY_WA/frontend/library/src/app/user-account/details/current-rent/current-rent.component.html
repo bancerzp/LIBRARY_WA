@@ -1,0 +1,19 @@
+<title>current-rent</title>
+
+<table class="rentTable w3-hoverable" >
+  <tr>
+    <th *ngFor="let name of column">
+      {{name}}
+    </th>
+  </tr>
+  <tbody>
+    <tr *ngFor="let rentInfo of rent">
+      <td>{{ rentInfo.RENT_ID  }}</td>
+      <td>{{ rentInfo.ISBN  }}</td>
+      <td>{{ rentInfo.title  }}</td>
+      <td>{{ rentInfo.VOLUME_ID }}</td>
+      <td>{{ rentInfo.START_DATE }}</td>
+      <td>{{ rentInfo.EXPIRE_DATE  }}</td>
+    </tr>
+  </tbody>
+</table>

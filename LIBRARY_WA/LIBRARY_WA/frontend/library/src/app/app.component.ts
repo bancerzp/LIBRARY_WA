@@ -18,13 +18,21 @@ export class AppComponent  {
   public menuGuest: MenuItem[] = [this.login, this.searchBook];
   public menuLibrarian: MenuItem[] = [this.users, this.searchBook, this.addBook, this.login,this.user];
   public menu: MenuItem[] = this.menuLibrarian;
- 
+
+  public nn: String;
+
+
+  countChangedHandler(n: String) {
+    this.nn = n;
+    console.log(this.nn);
+  }
 }
 
 export class MenuItem {
   title: string;
   path: string;
   href: string;
+  
 }
 
 //w zależności od otrzymanego typu osoby menu=.

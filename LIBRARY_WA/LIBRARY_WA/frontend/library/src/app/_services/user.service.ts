@@ -35,10 +35,21 @@ export class UserService {
     return this.http.get(this.accessPointUrl + "/SearchBook", { headers: this.headers, params: user });
   }
 
+  
+  //-------------------------userdata
+  public GetUser(id) {
+    return this.http.get(this.accessPointUrl + "/GetUser/"+id, { headers: this.headers });
+  }
+  public GetRent(id) {
+    return this.http.get(this.accessPointUrl + "/GetRent/" + id, { headers: this.headers });
+  }
+  public GetReservation(id) {
+    return this.http.get(this.accessPointUrl + "/GetReservation/" + id, { headers: this.headers });
+  }
 
-
-
-
+  public GetRenth(id) {
+    return this.http.get(this.accessPointUrl + "/GetRenth/" + id, { headers: this.headers });
+  }
 
 
 

@@ -24,9 +24,9 @@ import { SearchUserComponent } from './user/search-user/search-user.component';
 import { SearchBookComponent } from './search-book/search-book.component';
 import { GridJoggingComponentComponent } from './grid-jogging-component/grid-jogging-component.component';
 import { UserComponent } from './user/user.component';
-import { BookBookingModule } from './user-account/details/book-booking/book-booking.module';
-import { BookBorrowModule } from './user-account/details/book-borrow/book-borrow.module';
-import { CurrentBorrowModule } from './user-account/details/current-borrow/current-borrow.module';
+import { BookReservationModule } from './user-account/details/book-reservation/book-reservation.module';
+import { BookRenthModule } from './user-account/details/book-renth/book-renth.module';
+import { CurrentRentModule } from './user-account/details/current-rent/current-rent.module';
 import { UserPIModule } from './user-account/details/user-pi/user-pi.module';
 
 export const appRoutes: Routes = [
@@ -69,18 +69,18 @@ export const appRoutes: Routes = [
     children: [
       {
 
-        path: 'app-book-booking',
-        component: BookBookingModule
+        path: 'app-book-reservation',
+        component: BookReservationModule
 
       },
       {
-        path: 'app-book-borrow',
-        component: BookBorrowModule
+        path: 'app-book-renth',
+        component: BookRenthModule
       },
     {
 
-      path: 'app-current-borrow',
-      component: CurrentBorrowModule
+      path: 'app-current-rent',
+      component: CurrentRentModule
 
       },
       {
@@ -89,7 +89,7 @@ export const appRoutes: Routes = [
       },
     {
         path: '',
-      component: CurrentBorrowModule
+      component: CurrentRentModule
       }]
   },
   {
@@ -110,12 +110,12 @@ export const appRoutes: Routes = [
     UserAccountComponent,
     SearchUserComponent,
     SearchBookComponent,
-    CurrentBorrowModule,
+    CurrentRentModule,
     GridJoggingComponentComponent,
     UserComponent,
     UserPIModule,
-    BookBookingModule,
-    BookBorrowModule
+    BookReservationModule,
+    BookRenthModule
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

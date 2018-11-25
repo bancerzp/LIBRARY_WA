@@ -34,6 +34,8 @@ namespace LIBRARY_WA.Models
         [System.ComponentModel.DefaultValue("Brak opisu")]
         public string description { get; set; }
 
+
+        //czy istnieje w bibliotece
         [System.ComponentModel.DefaultValue(true)]
         public Boolean is_available { get; set; }
     }

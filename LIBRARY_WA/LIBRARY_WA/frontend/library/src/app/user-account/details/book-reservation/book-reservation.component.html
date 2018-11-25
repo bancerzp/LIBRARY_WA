@@ -1,0 +1,22 @@
+
+<title>book-reservation</title>
+
+<table class="reservationTable w3-hoverable">
+  <tr>
+    <th *ngFor="let name of column">
+      {{name}}
+    </th>
+  </tr>
+  <tbody>
+    <tr *ngFor="let reservationInfo of reservation">
+      <td>{{ reservationInfo.RESERVATION_ID  }}</td>
+      <td>{{ reservationInfo.ISBN  }}</td>
+      <td>{{ reservationInfo.TITLE  }}</td>
+      <td>{{ reservationInfo.VOLUME_ID }}</td>
+      <td>{{ reservationInfo.START_DATE }}</td>
+      <td>{{ reservationInfo.EXPIRE_DATE  }}</td>
+      <td>{{ reservationInfo.IS_ACTIVE  }}</td>
+      <td><button class="btn btn-primary" ngClick="CancelReservation()">Anuluj rezerwację</button></td>
+    </tr>
+  </tbody>
+</table>

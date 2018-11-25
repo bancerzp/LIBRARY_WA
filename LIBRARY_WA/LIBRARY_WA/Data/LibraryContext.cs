@@ -12,7 +12,10 @@ public class LibraryContext : DbContext
     {
     }
  //   public UserContext UserContext { get; set; }
-    public DbSet<Book> Resource { get; set; }
+    public DbSet<Book> Book { get; set; }
     public DbSet<User> User { get; set; }
     public DbSet<Volume> Volume { get; set; }
+    public DbSet<Reservation> Reservation { get; set; }
+    public DbSet<Rent> Rent { get; set; }
+    public DbSet<Renth> Renth { get; set; }
 }
