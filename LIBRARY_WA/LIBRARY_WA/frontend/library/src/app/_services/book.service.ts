@@ -16,7 +16,7 @@ export class BookService {
   }
 
   constructor(private http: HttpClient) {
-    this.headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+    this.headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token")  });
   }
 
   public GetAuthor() {
@@ -33,8 +33,8 @@ export class BookService {
   }
   
   public SearchBook(book) {
-
-    return this.http.get(this.accessPointUrl + "/SearchBook", { headers: this.headers, params: {'book': book }});
+   
+    return this.http.post(this.accessPointUrl + "/SearchBook", book, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") })});
   }
   
   public IfISBNExists(ISBN) {

@@ -16,7 +16,7 @@ namespace LIBRARY_WA.Models
 
         [RegularExpression(@"\d{13}", ErrorMessage = "Niepoprawny format numer ISBN")]
         [StringLength(13)]
-        public string ISBN { get; set; }
+        public string isbn { get; set; }
 
         [MaxLength(100, ErrorMessage = "Za długie nazwisko")]
         public string author_fullname { get; set; }

@@ -1,11 +1,11 @@
 export class Renth {
 
-  RENT_ID_H: Int32Array;
-  BOOK_ID: Int32Array;
+  rent_id_h: Int32Array;
+  book_id: Int32Array;
   user_id: Int32Array;
-  ISBN: String;
-  TITLE: String;
-  VOLUME_ID: Int32Array;
-  START_DATE: Date;
-  END_DATE: Date;
+  isbn: String;
+  title: String;
+  volume_id: Int32Array;
+  start_date: Date;
+  end_date: Date;
 }

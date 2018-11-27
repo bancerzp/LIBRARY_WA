@@ -32,16 +32,16 @@
     </div>
 
     <div class="form-group">
-      <label for="date_Of_Birth">Data urodzenia</label>
-      <input type="date" formControlName="date_Of_Birth" class="form-control" [(ngModel)]="user.date_of_birth" max="{{maxDate | date:'yyyy-MM-dd'}}" />
-      <div class="alert alert-danger " *ngIf="sumbitted && addUserForm.get('date_Of_Birth').hasError('required') ">Pole data urodzenia nie może byc puste</div>
+      <label for="date_of_birth">Data urodzenia</label>
+      <input type="date" formControlName="date_of_birth" class="form-control" [(ngModel)]="user.date_of_birth" max="{{maxDate | date:'yyyy-MM-dd'}}" />
+      <div class="alert alert-danger " *ngIf="sumbitted && addUserForm.get('date_of_birth').hasError('required') ">Pole data urodzenia nie może byc puste</div>
     </div>
 
     <div class="form-group">
-      <label for="phone_Number">Numer telefonu</label>
-      <input type="tel" formControlName="phone_Number" class="form-control" [(ngModel)]="user.phone_number" placeholder="format. 000-000-000" />
-      <div class="alert alert-danger " *ngIf="(sumbitted && addUserForm.get('phone_Number').hasError('required')) || (addUserForm.get('phone_Number').hasError('required') && addUserForm.get('phone_Number').dirty)">Pole telefon musi być wypełnione</div>
-      <div class="alert alert-danger " *ngIf="!sumbitted && addUserForm.get('phone_Number').hasError('pattern') && addUserForm.get('phone_Number').dirty && addUserForm.get('phone_Number').touched">Nieprawidłowy format numeru telefonu</div>
+      <label for="phone_number">Numer telefonu</label>
+      <input type="tel" formControlName="phone_number" class="form-control" [(ngModel)]="user.phone_number" placeholder="format. 000-000-000" />
+      <div class="alert alert-danger " *ngIf="(sumbitted && addUserForm.get('phone_number').hasError('required')) || (addUserForm.get('phone_number').hasError('required') && addUserForm.get('phone_number').dirty)">Pole telefon musi być wypełnione</div>
+      <div class="alert alert-danger " *ngIf="!sumbitted && addUserForm.get('phone_number').hasError('pattern') && addUserForm.get('phone_number').dirty && addUserForm.get('phone_number').touched">Nieprawidłowy format numeru telefonu</div>
     </div>
 
     <div class="form-group">

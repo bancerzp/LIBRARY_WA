@@ -35,18 +35,22 @@ namespace LIBRARY_WA.Controllers
          //   this.context = context;
         }
 
-        // POST: api/User
-        [HttpPost,Authorize(Roles ="l")]
-        public async Task<IActionResult> AddUser([FromBody] User user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("GetUser", new { id = user.user_Id }, user);
+        //----Data verifying
+        [HttpGet("{email}")]
+        public IEnumerable<User> IfEmailExists([FromRoute] String email)
+        {
+            String email2 = email.Replace("'", "");
+
+            return _context.User.Where(u => u.email == email2);
+
+        }
+
+        [HttpGet("{login}")]
+        public IEnumerable<User> IfLoginExists([FromRoute] String login)
+        {
+            String login2 = login.Replace("'", "");
+            return _context.User.Where(u => u.login == login2);
         }
 
 
@@ -79,45 +83,30 @@ namespace LIBRARY_WA.Controllers
                 );
 
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-                return Ok(new { Token = tokenString,id=user.user_Id,user_type=user.user_Type,fullname=user.fullname });
+                return Ok(new { Token = tokenString, id = user.user_Id, user_type = user.user_Type, fullname = user.fullname });
             }
             else
             {
                 return Unauthorized();
             }
-        
 
-  
         }
 
-        [HttpGet("{id}"),Authorize]
+
+        [HttpGet("{id}"), Authorize]
         public IEnumerable<User> GetUserById([FromRoute] Int32 id)
         {
             //rom p in context.Professors
             // select p.Name).ToList()
 
-            return _context.User.Where(a=>a.user_Id==id);
+            return _context.User.Where(a => a.user_Id == id);
         }
 
-        [HttpGet("{email}")]
-        public IEnumerable<User> IfEmailExists([FromRoute] String email)
+
+
+        [HttpPost, Authorize]
+        public IEnumerable<User> SearchUser([FromBody] String[] search)
         {
-            String email2 = email.Replace("'", "");
-           
-            return _context.User.Where(u => u.email == email2);
-
-        }
-
-        [HttpGet("{login}")]
-        public IEnumerable<User> IfLoginExists([FromRoute] String login)
-        {
-            String login2 = login.Replace("'", "");
-            return _context.User.Where(u => u.login == login2);
-        }
-
-
-        [HttpGet,Authorize]
-        public IEnumerable<User> SearchUser([FromHeader] String[] search) { 
             String[] name = { "user_id", "login", "fullname", "date_of_birth", "phone_number", "email" };
             String sql = "Select * from User where 1=1 ";
             for (int i = 0; i < search.Length; i++)
@@ -130,7 +119,7 @@ namespace LIBRARY_WA.Controllers
                     }
                     else
                     {
-                    sql += "and " + name[i] + "='" + search[i] + "' ";
+                        sql += "and " + name[i] + "='" + search[i] + "' ";
                     }
                 }
             }
@@ -138,6 +127,25 @@ namespace LIBRARY_WA.Controllers
 
 
         }
+
+
+
+        // POST: api/User
+        [HttpPost,Authorize(Roles ="l")]
+        public async Task<IActionResult> AddUser([FromBody] User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetUser", new { id = user.user_Id }, user);
+        }
+
+
+      
 
         //----------------------userdata
       

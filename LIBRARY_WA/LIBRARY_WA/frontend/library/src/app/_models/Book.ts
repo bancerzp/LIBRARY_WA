@@ -2,7 +2,7 @@ export class Book {
 
   book_id: String;
   title: String;
-  ISBN: String;
+  isbn: String;
   author_fullname: String;
   year: String;
   language: String;
@@ -13,7 +13,7 @@ export class Book {
   constructor(
     book_id: String,
     title: String,
-    ISBN: String,
+    isbn: String,
     author_fullname: String,
     year: String,
     language: String,

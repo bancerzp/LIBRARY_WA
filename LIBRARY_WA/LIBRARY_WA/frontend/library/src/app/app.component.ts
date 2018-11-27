@@ -51,7 +51,7 @@ export class AppComponent  {
     this.userFullname = localStorage.getItem("user_fullname");
   }
 
-  logout() {
+  Logout() {
     localStorage.clear();
   //  this.router.navigateByUrl('/');
   }

@@ -9,13 +9,13 @@
   </tr>
   <tbody>
     <tr *ngFor="let reservationInfo of reservation">
-      <td>{{ reservationInfo.RESERVATION_ID  }}</td>
-      <td>{{ reservationInfo.ISBN  }}</td>
-      <td>{{ reservationInfo.TITLE  }}</td>
-      <td>{{ reservationInfo.VOLUME_ID }}</td>
-      <td>{{ reservationInfo.START_DATE }}</td>
-      <td>{{ reservationInfo.EXPIRE_DATE  }}</td>
-      <td>{{ reservationInfo.IS_ACTIVE  }}</td>
+      <td>{{ reservationInfo.reservation_id  }}</td>
+      <td>{{ reservationInfo.isbn  }}</td>
+      <td>{{ reservationInfo.title  }}</td>
+      <td>{{ reservationInfo.volume_id }}</td>
+      <td>{{ reservationInfo.start_date }}</td>
+      <td>{{ reservationInfo.expire_date  }}</td>
+      <td>{{ reservationInfo.is_active  }}</td>
       <td><button class="btn btn-primary" ngClick="CancelReservation()">Anuluj rezerwację</button></td>
     </tr>
   </tbody>

@@ -46,7 +46,7 @@ export class UserService {
 
   public SearchUser(user) {
 
-    return this.http.get(this.accessPointUrl + "/SearchBook", { headers: this.headers, params: user });
+    return this.http.post(this.accessPointUrl + "/SearchUser",user, { headers: this.headers });
   }
 
   

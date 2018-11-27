@@ -35,12 +35,12 @@ export class AddUserComponent implements OnInit {
       login: ['', [Validators.required], this.CheckLoginExistsInDB.bind(this)],//, Validators.minLength(5), Validators.maxLength(10)]],//Validators.pattern("[/S]*"),
       email: ['', [Validators.email, Validators.required], this.CheckEmailExistsInDB.bind(this)],
       fullname: ['', [Validators.required]], //, Validators.pattern("\S")
-      date_Of_Birth: ['', Validators.required],
-      phone_Number: ['',[Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
+      date_of_birth: ['', Validators.required],
+      phone_number: ['',[Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
       type: ['', Validators.required],
       password: '',
       address: ['', Validators.required], //, Validators.pattern("/^\S*$/")
-      is_Valid: [true]
+      is_valid: [true]
     });
   }
 

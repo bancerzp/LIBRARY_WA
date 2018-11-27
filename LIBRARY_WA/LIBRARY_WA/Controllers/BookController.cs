@@ -43,34 +43,34 @@ namespace LIBRARY_WA.Data
             return _context.Book.Select(a => a.language).Distinct().ToList();
         }
 
-        [HttpGet("{ISBN}")]
-        public IEnumerable<Book> IfISBNExists([FromRoute] String ISBN)
+        [HttpGet("{isbn}")]
+        public IEnumerable<Book> IfISBNExists([FromRoute] String isbn)
         {
-            return _context.Book.Where(a => (a.ISBN == ISBN) ); //&& (a.is_available == true)
+            return _context.Book.Where(a => (a.isbn == isbn) ); //&& (a.is_available == true)
         }
 
         // GET: api/Books/5
-        [HttpGet]//"{book_id}/{ISBN}/{title}/{author_fullname}/{year}/{language}/{type}")]
-        public IEnumerable<Book> SearchBook([FromHeader(Name ="params")] String search)
+        [HttpPost,Authorize]//"{book_id}/{ISBN}/{title}/{author_fullname}/{year}/{language}/{type}")]
+        public IEnumerable<Book> SearchBook([FromBody] String[] search)
         {
-            FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            BinaryWriter w = new BinaryWriter(fs);
-            w.Write(search);
+            //  search.
+            //FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            //BinaryWriter w = new BinaryWriter(fs);
             String[] name = { "book_id", "title", "ISBN", "author_fullname", "year", "language", "type" };
             String sql = "Select * from Book where is_available=true ";
             for (int i = 0; i < search.Length; i++)
             {
-                if (search != "%")
+                if (search[i] != "%")
                 {
-                    sql += "and " + name[i] + "='" + search + "'";
+                    sql += "and " + name[i] + "='" + search[i] + "'";
                 }
-              //  w.Write(search[i] + i.ToString());
+             
             }
 
-         //   w.Write(search.Length.ToString());
-            w.Close();
+            //w.Write(sql);
+            //w.Close();
 
-            return _context.Book; //.FromSql(sql);
+            return _context.Book.FromSql(sql);
         }
 
 

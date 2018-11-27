@@ -18,7 +18,8 @@ import { User } from '../../../_models/User';
   ]
 })
 export class UserPIModule {
-  user:User;
+  n: Int32Array = 0;
+  user = new User(this.n, "", "", "", "", "", "", "", "", "");
   updateUserForm: FormGroup;
   submitted: boolean;
   constructor(
@@ -27,6 +28,13 @@ export class UserPIModule {
     private userService: UserService) { }
 
   createForm() {
+    
+  }
+
+  ngOnInit() {
+    this.GetUserById();
+    this.submitted = false;
+    //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.updateUserForm = this.formBuilder.group({
       login: [this.user.login],
       email: [this.user.email, [Validators.email, Validators.required], this.checkEmailExistsInDB.bind(this)],
@@ -36,15 +44,7 @@ export class UserPIModule {
       type: [this.user.user_type, Validators.required],
       password: this.user.password,
       address: [this.user.address, Validators.required], //, Validators.pattern("/^\S*$/")
-      is_Valid: [true]
     });
-  }
-
-  ngOnInit() {
-    this.GetUserById();
-    this.submitted = false;
-    //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
-    this.createForm();
   }
 
   UpdateUser() {

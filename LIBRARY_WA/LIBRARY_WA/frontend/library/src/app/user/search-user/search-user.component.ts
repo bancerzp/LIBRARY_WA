@@ -16,13 +16,14 @@ import { UserService } from '../../_services/user.service';
 export class SearchUserComponent implements OnInit {
   @Output() user = new EventEmitter<User>();
 
-  column=["Id. użytkownika","Imię i nazwisko","Data urodzenia","email","Numer telefonu","login","typ"]
-
+  column=["Id. użytkownika","Imię i nazwisko","Data urodzenia","email","Numer telefonu","Login","Typ"]
+  public values = [];
   userData: User[];
   searchUserForm: FormGroup;
   loading = false;
   submitted = false;
   returnUrl: string;
+  userType: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,10 +34,11 @@ export class SearchUserComponent implements OnInit {
   // private alertService: AlertService) { }*/
 
   ngOnInit() {
+    this.userType = localStorage.getItem("user_type");
     this.submitted = false;
     this.searchUserForm = this.formBuilder.group({
       userId: '',
-      userFullname: '',
+      user_fullname: '',
       email: ['', Validators.pattern("/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i")],
       login: ''
     });
@@ -53,17 +55,20 @@ export class SearchUserComponent implements OnInit {
   // get f() { return this.loginForm.controls; }
 
   searchUser() {
+ 
     this.submitted = true;
     var values;
+
     Object.keys(this.searchUserForm.controls).forEach((name) => {
       var s = this.searchUserForm.controls[name].value;
       if (s.replace(" ", "").replace("'", "").length == 0) {
-        values.push('%');
+        this.values.push('%');
       }
       else {
-        values.push(s.replace("'", ""));
+        this.values.push(s.replace("'", ""));
       }
     });
+
 
     return this.userService.SearchUser(values).subscribe((data: User[]) => this.userData = data)
 

@@ -21,10 +21,7 @@ export class User {
     phoneNumber: String,
     email: String,
     address: String,
-    is_valid: boolean)
-  { }
-  Constructor() {
-
+    is_valid: boolean) {
   }
 }
 

@@ -10,8 +10,8 @@
   </div>
 
   <div class="form-group">
-    <label for="ISBN">ISBN</label>
-    <input type="text" formControlName="ISBN" class="form-control" />
+    <label for="isbn">ISBN</label>
+    <input type="text" formControlName="isbn" class="form-control" />
   </div>
 
   <div class="form-group">
@@ -68,25 +68,29 @@
     <tr *ngFor="let bookInfo of bookData">
       <td>{{ bookInfo.book_id  }}</td>
       <td>{{ bookInfo.title  }}</td>
-      <td>{{ bookInfo.ISBN  }}</td>
+      <td>{{ bookInfo.isbn  }}</td>
       <td>{{ bookInfo.author_fullname }}</td>
       <td>{{ bookInfo.year }}</td>
       <td>{{ bookInfo.language  }}</td>
       <td>{{ bookInfo.type  }}</td>
       <!-- read one product button -->
-      <td *ngFor="let action of userAction">
-        columnAddLibrarian
-        <a (click)="UpdateBook(bookInfo.book_id)" class='btn btn-info m-r-5px'>
+      <td *ngIf="userType=='r'">
+        <a class='btn btn-info m-r-5px' (click)="reserveReader()">
+          <span class='glyphicon glyphicon-edit'></span> Zarezerwuj
+        </a>
+      </td>
+      <td *ngIf="userType=='l'">
+        <a class='btn btn-info m-r-5px' (click)="reserveLibrarian()">
+          <span class='glyphicon glyphicon-check'></span> Zarezerwuj
+        </a>
+        <a (click)="UpdateBook()" class='btn btn-info m-r-5px'>
           <span class='glyphicon glyphicon-edit'></span> Edytuj
         </a>
-        <a (click)="DeleteBook(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
+        <a (click)="DeleteBook()" class='btn btn-danger m-r-5px'>
           <span class='glyphicon glyphicon-remove'></span> Usuń
         </a>
-        <a (click)="AddVolume(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
-          <span class='glyphicon glyphicon-remove'></span> Dodaj egzemplarz
-        </a>
-        <a (click)="AddVolume(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
-          <span class='glyphicon glyphicon-remove'></span> Dodaj egzemplarz
+        <a (click)="AddVolume()" class='btn btn-info m-r-5px'>
+          <span class='glyphicon glyphicon-plus'></span> Dodaj egzemplarz
         </a>
       </td>
     </tr>

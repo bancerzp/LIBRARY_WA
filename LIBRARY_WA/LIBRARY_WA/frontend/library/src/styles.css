@@ -110,7 +110,7 @@ h1 {
 #container {
   width: 90%;
   height: 95%;
-  margin:0% 8% 0% 8%;
+  margin:auto;
   background-color: lavender;
 }
 
@@ -118,6 +118,12 @@ h1 {
   padding-right: 1px;
   margin-right: 0px;
   margin-left: 0px;
+}
+
+.icon{
+  text-align:center;
+  font-size:10px;
+  align-self:stretch;
 }
 
 .body-content {
@@ -131,16 +137,6 @@ h1 {
   color: aliceblue;
 }
 
-#logo {
-  /* background-color: palevioletred;*/
-  float: left;
-  width: 80%;
-  padding: 2%;
-  font-family: 'K2D', sans-serif;
-  font-size: 200%;
-  text-align: center;
-  color: gray;
-}
 
 #clock {
   background-color: coral;
@@ -198,9 +194,10 @@ h1 {
   border-color: brown;
   border-bottom-style: groove;
   box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
-  margin: 5px;
+  margin: auto;
+  text-align:center;
   overflow: hidden;
-  width: 120%;
+  width: 80%;
 }
 
 tr :hover {
@@ -208,7 +205,7 @@ tr :hover {
 }
 
 table {
-  width: 120%;
+  width: 100%;
   background-color: white;
 }
 

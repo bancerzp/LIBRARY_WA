@@ -6,8 +6,8 @@
 
   </div>
   <div class="form-group">
-    <label for="userFullname">Imię/nazwisko</label>
-    <input type="text" formControlName="userFullname" class="form-control" />
+    <label for="user_fullname">Imię/nazwisko</label>
+    <input type="text" formControlName="user_fullname" class="form-control" />
 
   </div>
   <div class="form-group">
@@ -34,14 +34,19 @@
     </th>
   </tr>
   <tbody>
-    <tr *ngFor="let bookInfo of bookData">
-      <td>{{ bookInfo.book_id  }}</td>
-      <td>{{ bookInfo.title  }}</td>
-      <td>{{ bookInfo.ISBN  }}</td>
-      <td>{{ bookInfo.author_fullname }}</td>
-      <td>{{ bookInfo.year }}</td>
-      <td>{{ bookInfo.language  }}</td>
-      <td>{{ bookInfo.type  }}</td>
+    <tr *ngFor="let userInfo of userData">
+      <td>{{ userInfo.user_id  }}</td>
+      <td>{{ userInfo.user_fullname  }}</td>
+      <td>{{ userInfo.date_of_birth  }}</td>
+      <td>{{ userInfo.email }}</td>
+      <td>{{ userInfo.phone_number }}</td>
+      <td>{{ userInfo.login  }}</td>
+      <td>{{ userInfo.type  }}</td>
+      <td ngIf="userType='l'">
+        <a (click)="DeleteUser()" class='btn btn-danger m-r-5px'>
+          <span class='glyphicon glyphicon-remove'></span>Usuń użytkownika
+        </a>
+      </td>
     </tr>
   </tbody>
 </table>

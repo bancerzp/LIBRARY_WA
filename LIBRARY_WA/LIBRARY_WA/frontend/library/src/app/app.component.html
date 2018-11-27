@@ -5,11 +5,8 @@
 <body>
   <div id="container">
     <nav class="navbar navbar-expand-md navbar-dark green">
-      <button class="navbar-toggler-icon" type="button">
-        <span class="glyphicon glyphicon-book" style="font-size:60px;color:black"></span>
-      </button>
-
-      <ul class="navbar-nav mr-left" style=" color:red" *ngFor="let item of menu">
+        <span class=" glyphicon glyphicon-book" style="font-size:80px;color:black"></span>
+      <ul class="navbar-nav navbar-left" style=" color:red" *ngFor="let item of menu">
         <li class="nav-item">
           <a class="nav-link waves-light" [routerLink]=[item.path] routerLinkActive="active" href=item.href mdbWavesEffect>{{item.title}}</a>
         </li>
@@ -37,9 +34,9 @@
     </li>-->
 
       </ul>
-      <div *ngIf="isLogged">
-        <a  class="glyphicon glyphicon-user">Jesteś zalogowany jako: {{userFullname}}</a>
-        <a onclick="logout()" href="/">Wyloguj</a>
+      <div *ngIf="isLogged" class="nav navbar-nav navbar-right" style="text-align-last:center;">
+        <a  class="glyphicon glyphicon-user" style="word-spacing:normal"><br />Jesteś zalogowany jako: <br />{{userFullname}}</a>
+        <button (click)="Logout()">Wyloguj</button>
       </div>
     
 

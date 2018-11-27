@@ -34,7 +34,7 @@ export class AddBookComponent implements OnInit {
     this.GetLanguage();
 
     this.addBookForm = this.formBuilder.group({
-      ISBN: ['', [Validators.pattern("[0-9]{13}"),
+      isbn: ['', [Validators.pattern("[0-9]{13}"),
         Validators.required], this.CheckISBNExistsInDB.bind(this)],
       title: ['', [Validators.required, Validators.maxLength(50)]],
       author_fullname: ['', [Validators.required, Validators.maxLength(100)]],

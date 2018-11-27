@@ -17,7 +17,7 @@ import { UserService } from '../../../_services/user.service';
 export class BookRenthModule {
   renth: Renth[];
   column = ["Numer wypożyczenia", "ISBN", "Tytuł", "Numer egzemplarza", "Data wypożyczenia", "Data zwrotu"];
-
+  name:String
 
   constructor(
     private userService: UserService) {
@@ -28,7 +28,7 @@ export class BookRenthModule {
   }
 
   GetRenth() {
-    this.userService.GetRenth(localStorage.getItem("user_id")).subscribe((renths: any[]) => this.renth = renths);
+    this.name = localStorage.getItem("user_id");
+    this.userService.GetRenth(this.name).subscribe((renths: any[]) => this.renth = renths);
   }
-
 }

@@ -19,16 +19,17 @@ export class SearchBookComponent implements OnInit {
   //@Input()
 
   submitted: boolean;
+  userType: string;
   bookData: Book[] = []; // [{ book_id: 'test', title: 'test', ISBN: 'test', author_fullname: 'test', year: 'test', language: 'test',  type: 'test',description: 'test'}];
   public author = [];
   public bookType = [];
   public language = [];
   public values = [];
-  public action = [];
+  public userAction = [];
   searchBookForm: FormGroup;
-  column: String[] = ["Id. książki", "Tytuł", "ISBN",  "Autor", "Rok wydania", "Język wydania", "Rodzaj","Akcje"];
-  columnAddReader:String[] =["Zarezerwuj"]
-  columnAddLibrarian: String[] = ["Zarezerwuj","Edytuj","Usuń","Dodaj egzemplarz"]
+  column: String[] = ["Id. książki", "Tytuł", "ISBN", "Autor", "Rok wydania", "Język wydania", "Rodzaj", "Akcje"];
+  columnAddReader: UserAction[] = [ new UserAction("Zarezerwuj","Reserve")]
+  columnAddLibrarian: UserAction[] = [new UserAction("Zarezerwuj", "Reserve()"), new UserAction("Edytuj", "Update()"), new UserAction("Usuń", "Delete()"), new UserAction("Dodaj egzemplarz", "AddVolume()")]
 
 
   constructor(
@@ -67,7 +68,8 @@ export class SearchBookComponent implements OnInit {
   ngOnInit() {
    // this.recordDeleted.emit("Wydarzenie wyemitowane");
     //w zależności od typu użytkownika różne akcje
-    this.action = this.columnAddLibrarian;
+    this.userType = localStorage.getItem("user_type");
+   
     this.submitted = false;
     //pobranie wartości do list rozwijanych
     this.GetBookType();
@@ -76,8 +78,8 @@ export class SearchBookComponent implements OnInit {
 
     var names = this.column;
     this.searchBookForm = this.formBuilder.group({
-    book_id:'1',
-    ISBN: [''],
+      book_id: localStorage.getItem("user_id"),
+    isbn: [''],
     title: '',
     author_fullname: [''],
     year: [''],
@@ -99,6 +101,7 @@ export class SearchBookComponent implements OnInit {
         this.values.push(s.replace("'",""));
       }
     });
+  //  var book = new Book(this.values[0], this.values[1], this.values[2], this.values[3], this.values[4], this.values[5], this.values[6], this.values[7],true)
 
     return this.bookService.SearchBook(this.values).subscribe((data:Book[]) => this.bookData=data)
   }
@@ -118,6 +121,9 @@ export class SearchBookComponent implements OnInit {
     return this.bookService.GetLanguage().subscribe((languages: any[]) => this.language = languages);
   };
 
+  Reserve() {
+    
+  }
 
   UpdateBook() {
 
@@ -138,4 +144,15 @@ export class SearchBookComponent implements OnInit {
 
   }
 }
-//tu tez przekazac zmienna czy jest ktos zalogowany
+
+export class UserAction {
+  text: string;
+  action: string;
+
+  constructor(text: string,
+    action: string) {
+    this.text = text;
+    this.action = action;
+  }
+
+}
