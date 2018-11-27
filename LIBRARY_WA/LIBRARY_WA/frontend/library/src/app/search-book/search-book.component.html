@@ -43,7 +43,7 @@
   <div class="form-group">
     <label for="type">Typ</label>
     <input type="text" list="bookType" formControlName="type" class="form-control" [(ngModel)]="book.type" />
-    <datalist id="bookType" >
+    <datalist id="bookType">
       <option *ngFor="let bookTyp of bookType" value="{{bookTyp}}">{{bookTyp}}</option>
     </datalist>
   </div>
@@ -56,7 +56,7 @@
 
 
 
-<table  class="searchResult w3-hoverable" *ngIf="submitted">
+<table class="searchResult w3-hoverable" *ngIf="submitted">
   <thead>
     <tr>
       <th *ngFor="let name of column">
@@ -75,24 +75,28 @@
       <td>{{ bookInfo.type  }}</td>
       <!-- read one product button -->
       <td *ngIf="userType=='r'">
-        <a class='btn btn-info m-r-5px' (click)="reserveReader()">
+        <a class='btn btn-info m-r-5px' (click)="ReserveBookReader(bookInfo.book_id)">
           <span class='glyphicon glyphicon-edit'></span> Zarezerwuj
         </a>
       </td>
       <td *ngIf="userType=='l'">
-        <a class='btn btn-info m-r-5px' (click)="reserveLibrarian()">
+        <button class='btn btn-info m-r-5px' (click)="ReserveBookLibrarian(bookInfo.book_id,inputValue)" [disabled]="!empty">
           <span class='glyphicon glyphicon-check'></span> Zarezerwuj
-        </a>
-        <a (click)="UpdateBook()" class='btn btn-info m-r-5px'>
+        </button>
+        <a (click)="UpdateBook(bookInfo.book_id)" class='btn btn-info m-r-5px'>
           <span class='glyphicon glyphicon-edit'></span> Edytuj
         </a>
-        <a (click)="DeleteBook()" class='btn btn-danger m-r-5px'>
+        <a (click)="RemoveBook(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
           <span class='glyphicon glyphicon-remove'></span> Usuń
         </a>
-        <a (click)="AddVolume()" class='btn btn-info m-r-5px'>
+        <a (click)="AddVolume(bookInfo.book_id)" class='btn btn-info m-r-5px'>
           <span class='glyphicon glyphicon-plus'></span> Dodaj egzemplarz
         </a>
+      </td>
+      <td *ngIf="userType=='l'" ng-model="inputValue">
+          <input  #user/>
       </td>
     </tr>
   </tbody>
 </table>
+

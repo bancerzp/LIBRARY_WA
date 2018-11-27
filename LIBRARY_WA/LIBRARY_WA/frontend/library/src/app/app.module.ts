@@ -28,6 +28,7 @@ import { BookReservationModule } from './user-account/details/book-reservation/b
 import { BookRenthModule } from './user-account/details/book-renth/book-renth.module';
 import { CurrentRentModule } from './user-account/details/current-rent/current-rent.module';
 import { UserPIModule } from './user-account/details/user-pi/user-pi.module';
+import { EditBookComponent } from './search-book/edit-book/edit-book.module';
 
 export const appRoutes: Routes = [
 
@@ -61,7 +62,11 @@ export const appRoutes: Routes = [
   },
   {
     path: 'app-search-book',
-    component: SearchBookComponent
+    component: SearchBookComponent,
+    children:[{
+      path: 'app-edit-book',
+      component: EditBookComponent
+    },]
   },
 
   {
@@ -119,7 +124,8 @@ export const appRoutes: Routes = [
     UserComponent,
     UserPIModule,
     BookReservationModule,
-    BookRenthModule
+    BookRenthModule,
+    EditBookComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

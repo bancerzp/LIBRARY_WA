@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LIBRARY_WA.Models
 {
     public class Renth
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Int32 rent_id_h { get; set; }
         public Int32 user_id { get; set; }
         [MaxLength(50)]

@@ -5,6 +5,7 @@
     <th *ngFor="let name of column">
       {{name}}
     </th>
+    <th *ngIf="user_type=='l'">Akcje</th>
   </tr>
   <tbody>
     <tr *ngFor="let rentInfo of rent">
@@ -15,8 +16,8 @@
       <td>{{ rentInfo.start_date }}</td>
       <td>{{ rentInfo.expire_date  }}</td>
       <td *ngIf="user_type=='l'">
-        <a  (click)="ReturnBook({{rentInfo.rent_id}})" class='btn btn-info m-r-5px'>
-          <span class='glyphicon glyphicon-edit'></span> Wypożycz.
+        <a  (click)="ReturnBook(rentInfo.rent_id)" class='btn btn-info m-r-5px'>
+          Zwrot
         </a>
       </td>
     </tr>

@@ -17,10 +17,10 @@
       <td>{{ reservationInfo.expire_date  }}</td>
       <td>{{ reservationInfo.is_active  }}</td>
       <td>
-        <a (click)="CancelReservation({{reservationInfo.reservation_id}})" class='btn btn-info m-r-5px'>
+        <a (click)="CancelReservation(reservationInfo.reservation_id)" class='btn btn-info m-r-5px'>
           <span class='glyphicon glyphicon-edit'></span> Anuluj rezerwację.
         </a>
-        <a *ngIf="user_type=='l'" (click)="RentBook({{reservationInfo.reservation_id}})" class='btn btn-info m-r-5px'>
+        <a *ngIf="user_type=='l'" (click)="RentBook(reservationInfo.reservation_id)" class='btn btn-info m-r-5px'>
           <span class='glyphicon glyphicon-edit'></span> Wypożycz.
         </a>
       </td>

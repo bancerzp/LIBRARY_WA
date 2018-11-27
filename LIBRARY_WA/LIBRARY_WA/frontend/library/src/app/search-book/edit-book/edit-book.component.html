@@ -1,0 +1,71 @@
+<p>
+  Dodaj książkę
+</p>
+
+<h2>Dodaj książkę</h2>
+<form [formGroup]="addBookForm" (ngSubmit)="AddBook()">
+  <div class="form-group">
+    <label for="isbn">isbn</label>
+    <input type="text" formControlName="isbn" class="form-control" [(ngModel)]="book.isbn" ng-change="CheckisbnExistsInDB()" placeholder="format: 9999999999999" />
+    <div class="alert alert-danger " *ngIf="(sumbitted && addBookForm.get('isbn').hasError('required'))||(addBookForm.get('isbn').hasError('required')  && addBookForm.get('isbn').touched)">Pole isbn nie może być puste</div>
+    <div class="alert alert-danger " *ngIf="addBookForm.get('isbn').hasError('pattern')  && addBookForm.get('isbn').touched  ">Nieprawidłowy format ISBN</div>
+    <div class="alert alert-danger " *ngIf="addBookForm.get('isbn').hasError('isbnTaken') && addBookForm.get('isbn').touched">Podany ISBN już jest przypisany do książki</div>
+  </div>
+
+  <div class="form-group">
+    <label for="title">Tytuł książki</label>
+    <input type="text" formControlName="title" class="form-control" [(ngModel)]="book.title" />
+    <div class="alert alert-danger " *ngIf="(sumbitted && (addBookForm.get('title').hasError('required') || addBookForm.get('title').hasError('pattern'))) || (addBookForm.get('title').hasError('required') && addBookForm.get('title').dirty)">Pole imię i nazwisko nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf="addBookForm.get('title').hasError('maxLength') && addBookForm.get('title').dirty">Za długi tytuł(max.50znaków)</div>
+  </div>
+
+  <div class="form-group">
+    <label for="author_fullname">Imię i nazwisko autora</label>
+    <input type="text" list="author" formControlName="author_fullname" class="form-control" [(ngModel)]="book.author_fullname" />
+    <datalist id="author">
+      <option *ngFor="let author of author" value="{{author}}">{{author}}</option>
+    </datalist>
+    <div class="alert alert-danger " *ngIf="(sumbitted && (addBookForm.get('author_fullname').hasError('required') || addBookForm.get('author_fullname').hasError('pattern'))) || (addBookForm.get('author_fullname').hasError('required') && addBookForm.get('author_fullname').dirty)">Pole imię i nazwisko nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf="addBookForm.get('author_fullname').hasError('maxLength') && addBookForm.get('author_fullname').dirty && addBookForm.get('author_fullname').touched">Za długa nazwa autora (max.50znaków)</div>
+  </div>
+
+  <div class="form-group">
+    <label for="year">Rok wydania</label>
+    <input type="text" formControlName="year" class="form-control" [(ngModel)]="book.year" />
+    <div class="alert alert-danger " *ngIf="(sumbitted && (addBookForm.get('year').hasError('required') || addBookForm.get('year').hasError('pattern'))) || (addBookForm.get('year').hasError('required') && addBookForm.get('year').dirty)">Pole rok nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf=" addBookForm.get('year').hasError('pattern') && addBookForm.get('year').dirty ">Nieprawidłowy format roku</div>
+  </div>
+
+  <div class="form-group">
+    <label for="language">Język</label>
+    <input type="text" list="language" formControlName="language" class="form-control" [(ngModel)]="book.language" />
+    <datalist id="language">
+      <option *ngFor="let language of language" value="{{language}}">{{language}}</option>
+    </datalist>
+    <div class="alert alert-danger " *ngIf="(sumbitted && (addBookForm.get('language').hasError('required') || addBookForm.get('language').hasError('pattern'))) || (addBookForm.get('language').hasError('required') && addBookForm.get('language').dirty)">Pole język nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf="addBookForm.get('language').hasError('maxLength') && addBookForm.get('language').dirty && addBookForm.get('language').touched">Za długa nazwa języka(max.20znaków)</div>
+  </div>
+
+  <div class="form-group">
+    <label for="type">Typ</label>
+    <input type="text" list="type" formControlName="type" class="form-control" [(ngModel)]="book.type" />
+    <datalist id="type">
+      <option *ngFor="let bookType of bookType" value="{{bookType}}">{{bookType}}</option>
+    </datalist>
+    <div class="alert alert-danger " *ngIf="(sumbitted && (addBookForm.get('type').hasError('required') || addBookForm.get('type').hasError('pattern'))) || (addBookForm.get('type').hasError('required') && addBookForm.get('type').dirty)">Pole typ książki nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf="addBookForm.get('type').hasError('maxLength') && addBookForm.get('type').dirty && addBookForm.get('type').touched">Za długi typ książki(max.30znaków)</div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Opis(opcjonalny):</label>
+    <textarea type="text" formControlName="description" class="form-control" [(ngModel)]="book.description"></textarea>
+    <div class="alert alert-danger" *ngIf="addBookForm.get('description').hasError('maxLength') && addBookForm.get('description').dirty && addBookForm.get('description').touched">Za długi opis(max.300 znaków)</div>
+  </div>
+
+  <div class="form-group">
+    <button type="submit" (ngSubmit)="AddBook()" [disabled]="loading || !addBookForm.valid" class="btn btn-primary">Dodaj książkę</button>
+  </div>
+  <!---->
+
+</form>
+<button [disabled]="loading" class="btn btn-primary" ng-Click="CheckisbnExistsInDB()">Wyczyść</button>

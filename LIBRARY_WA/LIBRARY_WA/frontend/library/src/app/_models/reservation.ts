@@ -8,5 +8,6 @@ export class Reservation {
   volume_id: Int32Array;
   start_date: Date;
   expire_date: Date;
+  queue: Int32Array;
   is_active: Boolean;
 }

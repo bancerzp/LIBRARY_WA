@@ -1,10 +1,11 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { Http, Response } from '@angular/http';
 import { BookService } from '../_services/book.service';
 import { Book } from '../_models/book';
 import { map } from 'rxjs/operators';
 import { forEach } from '@angular/router/src/utils/collection';
+import { Volume } from '../_models/Volume';
 @Component({
   selector: 'app-search-book',
   templateUrl: './search-book.component.html',
@@ -30,8 +31,7 @@ export class SearchBookComponent implements OnInit {
   column: String[] = ["Id. książki", "Tytuł", "ISBN", "Autor", "Rok wydania", "Język wydania", "Rodzaj", "Akcje"];
   columnAddReader: UserAction[] = [ new UserAction("Zarezerwuj","Reserve")]
   columnAddLibrarian: UserAction[] = [new UserAction("Zarezerwuj", "Reserve()"), new UserAction("Edytuj", "Update()"), new UserAction("Usuń", "Delete()"), new UserAction("Dodaj egzemplarz", "AddVolume()")]
-
-
+ 
   constructor(
     private formBuilder: FormBuilder,
     private http: Http,
@@ -63,7 +63,8 @@ export class SearchBookComponent implements OnInit {
   //      this.bookData = products['records']
   //    );
  // }
- 
+
+  IsInputEmpty() {}
 
   ngOnInit() {
    // this.recordDeleted.emit("Wydarzenie wyemitowane");
@@ -78,7 +79,7 @@ export class SearchBookComponent implements OnInit {
 
     var names = this.column;
     this.searchBookForm = this.formBuilder.group({
-      book_id: localStorage.getItem("user_id"),
+    book_id:'',
     isbn: [''],
     title: '',
     author_fullname: [''],
@@ -121,30 +122,41 @@ export class SearchBookComponent implements OnInit {
     return this.bookService.GetLanguage().subscribe((languages: any[]) => this.language = languages);
   };
 
-  Reserve(id) {
-    
+  ReserveBookLibrarian(book_id, user_id) {
+    //wypisywanie błędu
+    this.bookService.ReserveBook(book_id, user_id).subscribe();
   }
 
+  ReserveBookReader(book_id) {
+    this.bookService.ReserveBook(book_id, localStorage.getItem("user_id")).subscribe();
+  }
+
+  //nie zrobione
   UpdateBook() {
-
+  //  this.bookService.update(book_id, localStorage.getItem("user_id")).subscribe();
   }
 
-  DeleteBook(id) {
-
+  RemoveBook(id) {
+    this.bookService.RemoveBook(id).subscribe(this.SearchBook);
+    this.bookData.splice(this.bookData.indexOf(this.bookData.find(book => book.book_id != id)));
+    
   }
 
   AddVolume(id) {
     this.bookService.AddVolume(id).subscribe(
-      (data: Book) => { this.id = Number(data.book_id), alert("Książka dodana poprawnie " + this.id) },
-      Error => { alert("Błąd dodawania książki") });
+      (volume: Volume) => { alert("Egzemplarz dodany poprawnie: "+volume.volume_id) },
+      Error => { alert("Błąd dodawania książki" +Error) });
   }
 
-  readOneProduct(id) { }
+  readOneProduct(id) {
+    this.bookService.AddVolume(id).subscribe(
+  }
 
 
   rentBook(bookId,userId) {
 
   }
+  
 }
 
 export class UserAction {

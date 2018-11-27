@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace LIBRARY_WA.Models
 {
     public class User
     {
-        [Key]
+        [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Int32 user_Id { get; set; }
         public String login { get; set; }
         public String password { get; set; }
