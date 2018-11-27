@@ -23,24 +23,20 @@ export class UserAccountComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    localStorage.clear()
     this.GetUser();
-    this.GetRent();
+  //  this.GetRent();
     this.GetReservation();
-    this.GetRenth();
+  //  this.GetRenth();
   }
 
   GetUser() {
-
   }
-  GetRent() {
-
-  }
+  
   GetReservation() {
 
   }
 
-  GetRenth() {
-
-  }
+  
 
 }

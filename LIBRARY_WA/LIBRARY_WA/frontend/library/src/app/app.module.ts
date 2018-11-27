@@ -30,6 +30,7 @@ import { CurrentRentModule } from './user-account/details/current-rent/current-r
 import { UserPIModule } from './user-account/details/user-pi/user-pi.module';
 
 export const appRoutes: Routes = [
+
   {
     path: 'app-login',
     component: LoginComponent
@@ -47,6 +48,10 @@ export const appRoutes: Routes = [
       {
         path: 'app-search-user',
         component: SearchUserComponent
+      },
+    {
+        path: '',
+      component: SearchUserComponent
       }]
   },
   
@@ -96,7 +101,6 @@ export const appRoutes: Routes = [
     path: '',
     component: HomeComponent
   },
-
 ];
 
 @NgModule({

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,17 +15,45 @@ export class AppComponent  {
   public user: MenuItem = { title: 'Moje konto', path: 'app-user-account', href: '#user' };
   public searchBook: MenuItem = { title: 'Wyszukaj książkę', path: 'app-search-book', href: '#searchBook' };
   public searchUser: MenuItem = { title: 'Wyszukaj użytkownika', path: 'app-search-user', href: '#searchUser' };
-  public menuUser: MenuItem[]=[this.searchBook,this.user];
+
+  public menuReader: MenuItem[]=[this.searchBook,this.user];
   public menuGuest: MenuItem[] = [this.login, this.searchBook];
   public menuLibrarian: MenuItem[] = [this.users, this.searchBook, this.addBook, this.login,this.user];
-  public menu: MenuItem[] = this.menuLibrarian;
+  public menu: MenuItem[]; //= this.menuLibrarian;
 
   public nn: String;
+  public userFullname;
+  public isLogged;
 
+  constructor(private router: Router) {
+
+  }
 
   countChangedHandler(n: String) {
     this.nn = n;
     console.log(this.nn);
+  }
+
+  ngOnInit() {
+    this.isLogged = false;
+    if (localStorage.getItem("user_type") == "r") {
+      this.menu = this.menuReader;
+      this.isLogged = true;
+    }
+    else if (localStorage.getItem("user_type") == "l") {
+      this.menu = this.menuLibrarian;
+      this.isLogged = true;
+    }
+    else {
+      this.menu = this.menuGuest;
+      this.isLogged = false;
+    }
+    this.userFullname = localStorage.getItem("user_fullname");
+  }
+
+  logout() {
+    localStorage.clear();
+  //  this.router.navigateByUrl('/');
   }
 }
 

@@ -4,49 +4,52 @@
 
 <body>
   <div id="container">
-    <nav class="navbar navbar-expand-lg navbar-dark green">
-      <button class="navbar-toggler" type="button">
-        <span class="navbar-toggler-icon">Biblioteka - tytuł</span>
+    <nav class="navbar navbar-expand-md navbar-dark green">
+      <button class="navbar-toggler-icon" type="button">
+        <span class="glyphicon glyphicon-book" style="font-size:60px;color:black"></span>
       </button>
-      <a class="navbar-brand" href="#home" style="height:200%">
-        <div id="logo">
-          <div class="glyphicon glyphicon-book" style="font-size:70px;color:black"></div>
-        </div>
+
+      <ul class="navbar-nav mr-left" style=" color:red" *ngFor="let item of menu">
+        <li class="nav-item">
+          <a class="nav-link waves-light" [routerLink]=[item.path] routerLinkActive="active" href=item.href mdbWavesEffect>{{item.title}}</a>
+        </li>
+
+        <!--   <li class="nav-item">
+      <a class="nav-link waves-light" routerLink="app-login" routerLinkActive="active" href="#login" mdbWavesEffect>Logowanie</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link waves-light" routerLink="app-add-user" routerLinkActive="active" href="#addUser" mdbWavesEffect>Dodaj użytkownika</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link waves-light" routerLink="app-add-resource" routerLinkActive="active" href="#addResources" mdbWavesEffect>Zasoby dodaj</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link waves-light" routerLink="app-user" routerLinkActive="active" href="#user" mdbWavesEffect>Użytkownicy</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link waves-light" routerLink="app-search-resource" routerLinkActive="active" href="#search-resources" mdbWavesEffect>Szukaj zasoby</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link waves-light" routerLink="app-search-user" routerLinkActive="active" href="#search-user" mdbWavesEffect>Szukaj użytkowników</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link waves-light" routerLink="app-user-account" routerLinkActive="active" href="#user-account" mdbWavesEffect>Konto użytkownika</a>
+    </li>-->
+
+      </ul>
+      <div *ngIf="isLogged">
+        <a  class="glyphicon glyphicon-user">Jesteś zalogowany jako: {{userFullname}}</a>
+        <a onclick="logout()" href="/">Wyloguj</a>
+      </div>
+    
+
+    </nav>
+     <a class="navbar-brand" href="#home" style="height:200%">
         <div id="clock">
           21:06:00
         </div>
         <br />
       </a>
-
-      <ul class="navbar-nav mr-auto" style=" color:red" *ngFor="let item of menu">
-        <li class="nav-item" >
-          <a class="nav-link waves-light" [routerLink]=[item.path] routerLinkActive="active" href=item.href mdbWavesEffect>{{item.title}}</a>
-        </li>
-
-        <!--   <li class="nav-item">
-    <a class="nav-link waves-light" routerLink="app-login" routerLinkActive="active" href="#login" mdbWavesEffect>Logowanie</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link waves-light" routerLink="app-add-user" routerLinkActive="active" href="#addUser" mdbWavesEffect>Dodaj użytkownika</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link waves-light" routerLink="app-add-resource" routerLinkActive="active" href="#addResources" mdbWavesEffect>Zasoby dodaj</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link waves-light" routerLink="app-user" routerLinkActive="active" href="#user" mdbWavesEffect>Użytkownicy</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link waves-light" routerLink="app-search-resource" routerLinkActive="active" href="#search-resources" mdbWavesEffect>Szukaj zasoby</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link waves-light" routerLink="app-search-user" routerLinkActive="active" href="#search-user" mdbWavesEffect>Szukaj użytkowników</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link waves-light" routerLink="app-user-account" routerLinkActive="active" href="#user-account" mdbWavesEffect>Konto użytkownika</a>
-  </li>-->
-      </ul>
-    </nav>
-
     <!--   <div *ngFor="let menuItem of menus">
       <button md-button [mdMenuTriggerFor]="menu">
         <span>{{menuItem.title}}</span>

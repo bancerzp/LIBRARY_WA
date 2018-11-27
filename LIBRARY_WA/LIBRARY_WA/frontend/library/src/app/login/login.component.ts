@@ -1,11 +1,12 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Output, EventEmitter, NgModule } from '@angular/core';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { FormGroup, FormsModule, FormBuilder, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { UserService } from '../_services/user.service';
 import { User } from '../_models/User';
+import { appRoutes } from '../app.module';
 //import { AlertService, AuthenticationService } from '../_services';
 
 @Component({
@@ -13,19 +14,19 @@ import { User } from '../_models/User';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+@NgModule({
+  imports: [RouterModule.forRoot(appRoutes)]
+})
 
 export class LoginComponent implements OnInit {
   @Output() logedUser = new EventEmitter<User>();
 
 
   loginForm: FormGroup;
-  loading = false;
   submitted = false;
-  returnUrl: string;
   user: User;
   valid: boolean;
   loginData: User;
-  test: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,8 +39,7 @@ export class LoginComponent implements OnInit {
     this.user = null;
     this.loginForm = this.formBuilder.group({
       login: ['', Validators.required],
-      password: ['', Validators.required],
-      check: ['']
+      password: ['', Validators.required]
     });
   }
 
@@ -51,28 +51,39 @@ export class LoginComponent implements OnInit {
 
   //f czyli fałszywy login/hasło
   login() {
-   // this.loginData = new User();//{ userId login: this.loginForm.get('login').value, password: this.loginForm.get('password').value };
-   // this.loginData.login = this.loginForm.get('login').value;
-   // this.loginData.password = this.loginForm.get('password').value;
-    
-    this.userService.IsLogged(this.logedUser)
-      .subscribe(userData => this.user = new User(userData["user_Id"], "","","","",new Date(),"","","",true));
-   // new User(userData["user_Id"], userData["login"], userData["password"], userData["user_Type"], userData["fullName"], userData["date_Of_Birth"], userData["phone_Number"], userData["email"], userData["address"], userData["is_Valid"]));
-
+      this.userService.IsLogged(this.logedUser).subscribe(response => {
+      let token = (<any>response).token;
+      let user_id = (<any>response).id;
+      let fullname = (<any>response).fullname;
+      let user_type = (<any>response).user_type
+      localStorage.setItem("token", token);
+      localStorage.setItem("user_id", user_id);
+      localStorage.setItem("user_fullname", fullname);
+      localStorage.setItem("user_type", user_type);
+        this.valid = true;
+        window.location.reload();
+        this.router.navigateByUrl('/')
+        
+    //   this.router.navigate["/"];
+      }, err => {
+      this.valid= false;
+    });
     this.submitted = true;
-    if (this.user === null) {
+  /*  if (this.user === null) {
       this.valid = false;
      
       return;
     }
     else {
       this.logedUser.emit(this.user);
-      this.router.navigate(['app-home']);
+      this.router.navigate(['app-home']);*/
      // this.logedUser.emit(this.user);
     //  this.router.navigate(['home']);
-    }
   }
-}
+
+ 
+  }
+
 
 
 

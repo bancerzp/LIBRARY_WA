@@ -1,6 +1,7 @@
 import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Reservation } from '../../../_models/reservation';
+import { UserService } from '../../../_services/user.service';
 
 @Component({
   selector: 'app-book-reservation',
@@ -17,6 +18,17 @@ export class BookReservationModule {
   column = ["Id. rezerwacji", "ISBN", "Tytuł", "Numer egzemplarza", "Data rezerwacji", "Rezerwacja do:", "Czy gotowe do wypożyczenia?","Anuluj rezerwację"];
 
 
+  constructor(
+    private userService: UserService) {
+  }
+
+  ngOnInit() {
+    this.GetReservation();
+  }
+
+  GetReservation() {
+    this.userService.GetReservation(localStorage.getItem("user_id")).subscribe((reservations: any[]) => this.reservation = reservations);
+  }
   CancelReservation(reservationId, userId) {
 
   }

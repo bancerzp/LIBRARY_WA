@@ -7,6 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LIBRARY_WA.Models;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
 
 namespace LIBRARY_WA.Controllers
 {
@@ -15,17 +22,21 @@ namespace LIBRARY_WA.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-       // private readonly UserContext _context;
+        public IConfiguration Configuration { get; }
+
+        // private readonly UserContext _context;
         private readonly LibraryContext _context;
 
-        public UserController(LibraryContext context)
+        public UserController(LibraryContext context, IConfiguration configuration)
         {
+            Configuration = configuration;
+
             this._context = context;//.UserContext;
          //   this.context = context;
         }
 
         // POST: api/User
-        [HttpPost]
+        [HttpPost,Authorize(Roles ="l")]
         public async Task<IActionResult> AddUser([FromBody] User user)
         {
             if (!ModelState.IsValid)
@@ -41,20 +52,46 @@ namespace LIBRARY_WA.Controllers
 
         // GET: api/User
         [HttpPost]
-        public User IsLogged([FromBody] User userData)
+        public IActionResult IsLogged([FromBody] User userData)
         {
-            if (_context.User.Where(u => u.login==userData.login && u.password== userData.password).FirstOrDefault() != null)
+            if (userData == null)
             {
-                return _context.User.Where(u => userData.login == u.login && userData.password == u.password).FirstOrDefault();
+                return BadRequest("Invalid client request");
+            }
+            User user = _context.User.Where(u => u.login == userData.login && u.password == userData.password).FirstOrDefault();
+            if (user != null)
+
+            {
+                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
+                var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+                var claims = new List<Claim>
+        {
+                 new Claim(ClaimTypes.Name, user.fullname),
+                 new Claim(ClaimTypes.Role, user.user_Type),
+        };
+
+                var tokeOptions = new JwtSecurityToken(
+                    issuer: "http://localhost:5000",
+                    audience: "http://localhost:5000",
+                    claims: claims,
+                    expires: DateTime.Now.AddMinutes(5),
+                    signingCredentials: signinCredentials
+                );
+
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+                return Ok(new { Token = tokenString,id=user.user_Id,user_type=user.user_Type,fullname=user.fullname });
             }
             else
             {
-                return new Models.User();
+                return Unauthorized();
             }
+        
+
+  
         }
 
-        [HttpGet("{id}")]
-        public IEnumerable<User> GetUser([FromRoute] Int32 id)
+        [HttpGet("{id}"),Authorize]
+        public IEnumerable<User> GetUserById([FromRoute] Int32 id)
         {
             //rom p in context.Professors
             // select p.Name).ToList()
@@ -66,6 +103,7 @@ namespace LIBRARY_WA.Controllers
         public IEnumerable<User> IfEmailExists([FromRoute] String email)
         {
             String email2 = email.Replace("'", "");
+           
             return _context.User.Where(u => u.email == email2);
 
         }
@@ -78,7 +116,7 @@ namespace LIBRARY_WA.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet,Authorize]
         public IEnumerable<User> SearchUser([FromHeader] String[] search) { 
             String[] name = { "user_id", "login", "fullname", "date_of_birth", "phone_number", "email" };
             String sql = "Select * from User where 1=1 ";

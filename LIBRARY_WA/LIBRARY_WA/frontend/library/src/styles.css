@@ -3,6 +3,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css?family=Charmonman|Josefin+Sans|K2D|Lato");
 
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+
 .form-control {
   display: block;
   width: 100%;
