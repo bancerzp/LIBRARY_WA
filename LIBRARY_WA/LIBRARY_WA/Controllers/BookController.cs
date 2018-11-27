@@ -94,6 +94,22 @@ namespace LIBRARY_WA.Data
             return CreatedAtAction("AddBook", new { id = book.book_id }, book);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddVolume([FromRoute] String id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Volume volume = new Volume();
+            volume.is_free = true;
+            volume.book_id = Convert.ToInt32(id);
+            _context.Volume.Add(volume);
+            _context.SaveChanges();
+            return CreatedAtAction("AddVolume", new { id = volume.volume_id }, volume);
+        }
+
         // DELETE: api/Books/5
         [HttpDelete("{id}")]
         //   [Authorize(Roles = "l")]

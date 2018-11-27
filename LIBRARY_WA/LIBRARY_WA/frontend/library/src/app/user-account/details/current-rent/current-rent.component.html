@@ -14,6 +14,11 @@
       <td>{{ rentInfo.volume_id }}</td>
       <td>{{ rentInfo.start_date }}</td>
       <td>{{ rentInfo.expire_date  }}</td>
+      <td *ngIf="user_type=='l'">
+        <a  (click)="ReturnBook({{rentInfo.rent_id}})" class='btn btn-info m-r-5px'>
+          <span class='glyphicon glyphicon-edit'></span> Wypożycz.
+        </a>
+      </td>
     </tr>
   </tbody>
 </table>

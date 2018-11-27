@@ -18,8 +18,7 @@ import { User } from '../../../_models/User';
   ]
 })
 export class UserPIModule {
-  n: Int32Array = 0;
-  user = new User(this.n, "", "", "", "", "", "", "", "", "");
+  user = new User(null, "", "", "", "", null, "", "", "", true);
   updateUserForm: FormGroup;
   submitted: boolean;
   constructor(

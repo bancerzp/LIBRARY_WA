@@ -121,7 +121,7 @@ export class SearchBookComponent implements OnInit {
     return this.bookService.GetLanguage().subscribe((languages: any[]) => this.language = languages);
   };
 
-  Reserve() {
+  Reserve(id) {
     
   }
 
@@ -129,12 +129,14 @@ export class SearchBookComponent implements OnInit {
 
   }
 
-  DeleteBook() {
+  DeleteBook(id) {
 
   }
 
-  AddVolume() {
-
+  AddVolume(id) {
+    this.bookService.AddVolume(id).subscribe(
+      (data: Book) => { this.id = Number(data.book_id), alert("Książka dodana poprawnie " + this.id) },
+      Error => { alert("Błąd dodawania książki") });
   }
 
   readOneProduct(id) { }

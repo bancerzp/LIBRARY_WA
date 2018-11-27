@@ -1,1 +1,0 @@
-:Select * from Book where is_available=true and book_id='1'

@@ -15,14 +15,15 @@ import { UserService } from '../../../_services/user.service';
 })
 export class BookReservationModule {
   reservation: Reservation[];
-  column = ["Id. rezerwacji", "ISBN", "Tytuł", "Numer egzemplarza", "Data rezerwacji", "Rezerwacja do:", "Czy gotowe do wypożyczenia?","Anuluj rezerwację"];
-
+  column = ["Id. rezerwacji", "ISBN", "Tytuł", "Numer egzemplarza", "Data rezerwacji", "Rezerwacja do:", "Czy gotowe do wypożyczenia?","Akcje"];
+  user_type: string;
 
   constructor(
     private userService: UserService) {
   }
 
   ngOnInit() {
+    this.user_type = localStorage.getItem("user_type");
     this.GetReservation();
   }
 
