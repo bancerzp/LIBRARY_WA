@@ -1,10 +1,10 @@
 export class Volume {
-  volume_id: String;
-  book_id: String;
+  volume_id: Number;
+  book_id: Number;
   is_free: boolean;
 
-  constructor(volume_id: String,
-    book_id: String,
+  constructor(volume_id: Number,
+    book_id: Number,
     is_free: boolean) {
   }
 }

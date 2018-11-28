@@ -53,18 +53,6 @@ export class SearchBookComponent implements OnInit {
     this.newClicked.emit();
   }
   */
-  areBooks() {
-    return this.bookData.length != 0;
-  }
-
-  //ngOnInit() {
-  //  this.BookService.readProducts()
-  //    .subscribe(products =>
-  //      this.bookData = products['records']
-  //    );
- // }
-
-  IsInputEmpty() {}
 
   ngOnInit() {
    // this.recordDeleted.emit("Wydarzenie wyemitowane");
@@ -85,26 +73,30 @@ export class SearchBookComponent implements OnInit {
     author_fullname: [''],
     year: [''],
     language: '',
-    type: '',
+    type: ''
     });
     this.SearchBook();
   }
 
   SearchBook() {
-    this.submitted = true;
-   
+    
+    this.submitted = false;
+    this.values = [];
+
     Object.keys(this.searchBookForm.controls).forEach((name) => {
       var s = this.searchBookForm.controls[name].value;
-      if (s.replace(" ", "").replace("'","").length == 0) {
+      if (s.replace(" ", "").replace("'", "").length == 0) {
         this.values.push('%');
       }
       else {
-        this.values.push(s.replace("'",""));
+        this.values.push(s.replace("'", ""));
       }
+     
     });
-  //  var book = new Book(this.values[0], this.values[1], this.values[2], this.values[3], this.values[4], this.values[5], this.values[6], this.values[7],true)
+    this.submitted = true;
 
-    return this.bookService.SearchBook(this.values).subscribe((data:Book[]) => this.bookData=data)
+    return this.bookService.SearchBook(this.values).subscribe((data: Book[]) => this.bookData = data)
+    
   }
 
   clearForm() {
@@ -114,6 +106,7 @@ export class SearchBookComponent implements OnInit {
   GetAuthor() {
     return this.bookService.GetAuthor().subscribe((authors: any[]) => this.author = authors);
   }
+
   GetBookType() {
     return this.bookService.GetBookType().subscribe((types: any[]) => this.bookType=types);
   };
@@ -137,9 +130,11 @@ export class SearchBookComponent implements OnInit {
   }
 
   RemoveBook(id) {
+    this.submitted = false;
     this.bookService.RemoveBook(id).subscribe(this.SearchBook);
-    this.bookData.splice(this.bookData.indexOf(this.bookData.find(book => book.book_id != id)));
-    
+    this.bookData.splice(this.bookData.indexOf(this.bookData.find(book => book.book_id = id)), 1);
+    this.SearchBook();
+    this.submitted = true;
   }
 
   AddVolume(id) {
@@ -147,11 +142,7 @@ export class SearchBookComponent implements OnInit {
       (volume: Volume) => { alert("Egzemplarz dodany poprawnie: "+volume.volume_id) },
       Error => { alert("Błąd dodawania książki" +Error) });
   }
-
-  readOneProduct(id) {
-    this.bookService.AddVolume(id).subscribe(
-  }
-
+  
 
   rentBook(bookId,userId) {
 

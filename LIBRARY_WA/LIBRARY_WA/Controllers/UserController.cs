@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LIBRARY_WA.Models;
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
-using System.Configuration;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 
@@ -24,15 +22,13 @@ namespace LIBRARY_WA.Controllers
     {
         public IConfiguration Configuration { get; }
 
-        // private readonly UserContext _context;
+       
         private readonly LibraryContext _context;
 
         public UserController(LibraryContext context, IConfiguration configuration)
         {
             Configuration = configuration;
-
-            this._context = context;//.UserContext;
-         //   this.context = context;
+            this._context = context;
         }
 
 
@@ -41,9 +37,7 @@ namespace LIBRARY_WA.Controllers
         public IEnumerable<User> IfEmailExists([FromRoute] String email)
         {
             String email2 = email.Replace("'", "");
-
             return _context.User.Where(u => u.email == email2);
-
         }
 
         [HttpGet("{login}")]
@@ -94,20 +88,35 @@ namespace LIBRARY_WA.Controllers
 
 
         [HttpGet("{id}"), Authorize]
-        public IEnumerable<User> GetUserById([FromRoute] Int32 id)
+        public async Task<IActionResult> GetUserById([FromRoute] Int32 id)
         {
-            //rom p in context.Professors
-            // select p.Name).ToList()
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            return _context.User.Where(a => a.user_Id == id);
+            var user = await _context.User.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
         }
 
 
 
-        [HttpPost, Authorize]
-        public IEnumerable<User> SearchUser([FromBody] String[] search)
+        [HttpPost, Authorize(Roles = "l")]
+        public async Task<IActionResult> SearchUser([FromBody] String[] search)
         {
-            String[] name = { "user_id", "login", "fullname", "date_of_birth", "phone_number", "email" };
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+           
+            String[] name = { "user_id", "fullname", "email", "login", "phone_number" };
             String sql = "Select * from User where 1=1 ";
             for (int i = 0; i < search.Length; i++)
             {
@@ -123,14 +132,13 @@ namespace LIBRARY_WA.Controllers
                     }
                 }
             }
-            return _context.User.FromSql(sql);
 
+            var user =  _context.User.FromSql(sql);
 
+            return Ok(user);
         }
 
-
-
-        // POST: api/User
+      
         [HttpPost,Authorize(Roles ="l")]
         public async Task<IActionResult> AddUser([FromBody] User user)
         {
@@ -138,7 +146,7 @@ namespace LIBRARY_WA.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            
             _context.User.Add(user);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetUser", new { id = user.user_Id }, user);
@@ -146,54 +154,29 @@ namespace LIBRARY_WA.Controllers
 
 
       
-
+        // nie zrobione
         //----------------------userdata
       
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public IEnumerable<Rent> GetRent()
         {
             return _context.Rent;
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public IEnumerable<Reservation> GetReservation()
         {
             return _context.Reservation;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public IEnumerable<Renth> GetRenth()
         {
             return _context.Renth;
         }
 
 
-        // GET: api/User/5
-        [HttpGet("{id}")]
-        public  IEnumerable<User> GetUser([FromRoute] string id)
-        {
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-
-            //var user = await _context.User.FindAsync(id);
-
-            //if (user == null)
-            //{
-            //    return NotFound();
-            //}
-            return _context.User;
-        }
-
-
-
-
-
-
-
-
-
-
+//------------NIEPOTRZEBNE
+        
         //----------------------------
         // PUT: api/User/5
         [HttpPut("{id}")]

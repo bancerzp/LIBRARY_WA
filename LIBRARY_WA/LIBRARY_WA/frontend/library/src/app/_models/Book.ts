@@ -1,6 +1,6 @@
 export class Book {
 
-  book_id: String;
+  book_id: Number;
   title: String;
   isbn: String;
   author_fullname: String;
@@ -11,7 +11,7 @@ export class Book {
   is_available: boolean;
     
   constructor(
-    book_id: String,
+    book_id: Number,
     title: String,
     isbn: String,
     author_fullname: String,

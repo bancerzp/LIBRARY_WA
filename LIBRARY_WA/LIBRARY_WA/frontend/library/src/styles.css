@@ -195,9 +195,10 @@ h1 {
   border-bottom-style: groove;
   box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
   margin: auto;
-  text-align:center;
+  text-align: center;
   overflow: hidden;
   width: 80%;
+  white-space: nowrap;
 }
 
 tr :hover {

@@ -1,10 +1,10 @@
 export class Rent {
-  rent_id: Int32Array;
-  user_id: Int32Array;
-  book_id: Int32Array;
+  rent_id: Number;
+  user_id: Number;
+  book_id: Number;
   title: String;
   isbn: String;
-  volume_id: Int32Array;
+  volume_id: Number;
   start_date: Date;
   expire_date: Date;
 }

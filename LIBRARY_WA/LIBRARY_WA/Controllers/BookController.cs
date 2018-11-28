@@ -38,6 +38,7 @@ namespace LIBRARY_WA.Data
             return _context.Book.Select(a => a.type).Distinct().ToList();
         }
 
+        [HttpGet]
         public List<String> GetLanguage()
         {
             return _context.Book.Select(a => a.language).Distinct().ToList();
@@ -49,14 +50,19 @@ namespace LIBRARY_WA.Data
             return _context.Book.Where(a => (a.isbn == isbn) ); //&& (a.is_available == true)
         }
 
-        // GET: api/Books/5
-        [HttpPost,Authorize]//"{book_id}/{ISBN}/{title}/{author_fullname}/{year}/{language}/{type}")]
-        public IEnumerable<Book> SearchBook([FromBody] String[] search)
+        
+        [HttpPost]
+        public async Task<IActionResult> SearchBook([FromBody] String[] search)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             //  search.
             //FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
             //BinaryWriter w = new BinaryWriter(fs);
-            String[] name = { "book_id", "title", "ISBN", "author_fullname", "year", "language", "type" };
+            String[] name = { "book_id", "ISBN", "title", "author_fullname", "year", "language", "type" };
             String sql = "Select * from Book where is_available=true ";
             for (int i = 0; i < search.Length; i++)
             {
@@ -66,16 +72,16 @@ namespace LIBRARY_WA.Data
                 }
              
             }
+            var book = _context.Book.FromSql(sql);
 
+            return Ok(book);
             //w.Write(sql);
             //w.Close();
-
-            return _context.Book.FromSql(sql);
+            
         }
 
 
-        [HttpPost]
-        //  [Authorize(Roles = "l")]
+        [HttpPost,Authorize(Roles = "l")]
         public async Task<IActionResult> AddBook([FromBody] Book book)
         {
             if (!ModelState.IsValid)
@@ -94,7 +100,7 @@ namespace LIBRARY_WA.Data
             return CreatedAtAction("AddBook", new { id = book.book_id }, book);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "l")]
         public async Task<IActionResult> AddVolume([FromRoute] String id)
         {
           
@@ -106,9 +112,8 @@ namespace LIBRARY_WA.Data
             return CreatedAtAction("AddVolume", new { id = volume.volume_id }, volume);
         }
 
-        // DELETE: api/Books/5
-        [HttpDelete("{id}")]
-        //   [Authorize(Roles = "l")]
+        
+        [HttpDelete("{id}"),Authorize(Roles = "l")]
         public async Task<IActionResult> RemoveBook([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -144,7 +149,7 @@ namespace LIBRARY_WA.Data
         //-----------------------
        
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "l")]
         public async Task<IActionResult> RemoveVolume([FromRoute] int volume_id)
         {
             //jeśli ma wypożyczone książki to komunikat, że nie można usunąć użytkownika bo ma nie wszystkie książki oddane, 
@@ -171,7 +176,7 @@ namespace LIBRARY_WA.Data
             return Ok(volume);
         }
 
-        [HttpPut]
+        [HttpPut, Authorize(Roles = "l,r")]
         public async Task<IActionResult> ReserveBook([FromBody] String[] data)
         {
 
@@ -215,7 +220,7 @@ namespace LIBRARY_WA.Data
             return Ok(reservation);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "l")]
         public async Task<IActionResult> RentBook([FromRoute] int reservationId)
         {
 

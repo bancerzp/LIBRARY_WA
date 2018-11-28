@@ -1,6 +1,6 @@
 export class User {
 
-  user_id: Int32Array;
+  user_id: Number;
   login: String;
   password: String;
   user_type: String;
@@ -12,7 +12,7 @@ export class User {
   is_valid: boolean;
 
   constructor(
-    user_id: Int32Array,
+    user_id: Number,
     login: String,
     password: String,
     user_type: String,

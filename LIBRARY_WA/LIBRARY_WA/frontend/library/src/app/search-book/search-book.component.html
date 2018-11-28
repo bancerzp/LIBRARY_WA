@@ -3,7 +3,7 @@
 </p>
 
 <h2>Wyszukaj zasób</h2>
-<form [formGroup]="searchBookForm">
+<form [formGroup]="searchBookForm" (ngSubmit)="SearchBook()">
   <div class="form-group">
     <label for="book_id">Id. książki</label>
     <input type="text" formControlName="book_id" class="form-control" />
@@ -21,7 +21,7 @@
 
   <div class="form-group">
     <label for="author_fullname">Imię i nazwisko autora</label>
-    <input type="text" list="author" formControlName="author_fullname" class="form-control" [(ngModel)]="book.author_fullname" />
+    <input type="text" list="author" formControlName="author_fullname" class="form-control" />
     <datalist id="author">
       <option *ngFor="let author of author" value="{{author}}">{{author}}</option>
     </datalist>
@@ -34,7 +34,7 @@
 
   <div class="form-group">
     <label for="language">Język</label>
-    <input type="text" list="language" formControlName="language" class="form-control" [(ngModel)]="book.language" />
+    <input type="text" list="language" formControlName="language" class="form-control"  />
     <datalist id="language">
       <option *ngFor="let language of language" value="{{language}}">{{language}}</option>
     </datalist>
@@ -42,17 +42,17 @@
 
   <div class="form-group">
     <label for="type">Typ</label>
-    <input type="text" list="bookType" formControlName="type" class="form-control" [(ngModel)]="book.type" />
+    <input type="text" list="bookType" formControlName="type" class="form-control" />
     <datalist id="bookType">
       <option *ngFor="let bookTyp of bookType" value="{{bookTyp}}">{{bookTyp}}</option>
     </datalist>
   </div>
 
   <div class="form-group">
-    <button [disabled]="loading " class="btn btn-primary" (ngSubmit)="SearchBook()">Wyszukaj</button>
+    <button [disabled]="loading " class="btn btn-primary" type="submit">Wyszukaj</button>
   </div>
 </form>
-<button [disabled]="loading " class="btn btn-primary" ng-Click="SearchBook()">Wyczyść</button>
+
 
 
 
@@ -73,7 +73,7 @@
       <td>{{ bookInfo.year }}</td>
       <td>{{ bookInfo.language  }}</td>
       <td>{{ bookInfo.type  }}</td>
-      <!-- read one product button -->
+
       <td *ngIf="userType=='r'">
         <a class='btn btn-info m-r-5px' (click)="ReserveBookReader(bookInfo.book_id)">
           <span class='glyphicon glyphicon-edit'></span> Zarezerwuj
@@ -83,7 +83,7 @@
         <button class='btn btn-info m-r-5px' (click)="ReserveBookLibrarian(bookInfo.book_id,inputValue)" [disabled]="!empty">
           <span class='glyphicon glyphicon-check'></span> Zarezerwuj
         </button>
-        <a (click)="UpdateBook(bookInfo.book_id)" class='btn btn-info m-r-5px'>
+        <a [routerLink]="['app-edit-book']" [queryParams]="{book_id: bookInfo.book_id}" class='btn btn-info m-r-5px'>
           <span class='glyphicon glyphicon-edit'></span> Edytuj
         </a>
         <a (click)="RemoveBook(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
@@ -94,9 +94,12 @@
         </a>
       </td>
       <td *ngIf="userType=='l'" ng-model="inputValue">
-          <input  #user/>
+        <input #user />
       </td>
     </tr>
   </tbody>
 </table>
+
+
+<!--(click)="UpdateBook(bookInfo.book_id)"-->
 

@@ -34,14 +34,18 @@ export class SearchUserComponent implements OnInit {
   // private alertService: AlertService) { }*/
 
   ngOnInit() {
+    this.submitted = false;
     this.userType = localStorage.getItem("user_type");
     this.submitted = false;
+    
     this.searchUserForm = this.formBuilder.group({
       userId: '',
       user_fullname: '',
       email: ['', Validators.pattern("/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i")],
-      login: ''
+      login: '',
+      phone_number: ''
     });
+   // this.SearchUser();
   }
   /*
   // reset login status
@@ -54,23 +58,23 @@ export class SearchUserComponent implements OnInit {
   // convenience getter for easy access to form fields
   // get f() { return this.loginForm.controls; }
 
-  searchUser() {
+  SearchUser() {
  
+    this.submitted = false;
+    this.values = [];
+
+      Object.keys(this.searchUserForm.controls).forEach((name) => {
+        var s = this.searchUserForm.controls[name].value;
+        if (s.replace(" ", "").replace("'", "").length == 0) {
+          this.values.push('%');
+        }
+        else {
+          this.values.push(s.replace("'", ""));
+        }
+      });
     this.submitted = true;
-    var values;
 
-    Object.keys(this.searchUserForm.controls).forEach((name) => {
-      var s = this.searchUserForm.controls[name].value;
-      if (s.replace(" ", "").replace("'", "").length == 0) {
-        this.values.push('%');
-      }
-      else {
-        this.values.push(s.replace("'", ""));
-      }
-    });
-
-
-    return this.userService.SearchUser(values).subscribe((data: User[]) => this.userData = data)
+    return this.userService.SearchUser(this.values).subscribe((data: User[]) => this.userData = data)
 
 
 

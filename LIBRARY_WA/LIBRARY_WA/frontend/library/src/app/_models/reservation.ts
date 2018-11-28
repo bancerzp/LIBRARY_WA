@@ -1,13 +1,13 @@
 export class Reservation {
 
-  reservation_id: Int32Array;
-  book_id: Int32Array;
-  user_id: Int32Array;
+  reservation_id: Number;
+  book_id: Number;
+  user_id: Number;
   isbn: String;
   title: String;
-  volume_id: Int32Array;
+  volume_id: Number;
   start_date: Date;
   expire_date: Date;
-  queue: Int32Array;
+  queue: Number;
   is_active: Boolean;
 }
