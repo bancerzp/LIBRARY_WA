@@ -9,8 +9,9 @@ namespace LIBRARY_WA.Models
 {
     public class Reservation
     {
-        public Reservation(String title,string isbn, int book_id, int volume_id, DateTime start_date, DateTime expire_date, int queue,Boolean is_active)
+        public Reservation(int user_id,String title,string isbn, int book_id, int volume_id, DateTime start_date, DateTime expire_date, int queue,Boolean is_active)
         {
+            this.user_id = user_id;
             this.isbn = isbn;
             this.book_id = book_id;
             this.volume_id = volume_id;

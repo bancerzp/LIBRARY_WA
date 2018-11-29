@@ -6,11 +6,12 @@ import { map } from 'rxjs/operators';
 import { Book } from '../_models/book';
 import { Router } from '@angular/router';
 import { ComboBoxComponent } from 'ng2-combobox';
+import { AppComponent } from '../app.component';
 @Component({
   selector: 'app-add-book',
   templateUrl: './add-book.component.html',
   styleUrls: ['./add-book.component.css'],
-  providers: [BookService]
+  providers: [BookService, AppComponent]
 })
 export class AddBookComponent implements OnInit {
   addBookForm: FormGroup;
@@ -24,7 +25,8 @@ export class AddBookComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private http: Http,
-    private bookService: BookService   ) { }
+    private bookService: BookService,
+    private app: AppComponent) { }
 
   ngOnInit() {
     this.submitted = false;
@@ -39,7 +41,7 @@ export class AddBookComponent implements OnInit {
       title: ['', [Validators.required, Validators.maxLength(50)]],
       author_fullname: ['', [Validators.required, Validators.maxLength(100)]],
       year: ['', [Validators.required, Validators.pattern("[1-9][0-9]{3}")]],
-      language: [Validators.required, Validators.maxLength(20)],
+      language:['', [Validators.required, Validators.maxLength(20)]],
       type: ['', [Validators.required, Validators.maxLength(30)]],
       description: ['', [Validators.maxLength(300)]],
       is_available:true,
@@ -47,11 +49,13 @@ export class AddBookComponent implements OnInit {
   }
 
   AddBook() {
+    if (this.app.IsExpired())
+      return;
     var m = this.book;
     this.id = 0;
     this.submitted = true;
     var added=this.bookService.AddBook(m).subscribe(
-      (data: Book) => { this.id = Number(data.book_id), alert("Książka dodana poprawnie " +this.id)},
+      (data: Book) => { this.id = Number(data.book_id), alert("Książka dodana poprawnie " + this.id); this.ngOnInit();},
       Error => { alert("Błąd dodawania książki") });
 
 
@@ -60,7 +64,7 @@ export class AddBookComponent implements OnInit {
       //    .subscribe(user =>
     //    this.user = user['records']);
     this.submitted = false;
-    this.ngOnInit();
+    
   
     }
 

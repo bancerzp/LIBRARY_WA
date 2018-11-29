@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 import { User } from '../../_models/User';
 import { UserService } from '../../_services/user.service';
 import { map } from 'rxjs/operators';
+import { AppComponent } from '../../app.component';
 
 //import { createConnection } from 'net';
 //import { createConnection } from 'mysql';
@@ -11,7 +12,8 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
-  styles: ['./add-user.component.css']
+  styles: ['./add-user.component.css'],
+  providers: [AppComponent]
 
 })
 export class AddUserComponent implements OnInit {
@@ -27,7 +29,8 @@ export class AddUserComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private http: Http,
-    private userService: UserService) { }
+    private userService: UserService,
+    private app: AppComponent,) { }
 
   createForm() {
     
@@ -56,6 +59,8 @@ export class AddUserComponent implements OnInit {
   }
   
   AddUser() {
+    if (this.app.IsExpired())
+      return;
   //  var result=this.userService.ifUserExists(this.user);
    
   //  if (this.addUserForm.invalid) {

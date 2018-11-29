@@ -169,10 +169,6 @@ h1 {
   font-size: 170%;
 }
 
-  .tileMenu:hover {
-    background-color: darksalmon;
-  }
-
 .btn-login {
   width: 200px;
   height: 20%;
@@ -188,7 +184,7 @@ h1 {
   padding-left: 30%
 }
 
-.searchResult, .renthTable, .rentTable, .reservationTable {
+.searchResult {
   border: 1px solid;
   border-radius: 10px;
   border-color: brown;
@@ -200,6 +196,33 @@ h1 {
   width: 80%;
   white-space: nowrap;
 }
+
+.searchUserResult {
+  border: 1px solid;
+  border-radius: 10px;
+  border-color: brown;
+  border-bottom-style: groove;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+  margin: auto;
+  text-align: center;
+  overflow: hidden;
+  width: 110%;
+  white-space: nowrap;
+}
+
+.renthTable, .rentTable, .reservationTable {
+  border: 1px solid;
+  border-radius: 10px;
+  border-color: brown;
+  border-bottom-style: groove;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+  margin: auto;
+  text-align: center;
+  overflow: hidden;
+  width: 110%;
+  white-space: nowrap;
+}
+
 
 tr :hover {
   background-color: grey;
@@ -214,6 +237,10 @@ table {
 td, th {
   color: blue;
   padding: 10px;
+  word-wrap: break-word;
+  column-width:auto;
+  max-width: 70px;
+  border-bottom: 1px solid antiquewhite;
 }
 
 td {

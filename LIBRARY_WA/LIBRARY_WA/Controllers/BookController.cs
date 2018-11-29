@@ -108,16 +108,16 @@ namespace LIBRARY_WA.Data
                     {
                         sql += "and " + name[i] + "='" + search[i] + "'";
                     }
-                    }
-
                 }
-                var book = _context.Book.FromSql(sql);
-
-                return Ok(book);
-                //w.Write(sql);
-                //w.Close();
 
             }
+            var book = _context.Book.FromSql(sql);
+
+            return Ok(book);
+            //w.Write(sql);
+            //w.Close();
+
+        }
 
 
         [HttpDelete("{id}"), Authorize(Roles = "l")]
@@ -156,17 +156,17 @@ namespace LIBRARY_WA.Data
 
 
         //Volume function
-        [HttpPost("{id}"), Authorize(Roles = "l")]
-        public async Task<IActionResult> AddVolume([FromRoute] int id) //
+        [HttpPost("{id}")]//, Authorize(Roles = "l")]
+        public async Task<IActionResult> AddVolume([FromRoute] int id)
         {
 
-              Volume volume = new Volume();
-              volume.is_free = true;
-               volume.book_id = Convert.ToInt32(id);
-               _context.Volume.Add(volume);
-              await _context.SaveChangesAsync();
-             return CreatedAtAction("AddVolume", new { id = volume.volume_id }, volume);
-           // return Ok(2);
+            Volume volume = new Volume();
+            volume.is_free = true;
+            volume.book_id = id;
+            _context.Volume.Add(volume);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("AddVolume", new { id = volume.volume_id }, volume);
+            // return Ok(2);
         }
 
         [HttpGet]
@@ -219,7 +219,7 @@ namespace LIBRARY_WA.Data
 
 
         [HttpPut, Authorize(Roles = "l,r")]
-        public async Task<IActionResult> ReserveBook([FromBody] String[] data)
+        public async Task<IActionResult> ReserveBook([FromBody] int[] data)
         {
 
             if (!ModelState.IsValid)
@@ -227,35 +227,46 @@ namespace LIBRARY_WA.Data
                 return BadRequest(ModelState);
             }
 
-            if (_context.Book.Where(a => a.book_id.Equals(data[0])).Count() == 0)
+            if (_context.Book.Where(a => a.book_id == data[0]).Count() == 0)
             {
                 return NotFound("Nie znaleziono książki o podanym id");
             }
 
-            if (_context.User.Where(a => a.user_id.Equals(data[1])).Count() == 0)
+            if (_context.User.Where(a => a.user_id == (data[1])).Count() == 0)
             {
                 return NotFound("Nie znaleziono użytkownika o podanym id");
             }
 
-            Book book = _context.Book.Where(a => a.book_id.Equals(data[0])).FirstOrDefault();
-            Int32 volume_id = _context.Volume.Where(a => a.book_id == Convert.ToInt32(data[0]) && a.is_free == true).FirstOrDefault().volume_id;
+            if (_context.Volume.Where(a => a.book_id == data[0]).Count() == 0)
+            {
+                return NotFound("Książka nie ma żadnych egzemplarzy!");
+            }
+
+            Book book = _context.Book.Where(a => a.book_id == (data[0])).FirstOrDefault();
+            int volume_id = _context.Volume.Where(a => a.book_id == data[0]).FirstOrDefault().volume_id;
             DateTime start_date = DateTime.Now;
             DateTime expire_date;
-            Int32 queue;
+            int queue;
             Boolean is_active = true;
-            if (_context.Volume.Where(a => a.book_id == Convert.ToInt32(data[0]) && a.is_free == true).Count() == 0)
+            if (_context.Volume.Where(a => a.book_id == data[0] && a.is_free == true).Count() == 0)
             {
-                queue = Convert.ToInt32(_context.Reservation.FromSql("Select queue from reservation where book_id='" + data[0] + "' order by queue desc;")) + 1;
+                queue = _context.Reservation.Where(a => a.book_id == data[0]).OrderByDescending(a => a.queue).FirstOrDefault().queue + 1;
                 is_active = false;
                 expire_date = DateTime.Now;
+
             }
             else
             {
+                volume_id = _context.Volume.Where(a => a.book_id == Convert.ToInt32(data[0]) && a.is_free == true).FirstOrDefault().volume_id;
                 expire_date = DateTime.Now.AddDays(14);
-                _context.Volume.Where(a => a.book_id == Convert.ToInt32(data[0]) && a.is_free == true).FirstOrDefault().is_free = false;
+                _context.Volume.Where(a => a.volume_id == volume_id).FirstOrDefault().is_free = false;
                 queue = 0;
             }
-            Reservation reservation = new Reservation(book.title, book.isbn, book.book_id, volume_id, start_date, expire_date, queue, is_active);
+            //    FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            //    BinaryWriter w = new BinaryWriter(fs);
+            //   w.Write(data[1]+"   user    "+ book.title + "    title    " + book.isbn + "  isbn     " + book.book_id + "  book_id    " + volume_id + "  volume     " + start_date + "   start    " + expire_date + "  stop     " + queue + "  kolejka     " + is_active);
+            //   w.Close();
+            Reservation reservation = new Reservation(data[1], book.title, book.isbn, book.book_id, volume_id, start_date, expire_date, queue, is_active);
             await _context.Reservation.AddAsync(reservation);
             await _context.SaveChangesAsync();
 
@@ -276,40 +287,108 @@ namespace LIBRARY_WA.Data
             {
                 return BadRequest("Nie ma takiej rezerwacji");
             }
+
             Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservationId).FirstOrDefault();
             if (_context.Volume.Where(a => a.is_free == true).Count() == 0)
             {
                 return BadRequest(ModelState);
             }
-            Int32 volume_id = _context.Volume.Where(a => a.is_free == true).FirstOrDefault().volume_id;
+            int volume_id = _context.Volume.Where(a => a.is_free == true).FirstOrDefault().volume_id;
+            //zmień is free na false
+            _context.Volume.Where(a => a.is_free == true).FirstOrDefault().is_free = false;
             Rent rent = new Rent(reservation.user_id, reservation.book_id, reservation.title, reservation.isbn, volume_id, DateTime.Now, DateTime.Now.AddMonths(1));
             await _context.Rent.AddAsync(rent);
             await _context.SaveChangesAsync();
             return Ok();
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> ReturnBook([FromRoute] int rent_id)
-        //{
-        //    return this.http.post(this.accessPointUrl + "/ReturnBook/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
-        //}
+        [HttpPost("{id}"), Authorize(Roles = "l")]
+        public async Task<IActionResult> ReturnBook([FromRoute] int rent_id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> CancelReservation([FromRoute] int reservation_id)
-        //{
+            if (_context.Rent.Where(a => a.rent_id == rent_id).Count() == 0)
+            {
+                return BadRequest("Nie ma takiego wypożyczenia");
+            }
+
+            Rent rent = _context.Rent.Where(a => a.rent_id == rent_id).FirstOrDefault();
+            Volume volume = _context.Volume.Where(a => a.volume_id == rent.volume_id).FirstOrDefault();
+            Reservation[] reservations = _context.Reservation.Where(a => a.book_id == rent.book_id).ToArray();
+            Renth renth = new Renth(rent.user_id, rent.title, rent.isbn, rent.book_id, rent.volume_id, rent.start_date, DateTime.Now);
+            //wstaw do historii rezerwacji
+            await _context.Renth.AddAsync(renth);
+            await _context.SaveChangesAsync();
+
+            //z rezerwacji pozmieniać numerki, który w kolejce-->czy gotowa do odebrania na tak i zmienić queue
+            // this.expire_date = expire_date; data dziiejsza plus tydzien
+            //this.queue = queue;  -1
+            //this.is_active = is_active;
+            foreach (Reservation reservation in reservations)
+            {
+                reservation.queue = reservation.queue - 1;
+                if (reservation.queue == 0)
+                {
+                    reservation.is_active = true;
+                    reservation.expire_date = DateTime.Now.AddDays(8);
+                    reservation.volume_id = volume.volume_id;
+                }
+            }
+
+            //usuń z rent
+            _context.Rent.Remove(rent);
+
+            await _context.SaveChangesAsync();
+            return Ok("Książka została poprawnie zwrócona");
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> CancelReservation([FromRoute] int reservation_id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (_context.Reservation.Where(a => a.reservation_id == reservation_id).Count() == 0)
+            {
+                return BadRequest("Nie ma takiej rezerwacji");
+            }
+
+
+            Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservation_id).FirstOrDefault();
+            Reservation[] resToChange = _context.Reservation.Where(a => a.book_id == reservation.book_id && a.queue > reservation.queue).ToArray();
+            foreach (Reservation res in resToChange)
+            {
+                res.queue = res.queue - 1;
+                if (res.queue == 0)
+                {
+                    res.is_active = true;
+                    res.expire_date = DateTime.Now.AddDays(8);
+                    res.volume_id = reservation.volume_id;
+                }
+            }
+            _context.Reservation.Remove(reservation);
+            await _context.SaveChangesAsync();
+            return Ok("Rezerwacja została usunięta");
+        }
+     
         //    return this.http.delete(this.accessPointUrl + "/CancelReservation/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
         //}
-        ////-----------------------
+
+
+        //-----------------------
 
 
         private bool BookExists(int id)
         {
             return _context.Book.Any(e => e.book_id == id);
         }
-
-
-
-
+        
         //  [Authorize(Roles = "l")]
         //wydanie książki użytkownikowi
         //jeśli książka niedostępna to zarezerwuj, jeśli dostępna to wypożycz

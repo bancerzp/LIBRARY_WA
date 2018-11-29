@@ -77,7 +77,7 @@ namespace LIBRARY_WA.Controllers
                 );
 
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-                return Ok(new { Token = tokenString, id = user.user_id, user_type = user.user_Type, fullname = user.fullname });
+                return Ok(new { Token = tokenString, id = user.user_id, user_type = user.user_Type, fullname = user.fullname,expires=DateTime.Now.AddHours(5) });
             }
             else
             {
@@ -173,13 +173,33 @@ namespace LIBRARY_WA.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (_context.Rent.Where(a => a.user_id == id).Count() > 0)
+            {
+                return Ok("Nie można usunąć użytkownika , bo ma nieoddane książki!!");
+            }
+
             var user = await _context.User.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            _context.User.Remove(user);
+            Reservation[] reservation = _context.Reservation.Where(a => a.user_id == id).ToArray();
+            int[] bookId = reservation.Select(a => a.book_id).ToArray();
+
+            foreach(int book_id in bookId)
+            {
+                int usqueue = _context.Reservation.Where(a => a.user_id == id && a.book_id == book_id).First().queue;
+                Reservation[] r = _context.Reservation.Where(a => a.book_id == book_id && a.queue > usqueue).ToArray();
+                foreach(Reservation res in reservation)
+                {
+                    res.queue = res.queue - 1;
+                }
+                _context.Reservation.Remove(_context.Reservation.Where(a => a.user_id == id && a.book_id == book_id).First());
+                _context.SaveChanges();
+            }
+
+            user.is_valid=false;
             await _context.SaveChangesAsync();
 
             return Ok();

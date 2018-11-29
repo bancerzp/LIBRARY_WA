@@ -55,14 +55,17 @@ export class LoginComponent implements OnInit {
       let token = (<any>response).token;
       let user_id = (<any>response).id;
       let fullname = (<any>response).fullname;
-      let user_type = (<any>response).user_type
+      let user_type = (<any>response).user_type;
+      let expires = (<any>response).expires;
       localStorage.setItem("token", token);
       localStorage.setItem("user_id", user_id);
       localStorage.setItem("user_fullname", fullname);
+      localStorage.setItem("expires", expires);
       localStorage.setItem("user_type", user_type);
-        this.valid = true;
-        window.location.reload();
-        this.router.navigateByUrl('/')
+      
+      this.valid = true;
+      window.location.reload();
+      this.router.navigateByUrl('/')
         
     //   this.router.navigate["/"];
       }, err => {

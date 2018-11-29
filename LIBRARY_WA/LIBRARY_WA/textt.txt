@@ -1,0 +1,1 @@
+�1   user    Mały Książę    title    9788324050895  isbn     3  book_id    10  volume     29.11.2018 17:40:05   start    13.12.2018 17:40:05  stop     0  kolejka     True

@@ -23,19 +23,7 @@ export class UserAccountComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.GetUser();
-  //  this.GetRent();
-    this.GetReservation();
-  //  this.GetRenth();
+ 
   }
-
-  GetUser() {
-  }
-  
-  GetReservation() {
-
-  }
-
-  
-
+ 
 }

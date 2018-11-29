@@ -62,6 +62,9 @@
       <th *ngFor="let name of column">
         {{name}}
       </th>
+      <th style="column-width:200px">
+        Akcje
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -79,27 +82,26 @@
           <span class='glyphicon glyphicon-edit'></span> Zarezerwuj
         </a>
       </td>
-      <td *ngIf="userType=='l'">
-        <button class='btn btn-info m-r-5px' (click)="ReserveBookLibrarian(bookInfo.book_id,inputValue)" [disabled]="!empty">
-          <span class='glyphicon glyphicon-check'></span> Zarezerwuj
-        </button>
-        <a [routerLink]="['app-edit-book']" [queryParams]="{book_id: bookInfo.book_id}" class='btn btn-info m-r-5px'>
-          <span class='glyphicon glyphicon-edit'></span> Edytuj
-        </a>
-        <a (click)="RemoveBook(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
-          <span class='glyphicon glyphicon-remove'></span> Usuń
-        </a>
-        <a (click)="AddVolume(bookInfo.book_id)" class='btn btn-info m-r-5px'>
-          <span class='glyphicon glyphicon-plus'></span> Dodaj egzemplarz
-        </a>
-      </td>
-      <td *ngIf="userType=='l'" ng-model="inputValue">
-        <input #user />
+      <td *ngIf="userType=='l'" style="width:auto; min-width:150px">
+        <div class="button-group">
+          <button class='btn btn-info m-r-5px' (click)="ReserveBookLibrarian(bookInfo.book_id,user_id)" [disabled]="!user_id">
+            <span class='glyphicon glyphicon-check'></span> Zarezerwuj
+          </button>
+          <input #user style="width:80px" [(ngModel)]="user_id"/>
+
+        </div>
+        <div class="button-group">
+          <button (click)="EditBook(bookInfo.book_id)" class='btn btn-info m-r-5px'>
+            <span class='glyphicon glyphicon-edit'></span> Edytuj
+          </button>
+          <button (click)="RemoveBook(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
+            <span class='glyphicon glyphicon-remove'></span> Usuń
+          </button>
+          </div>
+          <button (click)="AddVolume(bookInfo.book_id)" class='btn btn-info m-r-5px'>
+            <span class='glyphicon glyphicon-plus'></span> Dodaj egzemplarz
+          </button>
       </td>
     </tr>
   </tbody>
 </table>
-
-
-<!--(click)="UpdateBook(bookInfo.book_id)"-->
-

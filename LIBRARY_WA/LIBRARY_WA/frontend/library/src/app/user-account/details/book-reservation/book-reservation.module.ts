@@ -2,10 +2,13 @@ import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Reservation } from '../../../_models/reservation';
 import { UserService } from '../../../_services/user.service';
+import { AppComponent } from '../../../app.component';
+import { BookService } from '../../../_services/book.service';
 
 @Component({
   selector: 'app-book-reservation',
-  templateUrl: './book-reservation.component.html'
+  templateUrl: './book-reservation.component.html',
+  providers: [AppComponent]
 })
 @NgModule({
   declarations: [],
@@ -15,23 +18,36 @@ import { UserService } from '../../../_services/user.service';
 })
 export class BookReservationModule {
   reservation: Reservation[];
-  column = ["Id. rezerwacji", "ISBN", "Tytuł", "Numer egzemplarza", "Data rezerwacji", "Rezerwacja do:", "Czy gotowe do wypożyczenia?","Akcje"];
+  column = ["Id. rezerwacji", "ISBN", "Tytuł", "Numer egzemplarza", "Data rezerwacji", "Rezerwacja do:", "Czy gotowe do wypożyczenia?"];
   user_type: string;
+  submitted: boolean;
 
   constructor(
-    private userService: UserService) {
+    private userService: UserService,
+    private app: AppComponent,
+    private bookService: BookService) {
   }
 
   ngOnInit() {
+    this.submitted = true;
     this.user_type = localStorage.getItem("user_type");
     this.GetReservation();
   }
 
   GetReservation() {
+    if (this.app.IsExpired())
+      return;
     this.userService.GetReservation(localStorage.getItem("user_id")).subscribe((reservations: any[]) => this.reservation = reservations);
   }
-  CancelReservation(reservationId, userId) {
 
+  CancelReservation(reservationId) {
+    if (this.app.IsExpired())
+      return;
+    this.submitted = false;
+    this.bookService.CancelReservation(reservationId).subscribe(data => {
+      this.reservation = this.reservation.filter(reservation => reservation.reservationId != reservationId);
+    },
+      Error => { alert(Error.message) });
+    this.submitted = true;
   }
- // @Input
 }

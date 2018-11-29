@@ -5,7 +5,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
 //services
-import { WorkoutService } from './_services/workout.service';
 import { UserService } from './_services/user.service';
 import { BookService } from './_services/book.service';
 
@@ -22,13 +21,12 @@ import { LoginComponent } from './login/login.component';
 import { UserAccountComponent } from './user-account/user-account.component';
 import { SearchUserComponent } from './user/search-user/search-user.component';
 import { SearchBookComponent } from './search-book/search-book.component';
-import { GridJoggingComponentComponent } from './grid-jogging-component/grid-jogging-component.component';
 import { UserComponent } from './user/user.component';
 import { BookReservationModule } from './user-account/details/book-reservation/book-reservation.module';
 import { BookRenthModule } from './user-account/details/book-renth/book-renth.module';
 import { CurrentRentModule } from './user-account/details/current-rent/current-rent.module';
 import { UserPIModule } from './user-account/details/user-pi/user-pi.module';
-import { EditBookComponent } from './search-book/edit-book/edit-book.module';
+import { EditBookComponent } from './edit-book/edit-book.module';
 
 export const appRoutes: Routes = [
 
@@ -63,12 +61,12 @@ export const appRoutes: Routes = [
   {
     path: 'app-search-book',
     component: SearchBookComponent,
-    children:[{
-      path: 'app-edit-book',
-      component: EditBookComponent
-    },]
+   
   },
-
+  {
+    path: 'app-edit-book',
+    component: EditBookComponent
+  },
   {
     path: 'app-home',
     component: HomeComponent
@@ -120,7 +118,6 @@ export const appRoutes: Routes = [
     SearchUserComponent,
     SearchBookComponent,
     CurrentRentModule,
-    GridJoggingComponentComponent,
     UserComponent,
     UserPIModule,
     BookReservationModule,
@@ -135,7 +132,7 @@ export const appRoutes: Routes = [
     HttpModule,
     HttpClientModule
   ],
-  providers: [WorkoutService,UserService, BookService],
+  providers: [UserService, BookService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

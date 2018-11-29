@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Rent } from '../../../_models/Rent';
 import { UserService } from '../../../_services/user.service';
 import { BookService } from '../../../_services/book.service';
+import { AppComponent } from '../../../app.component';
 
 @Component({
   selector: 'app-rent-borrow',
-  templateUrl: './current-rent.component.html'
+  templateUrl: './current-rent.component.html',
+  providers: [AppComponent]
 })
 
 @NgModule({
@@ -22,7 +24,8 @@ export class CurrentRentModule {
 
   constructor(
     private userService: UserService,
-    private bookService: BookService) {
+    private bookService: BookService,
+    private app: AppComponent,) {
   }
 
   ngOnInit() {
@@ -31,10 +34,17 @@ export class CurrentRentModule {
   }
 
   GetRent() {
+    if (this.app.IsExpired())
+      return;
     this.userService.GetRent(localStorage.getItem("user_id")).subscribe((rents: any[]) => this.rent = rents);
   }
   ReturnBook(rent_id) {
+    if (this.app.IsExpired())
+      return;
     //błędy wyłapać
-    this.bookService.ReturnBook(rent_id).subscribe();
+    this.bookService.ReturnBook(rent_id).subscribe(data => {
+      alert("Użytkownik został poprawnie usunięty")
+    },
+      Error => { alert("alle"+Error) });
   }
 }

@@ -5,10 +5,12 @@ import { Http } from '@angular/http';
 import { UserService } from '../../../_services/user.service';
 import { map } from 'rxjs/operators';
 import { User } from '../../../_models/User';
+import { AppComponent } from '../../../app.component';
 
 @Component({
   selector: 'app-user-pi',
-  templateUrl: './user-pi.component.html'
+  templateUrl: './user-pi.component.html',
+  providers: [AppComponent]
 })
 
 @NgModule({
@@ -25,7 +27,8 @@ export class UserPIModule {
   constructor(
     private formBuilder: FormBuilder,
     private http: Http,
-    private userService: UserService) { }
+    private userService: UserService,
+    private app: AppComponent,) { }
 
   createForm() {
     
@@ -50,14 +53,20 @@ export class UserPIModule {
   }
 
   UpdateUser() {
+    if (this.app.IsExpired())
+      return;
   //  this.userService.GetUserById(localStorage.getItem("user_id"));
   }
 
   GetUserById() {
+    if (this.app.IsExpired())
+      return;
     this.userService.GetUserById(localStorage.getItem("user_id")).subscribe((user: User) => this.user = user);
   }
 
   NewPassword() {
+    if (this.app.IsExpired())
+      return;
     this.reset = this.updateUserForm.get('password') == this.updateUserForm.get('password2');
   }
 

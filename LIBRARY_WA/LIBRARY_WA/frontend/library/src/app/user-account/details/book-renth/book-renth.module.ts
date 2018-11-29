@@ -2,10 +2,12 @@ import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Renth } from '../../../_models/Renth';
 import { UserService } from '../../../_services/user.service';
+import { AppComponent } from '../../../app.component';
 
 @Component({
   selector: 'app-book-renth',
-  templateUrl: './book-renth.component.html'
+  templateUrl: './book-renth.component.html',
+  providers: [AppComponent],
 })
 
 @NgModule({
@@ -20,7 +22,8 @@ export class BookRenthModule {
   name:String
 
   constructor(
-    private userService: UserService) {
+    private userService: UserService,
+    private app: AppComponent,) {
   }
 
   ngOnInit() {
@@ -28,6 +31,8 @@ export class BookRenthModule {
   }
 
   GetRenth() {
+    if (this.app.IsExpired())
+      return;
     this.name = localStorage.getItem("user_id");
     this.userService.GetRenth(this.name).subscribe((renths: any[]) => this.renth = renths);
   }

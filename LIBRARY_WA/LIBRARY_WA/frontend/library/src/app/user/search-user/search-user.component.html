@@ -32,12 +32,12 @@
 </form>
 
 
-<table class="searchResult w3-hoverable" *ngIf="submitted">
+<table class="searchUserResult w3-hoverable" *ngIf="submitted">
   <tr>
     <th *ngFor="let name of column">
       {{name}}
     </th>
-    <th *ngIf="userType=='l'">
+    <th *ngIf="userType=='l'" style="width:auto; min-width:150px">
       Akcje
     </th>
   </tr>
@@ -50,9 +50,12 @@
       <td>{{ userInfo.phone_number }}</td>
       <td>{{ userInfo.login  }}</td>
       <td>{{ userInfo.type  }}</td>
-      <td *ngIf="userType=='l'">
+      <td *ngIf="userType=='l'" style="width:auto; min-width:150px">
+        <a (click)="UserAccount(userInfo.user_id)" class='btn btn-danger m-r-5px'>
+          <span class="glyphicon glyphicon-edit"></span>Szczegóły
+        </a>
         <a (click)="RemoveUser(userInfo.user_id)" class='btn btn-danger m-r-5px'>
-          <span class='glyphicon glyphicon-remove'></span>Usuń użytkownika
+          <span class='glyphicon glyphicon-remove'></span>Usuń
         </a>
       </td>
     </tr>

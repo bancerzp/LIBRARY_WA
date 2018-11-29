@@ -2,16 +2,17 @@ import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Http } from '@angular/http';
-import { BookService } from '../../_services/book.service';
+import { BookService } from '../_services/book.service';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { Book } from '../../_models/book';
-import { Volume } from '../../_models/Volume';
+import { Book } from '../_models/book';
+import { Volume } from '../_models/Volume';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-edit-book',
   templateUrl: './edit-book.component.html',
-  providers: [BookService]
+  providers: [BookService, AppComponent]
 })
 
 @NgModule({
@@ -30,20 +31,28 @@ export class EditBookComponent {
 
 
   constructor(private formBuilder: FormBuilder,
-    private http: Http,
-    private bookService: BookService,
-    private route: ActivatedRoute) { }
+  private http: Http,
+  private bookService: BookService,
+  private route: ActivatedRoute,
+  private app: AppComponent) { }
   submitted: boolean;
   updateBookForm: FormGroup;
 
 
   ngOnInit() {
     this.displayVolume = true;
-    this.route.params.subscribe(params => {
-      this.book.book_id = +params['book_id']; // (+) converts string 'id' to a number
+    
+    //this.route.queryParams
+    //  .subscribe(params => {
+       
+    //    alert(params.book_id.value());
+    //    this.book.book_id = params.book_id;
+    //  }
+    //  )
 
-    });
+    this.book.book_id = Number.parseInt(localStorage.getItem("book_id"));
     this.GetBookById(this.book.book_id);
+    this.GetVolume();
 
     this.submitted = false;
     this.GetBookType();
@@ -51,9 +60,9 @@ export class EditBookComponent {
     this.GetLanguage();
 
     this.updateBookForm = this.formBuilder.group({
-      book_id: [this.book.isbn],
+      book_id: [this.book.book_id],
       isbn: [this.book.isbn, [Validators.pattern("[0-9]{13}"),
-        Validators.required], this.CheckISBNExistsInDB.bind(this)],
+      Validators.required], this.CheckISBNExistsInDB.bind(this)],
       title: [this.book.title, [Validators.required, Validators.maxLength(50)]],
       author_fullname: [this.book.author_fullname, [Validators.required, Validators.maxLength(100)]],
       year: [this.book.year, [Validators.pattern("[1-9][0-9]{3}"), Validators.required]],
@@ -67,7 +76,7 @@ export class EditBookComponent {
 
   CheckISBNExistsInDB(control: FormControl) {
     return this.bookService.IfISBNExists(control.value).pipe(
-      map(((res: any[]) => res.filter(book => book.ISBN == control.value).length == 0 ? { 'ISBNTaken': false } : { 'ISBNTaken': true })));
+      map(((res: any[]) => res.filter(book => book.ISBN == control.value).length > 0 ? { 'ISBNTaken': false } : null)));
   }
 
   GetAuthor() {
@@ -85,17 +94,26 @@ export class EditBookComponent {
     return this.bookService.GetVolume().subscribe((volumes: any[]) => this.volume = volumes);
   }
 
-  RemoveVolume(id){
+  RemoveVolume(id) {
+    if (this.app.IsExpired())
+      return;
   this.displayVolume = false;
-    this.bookService.RemoveVolume(id).subscribe(this.GetVolume);
-    this.volume.splice(this.volume.indexOf(this.volume.find(volume => volume.volume_id = id)), 1);
-    //this.SearchBook();
-
-  this.displayVolume = true;
+    this.bookService.RemoveVolume(id).subscribe(data => {
+      alert("Egzemplarz został poprawnie usunięty");
+      this.volume = this.volume.filter(volume => volume.volume_id != id);
+    });
+    
+    this.displayVolume = true;
 }
-
-  //error
-  GetBookById(id) {
-    this.bookService.AddVolume(id).subscribe((book:Book) => this.book=book);
+  EditBook() {
+    if (this.app.IsExpired())
+      return;
   }
+
+  GetBookById(id) {
+    if (this.app.IsExpired())
+      return;
+    this.bookService.AddVolume(id).subscribe((book: Book) => this.book = book);
+  }
+
 }

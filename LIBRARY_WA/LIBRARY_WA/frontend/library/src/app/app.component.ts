@@ -56,7 +56,19 @@ export class AppComponent  {
     window.location.reload();
     this.router.navigateByUrl('/app-login')
   }
-}
+
+  IsExpired() {
+    if (localStorage.getItem("expires") && (Date.now() > Date.parse(localStorage.getItem("expires")))) {
+      this.Logout();
+      return true;
+    }
+      return false;
+  }
+
+  RouteTo(path) {
+    this.router.navigateByUrl(path)
+  }
+  }
 
 export class MenuItem {
   title: string;

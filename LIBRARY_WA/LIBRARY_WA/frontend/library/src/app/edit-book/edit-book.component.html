@@ -1,0 +1,127 @@
+<p> Edytuj książkę</p>
+<form [formGroup]="editBookForm" (ngSubmit)="UpdateBook()">
+  <div class="form-group">
+    <label for="book_id">Id. książki</label>
+    <input type="text" formControlName="id" class="form-control" [(ngModel)]="book.id" disabled="disabled" />
+  </div>
+
+  <div class="form-group">
+    <label for="isbn">isbn</label>
+    <input type="text" formControlName="isbn" class="form-control" [(ngModel)]="book.isbn" ng-change="CheckisbnExistsInDB()" placeholder="format: 9999999999999" />
+    <div class="alert alert-danger " *ngIf="(sumbitted && editBookForm.get('isbn').hasError('required'))||(editBookForm.get('isbn').hasError('required')  && editBookForm.get('isbn').touched)">Pole isbn nie może być puste</div>
+    <div class="alert alert-danger " *ngIf="editBookForm.get('isbn').hasError('pattern')  && editBookForm.get('isbn').touched  ">Nieprawidłowy format ISBN</div>
+    <div class="alert alert-danger " *ngIf="editBookForm.get('isbn').invalid && !editBookForm.get('isbn').hasError('pattern')
+          && !editBookForm.get('isbn').hasError('required') && editBookForm.get('isbn').touched">Podany isbn jest już przypisany do książki</div>
+  </div>
+
+  <div class="form-group">
+    <label for="title">Tytuł książki</label>
+    <input type="text" formControlName="title" class="form-control" [(ngModel)]="book.title" />
+    <div class="alert alert-danger " *ngIf="(sumbitted && (editBookForm.get('title').hasError('required') || editBookForm.get('title').hasError('pattern'))) || (editBookForm.get('title').hasError('required') && editBookForm.get('title').dirty)">Pole imię i nazwisko nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf="editBookForm.get('title').hasError('maxLength') && editBookForm.get('title').dirty">Za długi tytuł(max.50znaków)</div>
+  </div>
+
+  <div class="form-group">
+    <label for="author_fullname">Imię i nazwisko autora</label>
+    <input type="text" list="author" formControlName="author_fullname" class="form-control" [(ngModel)]="book.author_fullname" />
+    <datalist id="author">
+      <option *ngFor="let author of author" value="{{author}}">{{author}}</option>
+    </datalist>
+    <div class="alert alert-danger " *ngIf="(sumbitted && (editBookForm.get('author_fullname').hasError('required') || editBookForm.get('author_fullname').hasError('pattern'))) || (editBookForm.get('author_fullname').hasError('required') && editBookForm.get('author_fullname').dirty)">Pole imię i nazwisko nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf="editBookForm.get('author_fullname').hasError('maxLength') && editBookForm.get('author_fullname').dirty && editBookForm.get('author_fullname').touched">Za długa nazwa autora (max.50znaków)</div>
+  </div>
+
+  <div class="form-group">
+    <label for="year">Rok wydania</label>
+    <input type="text" formControlName="year" class="form-control" [(ngModel)]="book.year" />
+    <div class="alert alert-danger " *ngIf="(sumbitted && (editBookForm.get('year').hasError('required') || editBookForm.get('year').hasError('pattern'))) || (editBookForm.get('year').hasError('required') && editBookForm.get('year').dirty)">Pole rok nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf=" editBookForm.get('year').hasError('pattern') && editBookForm.get('year').dirty ">Nieprawidłowy format roku</div>
+  </div>
+
+  <div class="form-group">
+    <label for="language">Język</label>
+    <input type="text" list="language" formControlName="language" class="form-control" [(ngModel)]="book.language" />
+    <datalist id="language">
+      <option *ngFor="let language of language" value="{{language}}">{{language}}</option>
+    </datalist>
+    <div class="alert alert-danger " *ngIf="(sumbitted && (editBookForm.get('language').hasError('required') || editBookForm.get('language').hasError('pattern'))) || (editBookForm.get('language').hasError('required') && editBookForm.get('language').dirty)">Pole język nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf="editBookForm.get('language').hasError('maxLength') && editBookForm.get('language').dirty && editBookForm.get('language').touched">Za długa nazwa języka(max.20znaków)</div>
+  </div>
+
+  <div class="form-group">
+    <label for="type">Typ</label>
+    <input type="text" list="type" formControlName="type" class="form-control" [(ngModel)]="book.type" />
+    <datalist id="type">
+      <option *ngFor="let bookType of bookType" value="{{bookType}}">{{bookType}}</option>
+    </datalist>
+    <div class="alert alert-danger " *ngIf="(sumbitted && (editBookForm.get('type').hasError('required') || editBookForm.get('type').hasError('pattern'))) || (editBookForm.get('type').hasError('required') && editBookForm.get('type').dirty)">Pole typ książki nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf="editBookForm.get('type').hasError('maxLength') && editBookForm.get('type').dirty && editBookForm.get('type').touched">Za długi typ książki(max.30znaków)</div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Opis(opcjonalny):</label>
+    <textarea type="text" formControlName="description" class="form-control" [(ngModel)]="book.description"></textarea>
+    <div class="alert alert-danger" *ngIf="editBookForm.get('description').hasError('maxLength') && editBookForm.get('description').dirty && editBookForm.get('description').touched">Za długi opis(max.300 znaków)</div>
+  </div>
+
+  <div class="form-group">
+    <button type="submit" [disabled]="loading || !editBookForm.valid" class="btn btn-primary">Dodaj książkę</button>
+  </div>
+</form>
+
+
+
+
+<table class="searchResult w3-hoverable" *ngIf="submitted">
+  <thead>
+    <tr>
+      <th *ngFor="let name of column">
+       Id egzemplarza
+      </th>
+      <th style="column-width:200px">
+       Czy wypożyczony?
+      </th>
+      <th>
+        Usuń
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let bookInfo of bookData">
+      <td>{{ bookInfo.book_id  }}</td>
+      <td>{{ bookInfo.title  }}</td>
+      <td>{{ bookInfo.isbn  }}</td>
+      <td>{{ bookInfo.author_fullname }}</td>
+      <td>{{ bookInfo.year }}</td>
+      <td>{{ bookInfo.language  }}</td>
+      <td>{{ bookInfo.type  }}</td>
+
+      <td *ngIf="userType=='r'">
+        <a class='btn btn-info m-r-5px' (click)="ReserveBookReader(bookInfo.book_id)">
+          <span class='glyphicon glyphicon-edit'></span> Zarezerwuj
+        </a>
+      </td>
+      <td *ngIf="userType=='l'" style="width:auto; min-width:150px">
+
+        <div class="button-group">
+          <button class='btn btn-info m-r-5px' (click)="ReserveBookLibrarian(bookInfo.book_id,user_id)" [disabled]="!user_id">
+            <span class='glyphicon glyphicon-check'></span> Zarezerwuj
+          </button>
+          <input #user style="width:80px" [(ngModel)]="user_id" />
+
+        </div>
+        <div class="button-group">
+          <button [routerLink]="['app-edit-book']" [queryParams]="{book_id: bookInfo.book_id}" class='btn btn-info m-r-5px'>
+            <span class='glyphicon glyphicon-edit'></span> Edytuj
+          </button>
+          <button (click)="RemoveBook(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
+            <span class='glyphicon glyphicon-remove'></span> Usuń
+          </button>
+        </div>
+        <button (click)="AddVolume(bookInfo.book_id)" class='btn btn-info m-r-5px'>
+          <span class='glyphicon glyphicon-plus'></span> Dodaj egzemplarz
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

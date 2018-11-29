@@ -3,15 +3,17 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { User } from '../../_models/User';
 import { UserService } from '../../_services/user.service';
+import { AppComponent } from '../../app.component';
 //import { AlertService, AuthenticationService } from '../_services';
 
 @Component({
   selector: 'app-search-user',
   templateUrl: './search-user.component.html',
-  styles: []
+  styles: [],
+  providers: [AppComponent]
 })
 export class SearchUserComponent implements OnInit {
   @Output() user = new EventEmitter<User>();
@@ -28,7 +30,8 @@ export class SearchUserComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private userService: UserService) { }
+    private userService: UserService,
+    private app: AppComponent,) { }
   //  private router: Router,
   // private authenticationService: AuthenticationService,
   // private alertService: AlertService) { }*/
@@ -59,7 +62,8 @@ export class SearchUserComponent implements OnInit {
   // get f() { return this.loginForm.controls; }
 
   SearchUser() {
-
+    if (this.app.IsExpired())
+      return;
     this.submitted = false;
     this.values = [];
 
@@ -78,16 +82,22 @@ export class SearchUserComponent implements OnInit {
   }
 
   RemoveUser(id) {
+    if (this.app.IsExpired())
+      return;
     this.submitted = false;
-    this.userService.RemoveUser(id).subscribe();
-    this.userData = this.userData.filter(user => user.user_id!=id);
-    //   this.SearchBook();
+    this.userService.RemoveUser(id).subscribe(data =>
+    {
+      this.userData = this.userData.filter(user => user.user_id != id);
+    },
+      Error => { alert(Error.message) });
     this.submitted = true;
-
   }
 
-    EditUser(){
-
+  UserAccount(id){
+      if (this.app.IsExpired())
+        return;
+    this.app.RouteTo("app-user-account");
+      localStorage.setItem("user_id",id)
     }
 
     

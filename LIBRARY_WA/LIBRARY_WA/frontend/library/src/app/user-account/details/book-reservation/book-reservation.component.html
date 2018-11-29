@@ -6,23 +6,32 @@
     <th *ngFor="let name of column">
       {{name}}
     </th>
+    <th style="width:auto; min-width:150px">
+      Akcje
+    </th>
   </tr>
   <tbody>
     <tr *ngFor="let reservationInfo of reservation">
       <td>{{ reservationInfo.reservation_id  }}</td>
       <td>{{ reservationInfo.isbn  }}</td>
       <td>{{ reservationInfo.title  }}</td>
-      <td>{{ reservationInfo.volume_id }}</td>
+      <td *ngIf=(reservationInfo.is_active)>{{ reservationInfo.volume_id }}</td>
+      <td *ngIf=(!reservationInfo.is_active)></td>
       <td>{{ reservationInfo.start_date }}</td>
       <td>{{ reservationInfo.expire_date  }}</td>
-      <td>{{ reservationInfo.is_active  }}</td>
-      <td>
-        <a (click)="CancelReservation(reservationInfo.reservation_id)" class='btn btn-info m-r-5px'>
-          <span class='glyphicon glyphicon-edit'></span> Anuluj rezerwację.
-        </a>
-        <a *ngIf="user_type=='l'" (click)="RentBook(reservationInfo.reservation_id)" class='btn btn-info m-r-5px'>
-          <span class='glyphicon glyphicon-edit'></span> Wypożycz.
-        </a>
+      <td *ngIf=(reservationInfo.is_active)>Tak</td>
+      <td *ngIf=(!reservationInfo.is_active)>Nie</td>
+      <td style="width:auto; min-width:150px">
+        <div class="button-group">
+          <a (click)="CancelReservation(reservationInfo.reservation_id)" class='btn btn-info m-r-5px'>
+            <span class='glyphicon glyphicon-remove'></span> Anuluj rezerwację.
+          </a>
+        </div>
+        <div class="button-group">
+          <a *ngIf="user_type=='l'" (click)="RentBook(reservationInfo.reservation_id)" class='btn btn-info m-r-5px'>
+            <span class='glyphicon glyphicon-edit'></span> Wypożycz.
+          </a>
+        </div>
       </td>
     </tr>
   </tbody>
