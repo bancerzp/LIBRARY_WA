@@ -44,10 +44,10 @@ export class BookReservationModule {
     if (this.app.IsExpired())
       return;
     this.submitted = false;
-    this.bookService.CancelReservation(reservationId).subscribe(data => {
-      this.reservation = this.reservation.filter(reservation => reservation.reservationId != reservationId);
+    this.userService.CancelReservation(reservationId).subscribe(data => {
+      this.reservation = this.reservation.filter(reservation => reservation.reservation_id != reservationId);
     },
-      Error => { alert(Error.message) });
+      Error => { alert(Error.text()) });
     this.submitted = true;
   }
 }

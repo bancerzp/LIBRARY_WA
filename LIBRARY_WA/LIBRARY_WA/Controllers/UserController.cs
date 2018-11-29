@@ -12,6 +12,7 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
+using System.IO;
 
 namespace LIBRARY_WA.Controllers
 {
@@ -227,9 +228,52 @@ namespace LIBRARY_WA.Controllers
             return _context.Renth;
         }
 
+        //zarzadzanie rezerwacjami
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> CancelReservation([FromRoute] int reservation_id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-//------------NIEPOTRZEBNE
-        
+            FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            BinaryWriter w = new BinaryWriter(fs);
+
+            w.Write(_context.Reservation.FirstOrDefault().book_id);
+            w.Close();
+            if (_context.Reservation.Find(reservation_id).queue>0)
+            {
+
+                return BadRequest("Nie ma takiej rezerwacji");
+            }
+
+
+            //     Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservation_id).FirstOrDefault();
+            //    Reservation[] resToChange = _context.Reservation.Where(a => a.book_id == reservation.book_id && a.queue > reservation.queue).ToArray();
+            //    foreach (Reservation res in resToChange)
+            //    {
+            //        res.queue = res.queue - 1;
+            //        if (res.queue == 0)
+            //        {
+            //           res.is_active = true;
+            //           res.expire_date = DateTime.Now.AddDays(8);
+            //            res.volume_id = reservation.volume_id;
+            //        }
+            //     }
+            //     _context.Reservation.Remove(reservation);
+            //   await _context.SaveChangesAsync();
+            return Ok("Rezerwacja została usunięta");
+        }
+
+        //    return this.http.delete(this.accessPointUrl + "/CancelReservation/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+        //}
+
+
+        //-----------------------
+
+        //------------NIEPOTRZEBNE
+
         //----------------------------
         // PUT: api/User/5
         [HttpPut("{id}")]

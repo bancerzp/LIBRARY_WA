@@ -2,7 +2,7 @@
 <form [formGroup]="editBookForm" (ngSubmit)="UpdateBook()">
   <div class="form-group">
     <label for="book_id">Id. książki</label>
-    <input type="text" formControlName="id" class="form-control" [(ngModel)]="book.id" disabled="disabled" />
+    <input type="text" formControlName="book_id" class="form-control" [(ngModel)]="book.book_id" disabled="disabled" />
   </div>
 
   <div class="form-group">

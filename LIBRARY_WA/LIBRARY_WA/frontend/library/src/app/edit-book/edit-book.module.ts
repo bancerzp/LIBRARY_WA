@@ -25,7 +25,7 @@ export class EditBookComponent {
   public author = [];
   public bookType = [];
   public language = [];
-  public book: Book;
+  book:Book = new Book(null,null, "", "", "", "", "", "",  true);
   public volume: Volume[] = [];
   public displayVolume: boolean;
 
@@ -36,7 +36,7 @@ export class EditBookComponent {
   private route: ActivatedRoute,
   private app: AppComponent) { }
   submitted: boolean;
-  updateBookForm: FormGroup;
+  editBookForm: FormGroup;
 
 
   ngOnInit() {
@@ -49,17 +49,17 @@ export class EditBookComponent {
     //    this.book.book_id = params.book_id;
     //  }
     //  )
+    
+    this.GetBookById();
+    alert("done")
+    this.GetVolumeByBookId();
 
-    this.book.book_id = Number.parseInt(localStorage.getItem("book_id"));
-    this.GetBookById(this.book.book_id);
-    this.GetVolume();
-
-    this.submitted = false;
+    this.submitted = true;
     this.GetBookType();
     this.GetAuthor();
     this.GetLanguage();
 
-    this.updateBookForm = this.formBuilder.group({
+    this.editBookForm = this.formBuilder.group({
       book_id: [this.book.book_id],
       isbn: [this.book.isbn, [Validators.pattern("[0-9]{13}"),
       Validators.required], this.CheckISBNExistsInDB.bind(this)],
@@ -90,8 +90,8 @@ export class EditBookComponent {
     return this.bookService.GetLanguage().subscribe((languages: any[]) => this.language = languages);
   };
 
-  GetVolume() {
-    return this.bookService.GetVolume().subscribe((volumes: any[]) => this.volume = volumes);
+  GetVolumeByBookId() {
+    return this.bookService.GetVolumeByBookId(localStorage.getItem("book_id")).subscribe((volumes: any[]) => this.volume = volumes);
   }
 
   RemoveVolume(id) {
@@ -108,12 +108,17 @@ export class EditBookComponent {
   EditBook() {
     if (this.app.IsExpired())
       return;
+    this.bookService.EditBook(this.book).subscribe(data => {
+      alert("Egzemplarz został poprawnie usunięty");
+     ;
+    });
+
   }
 
-  GetBookById(id) {
+  GetBookById() {
     if (this.app.IsExpired())
       return;
-    this.bookService.AddVolume(id).subscribe((book: Book) => this.book = book);
+    return this.bookService.GetBookById(localStorage.getItem("book_id")).subscribe((book: Book) => this.book = book);
   }
 
 }

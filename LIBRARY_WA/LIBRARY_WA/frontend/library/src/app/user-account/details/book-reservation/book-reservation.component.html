@@ -23,7 +23,7 @@
       <td *ngIf=(!reservationInfo.is_active)>Nie</td>
       <td style="width:auto; min-width:150px">
         <div class="button-group">
-          <a (click)="CancelReservation(reservationInfo.reservation_id)" class='btn btn-info m-r-5px'>
+          <a (click)="CancelReservation(reservationInfo.reservation_id)" class='btn btn-danger m-r-5px'>
             <span class='glyphicon glyphicon-remove'></span> Anuluj rezerwację.
           </a>
         </div>

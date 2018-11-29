@@ -79,6 +79,46 @@ namespace LIBRARY_WA.Data
             return CreatedAtAction("AddBook", new { id = book.book_id }, book);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetBookById([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var book = await _context.Book.FindAsync(id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(book);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetVolumeByBookId([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var volume = _context.Volume.Where(a=>a.book_id==id);
+
+            if (volume == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(volume);
+        }
+
+
+
+
+
         [HttpPost]
         public async Task<IActionResult> SearchBook([FromBody] String[] search)
         {
@@ -346,49 +386,14 @@ namespace LIBRARY_WA.Data
 
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> CancelReservation([FromRoute] int reservation_id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (_context.Reservation.Where(a => a.reservation_id == reservation_id).Count() == 0)
-            {
-                return BadRequest("Nie ma takiej rezerwacji");
-            }
-
-
-            Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservation_id).FirstOrDefault();
-            Reservation[] resToChange = _context.Reservation.Where(a => a.book_id == reservation.book_id && a.queue > reservation.queue).ToArray();
-            foreach (Reservation res in resToChange)
-            {
-                res.queue = res.queue - 1;
-                if (res.queue == 0)
-                {
-                    res.is_active = true;
-                    res.expire_date = DateTime.Now.AddDays(8);
-                    res.volume_id = reservation.volume_id;
-                }
-            }
-            _context.Reservation.Remove(reservation);
-            await _context.SaveChangesAsync();
-            return Ok("Rezerwacja została usunięta");
-        }
      
-        //    return this.http.delete(this.accessPointUrl + "/CancelReservation/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
-        //}
-
-
-        //-----------------------
 
 
         private bool BookExists(int id)
         {
             return _context.Book.Any(e => e.book_id == id);
         }
-        
+
         //  [Authorize(Roles = "l")]
         //wydanie książki użytkownikowi
         //jeśli książka niedostępna to zarezerwuj, jeśli dostępna to wypożycz
@@ -409,19 +414,14 @@ namespace LIBRARY_WA.Data
         }
         */
 
-        /*
-        *   // PUT: api/Book/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBook([FromRoute] int id, [FromBody] Book book)
+        
+          // PUT: api/Book/5
+        [HttpPut]
+        public async Task<IActionResult> EditBook( [FromBody] Book book)
         {
            if (!ModelState.IsValid)
            {
                return BadRequest(ModelState);
-           }
-
-           if (id != book.book_id)
-           {
-               return BadRequest();
            }
 
            _context.Entry(book).State = EntityState.Modified;
@@ -432,7 +432,7 @@ namespace LIBRARY_WA.Data
            }
            catch (DbUpdateConcurrencyException)
            {
-               if (!BookExists(id))
+               if (_context.Book.Where(a=>a.book_id==book.book_id).Count()==0)
                {
                    return NotFound();
                }
@@ -444,12 +444,11 @@ namespace LIBRARY_WA.Data
            return NoContent();
         }
 
-        // POST: api/Books
+      
         }
 
-        */
+       
     }
-}
 
 
 

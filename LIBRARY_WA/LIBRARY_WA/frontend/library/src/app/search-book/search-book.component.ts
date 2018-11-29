@@ -137,7 +137,8 @@ export class SearchBookComponent implements OnInit {
   EditBook(book_id) {
     if (this.app.IsExpired())
       return;
-      localStorage.setItem("book_id", book_id);
+    localStorage.setItem("book_id", book_id);
+    this.app.RouteTo("app-edit-book");
   //  this.bookService.update(book_id, localStorage.getItem("user_id")).subscribe();
   }
 
@@ -149,7 +150,7 @@ export class SearchBookComponent implements OnInit {
     this.bookService.RemoveBook(id).subscribe(data => {
       alert("Książka została poprawnie usunięta");
       this.bookData = this.bookData.filter(book => book.book_id != id);
-    },
+     },
       Error => { alert("Błąd usuwania książki") });
  //   this.bookData.splice(this.bookData.indexOf(this.bookData.find(book => book.book_id = id)), 1);
  //   this.SearchBook();
