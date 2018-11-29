@@ -25,7 +25,8 @@ export class EditBookComponent {
   public bookType = [];
   public language = [];
   public book: Book;
-  public volume: Volume[]=[];
+  public volume: Volume[] = [];
+  public displayVolume: boolean;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -37,6 +38,7 @@ export class EditBookComponent {
 
 
   ngOnInit() {
+    this.displayVolume = true;
     this.route.params.subscribe(params => {
       this.book.book_id = +params['book_id']; // (+) converts string 'id' to a number
 
@@ -79,9 +81,18 @@ export class EditBookComponent {
     return this.bookService.GetLanguage().subscribe((languages: any[]) => this.language = languages);
   };
 
-  GetVolumes() {
-
+  GetVolume() {
+    return this.bookService.GetVolume().subscribe((volumes: any[]) => this.volume = volumes);
   }
+
+  RemoveVolume(id){
+  this.displayVolume = false;
+    this.bookService.RemoveVolume(id).subscribe(this.GetVolume);
+    this.volume.splice(this.volume.indexOf(this.volume.find(volume => volume.volume_id = id)), 1);
+    //this.SearchBook();
+
+  this.displayVolume = true;
+}
 
   //error
   GetBookById(id) {

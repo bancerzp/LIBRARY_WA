@@ -53,7 +53,8 @@ export class AppComponent  {
 
   Logout() {
     localStorage.clear();
-  //  this.router.navigateByUrl('/');
+    window.location.reload();
+    this.router.navigateByUrl('/app-login')
   }
 }
 

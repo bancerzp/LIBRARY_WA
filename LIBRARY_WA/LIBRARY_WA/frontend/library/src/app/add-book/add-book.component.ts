@@ -38,7 +38,7 @@ export class AddBookComponent implements OnInit {
         Validators.required], this.CheckISBNExistsInDB.bind(this)],
       title: ['', [Validators.required, Validators.maxLength(50)]],
       author_fullname: ['', [Validators.required, Validators.maxLength(100)]],
-      year: ['', [Validators.pattern("[1-9][0-9]{3}"),Validators.required]],
+      year: ['', [Validators.required, Validators.pattern("[1-9][0-9]{3}")]],
       language: [Validators.required, Validators.maxLength(20)],
       type: ['', [Validators.required, Validators.maxLength(30)]],
       description: ['', [Validators.maxLength(300)]],
@@ -49,6 +49,7 @@ export class AddBookComponent implements OnInit {
   AddBook() {
     var m = this.book;
     this.id = 0;
+    this.submitted = true;
     var added=this.bookService.AddBook(m).subscribe(
       (data: Book) => { this.id = Number(data.book_id), alert("Książka dodana poprawnie " +this.id)},
       Error => { alert("Błąd dodawania książki") });
@@ -57,15 +58,17 @@ export class AddBookComponent implements OnInit {
       //   this.user = this.addUserForm.value();
       // this.userService.addUser(m);
       //    .subscribe(user =>
-      //    this.user = user['records']);
-      this.submitted = true;
+    //    this.user = user['records']);
+    this.submitted = false;
+    this.ngOnInit();
+  
     }
 
   ClearForm() { this.book = new EventEmitter<Book>();}
 
   CheckISBNExistsInDB(control: FormControl) {
     return this.bookService.IfISBNExists(control.value).pipe(
-      map(((res: any[]) => res.filter(book => book.ISBN == control.value).length == 0 ? { 'ISBNTaken': false } : { 'ISBNTaken': true })));
+      map(((res: any[]) => res.filter(book => book.ISBN == control.value).length > 0 ? { 'ISBNTaken': false } : null)));
   }
 
   GetAuthor() {

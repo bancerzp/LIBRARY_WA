@@ -21,7 +21,7 @@ export class AddUserComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   ifEmailExists: any;
-  ifLoginExists: any;
+  ifLoginExists: any[];
   maxDate = new Date().toString();
 
   constructor(
@@ -32,7 +32,7 @@ export class AddUserComponent implements OnInit {
   createForm() {
     
     this.addUserForm = this.formBuilder.group({
-      login: ['', [Validators.required], this.CheckLoginExistsInDB.bind(this)],//, Validators.minLength(5), Validators.maxLength(10)]],//Validators.pattern("[/S]*"),
+      login: ['', [Validators.required, Validators.minLength(5)], this.CheckLoginExistsInDB.bind(this)],//Validators.pattern("[/S]*"),
       email: ['', [Validators.email, Validators.required], this.CheckEmailExistsInDB.bind(this)],
       fullname: ['', [Validators.required]], //, Validators.pattern("\S")
       date_of_birth: ['', Validators.required],
@@ -51,20 +51,19 @@ export class AddUserComponent implements OnInit {
   }
 
   clearForm() {
-    console.log("wyczyszczone");
+  
     this.createForm();
   }
   
-  addUser() {
+  AddUser() {
   //  var result=this.userService.ifUserExists(this.user);
    
   //  if (this.addUserForm.invalid) {
    //   this.submitted = true;
    //   return;
    // }
-    var m = this.user;
-    this.userService.AddUser(m).subscribe(
-      data => { alert("Użytkownik dodany poprawnie") },
+    this.userService.AddUser(this.user).subscribe(
+      data => { alert("Użytkownik dodany poprawnie"); this.ngOnInit() },
       Error => { alert("Błąd dodawania użytkownika") });
 
  //   this.user = this.addUserForm.value();
@@ -77,12 +76,12 @@ export class AddUserComponent implements OnInit {
 
   CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(
-      map(((res: any[]) => res.filter(user => user.email == control.value).length == 0 ? { 'emailTaken': false } : { 'emailTaken': true })))
+      map(((res: any[]) => res.filter(user => user.email == control.value).length > 0 ? { 'emailTaken': false } : null)))
   };
 
   CheckLoginExistsInDB(control: FormControl) {
     return this.userService.IfLoginExists(control.value).pipe(
-      map(((res: any[]) => res.filter(user=> user.login == control.value).length == 0 ? { 'loginTaken': false } : { 'loginTaken': true })))
+      map(((res: any[]) => res.filter(user => user.login == control.value).length > 0 ? { 'loginTaken': false } : null)))
   };
     }
 

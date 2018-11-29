@@ -10,7 +10,7 @@ namespace LIBRARY_WA.Models
     public class Book
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Int32 book_id { get; set; }
+        public int book_id { get; set; }
 
         [MaxLength(50, ErrorMessage = "Za długi tytuł")]
         public string title { get; set; }

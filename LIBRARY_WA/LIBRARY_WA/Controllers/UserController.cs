@@ -72,12 +72,12 @@ namespace LIBRARY_WA.Controllers
                     issuer: "http://localhost:5000",
                     audience: "http://localhost:5000",
                     claims: claims,
-                    expires: DateTime.Now.AddMinutes(5),
+                    expires: DateTime.Now.AddHours(5),
                     signingCredentials: signinCredentials
                 );
 
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-                return Ok(new { Token = tokenString, id = user.user_Id, user_type = user.user_Type, fullname = user.fullname });
+                return Ok(new { Token = tokenString, id = user.user_id, user_type = user.user_Type, fullname = user.fullname });
             }
             else
             {
@@ -88,7 +88,7 @@ namespace LIBRARY_WA.Controllers
 
 
         [HttpGet("{id}"), Authorize]
-        public async Task<IActionResult> GetUserById([FromRoute] Int32 id)
+        public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -146,17 +146,50 @@ namespace LIBRARY_WA.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+
+            if (_context.User.Where(a => a.login == user.login).Count() > 0)
+            {
+                return BadRequest("Dany login jest już zajęty");
+            }
+
+            if (_context.User.Where(a => a.email == user.email).Count() > 0)
+            {
+                return BadRequest("Dany email już istnieje w bazie danych.");
+            }
+
             _context.User.Add(user);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetUser", new { id = user.user_Id }, user);
+            return CreatedAtAction("AddUser", new { id = user.user_id }, user);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveUser([FromRoute] int id)
+        {
+
+            //jeśli ma wypożyczone książki to komunikat, że nie można usunąć użytkownika bo ma niewyszystkie książki oddane, 
+            //a jesli usunięty to zmienia isValid na false
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            _context.User.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
 
-      
+
         // nie zrobione
         //----------------------userdata
-      
+
         [HttpGet("{id}"), Authorize]
         public IEnumerable<Rent> GetRent()
         {
@@ -187,7 +220,7 @@ namespace LIBRARY_WA.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id.ToString() == user.user_Id.ToString())
+            if (id.ToString() == user.user_id.ToString())
             {
                 return BadRequest();
             }
@@ -215,32 +248,11 @@ namespace LIBRARY_WA.Controllers
 
        
         // DELETE: api/User/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] string id)
-        {
-
-            //jeśli ma wypożyczone książki to komunikat, że nie można usunąć użytkownika bo ma niewyszystkie książki oddane, 
-            //a jesli usunięty to zmienia isValid na false
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return Ok(user);
-        }
+      
 
         private bool UserExists(Int32 id)
         {
-            return _context.User.Any(e => e.user_Id.ToString() == id.ToString());
+            return _context.User.Any(e => e.user_id.ToString() == id.ToString());
         }
     }
 }

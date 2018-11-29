@@ -59,24 +59,36 @@ export class SearchUserComponent implements OnInit {
   // get f() { return this.loginForm.controls; }
 
   SearchUser() {
- 
+
     this.submitted = false;
     this.values = [];
 
-      Object.keys(this.searchUserForm.controls).forEach((name) => {
-        var s = this.searchUserForm.controls[name].value;
-        if (s.replace(" ", "").replace("'", "").length == 0) {
-          this.values.push('%');
-        }
-        else {
-          this.values.push(s.replace("'", ""));
-        }
-      });
+    Object.keys(this.searchUserForm.controls).forEach((name) => {
+      var s = this.searchUserForm.controls[name].value;
+      if (s.replace(" ", "").replace("'", "").length == 0) {
+        this.values.push('%');
+      }
+      else {
+        this.values.push(s.replace("'", ""));
+      }
+    });
     this.submitted = true;
 
     return this.userService.SearchUser(this.values).subscribe((data: User[]) => this.userData = data)
+  }
 
+  RemoveUser(id) {
+    this.submitted = false;
+    this.userService.RemoveUser(id).subscribe();
+    this.userData = this.userData.filter(user => user.user_id!=id);
+    //   this.SearchBook();
+    this.submitted = true;
 
+  }
+
+    EditUser(){
+
+    }
 
     
     // http.post('my/php/login.php?action=login', this.loginForm.login, this.loginForm.password).then(function (user) {
@@ -101,7 +113,7 @@ export class SearchUserComponent implements OnInit {
             this.loading = false;
       }
       );*/
-  }
+
 }
 
 

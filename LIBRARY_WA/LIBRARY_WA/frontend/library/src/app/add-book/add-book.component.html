@@ -9,7 +9,9 @@
     <input type="text" formControlName="isbn" class="form-control" [(ngModel)]="book.isbn" ng-change="CheckisbnExistsInDB()" placeholder="format: 9999999999999" />
     <div class="alert alert-danger " *ngIf="(sumbitted && addBookForm.get('isbn').hasError('required'))||(addBookForm.get('isbn').hasError('required')  && addBookForm.get('isbn').touched)">Pole isbn nie może być puste</div>
     <div class="alert alert-danger " *ngIf="addBookForm.get('isbn').hasError('pattern')  && addBookForm.get('isbn').touched  ">Nieprawidłowy format ISBN</div>
-    <div class="alert alert-danger " *ngIf="addBookForm.get('isbn').hasError('isbnTaken') && addBookForm.get('isbn').touched">Podany ISBN już jest przypisany do książki</div>
+     <div class="alert alert-danger " *ngIf="addBookForm.get('isbn').invalid && !addBookForm.get('isbn').hasError('pattern')
+          && !addBookForm.get('isbn').hasError('required') && addBookForm.get('isbn').touched">Podany isbn jest już przypisany do książki</div>
+
   </div>
 
   <div class="form-group">
@@ -63,7 +65,7 @@
   </div>
  
     <div class="form-group">
-      <button type="submit" (ngSubmit)="AddBook()" [disabled]="loading || !addBookForm.valid" class="btn btn-primary">Dodaj książkę</button>
+      <button type="submit" [disabled]="loading || !addBookForm.valid" class="btn btn-primary">Dodaj książkę</button>
     </div>
     <!---->
 

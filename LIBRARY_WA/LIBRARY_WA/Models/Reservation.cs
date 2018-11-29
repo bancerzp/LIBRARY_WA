@@ -22,15 +22,15 @@ namespace LIBRARY_WA.Models
         }
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Int32 reservation_id { get; set; }
-        public Int32 user_id { get; set; }
+        public int reservation_id { get; set; }
+        public int user_id { get; set; }
         [MaxLength(50)]
         public String title { get; set; }
 
         [StringLength(13)]
         public String isbn { get; set; }
-        public Int32 book_id { get; set; }
-        public Int32 volume_id { get; set; }
+        public int book_id { get; set; }
+        public int volume_id { get; set; }
         public DateTime start_date { get; set; }
         public DateTime expire_date { get; set; }
         public Int32 queue { get; set; }

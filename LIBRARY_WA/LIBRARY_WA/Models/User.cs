@@ -10,7 +10,7 @@ namespace LIBRARY_WA.Models
     public class User
     {
         [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Int32 user_Id { get; set; }
+        public int user_id { get; set; }
         public String login { get; set; }
         public String password { get; set; }
         public String user_Type { get; set; }

@@ -75,7 +75,6 @@ export class SearchBookComponent implements OnInit {
     language: '',
     type: ''
     });
-    this.SearchBook();
   }
 
   SearchBook() {
@@ -133,14 +132,14 @@ export class SearchBookComponent implements OnInit {
     this.submitted = false;
     this.bookService.RemoveBook(id).subscribe(this.SearchBook);
     this.bookData.splice(this.bookData.indexOf(this.bookData.find(book => book.book_id = id)), 1);
-    this.SearchBook();
+ //   this.SearchBook();
     this.submitted = true;
   }
 
   AddVolume(id) {
     this.bookService.AddVolume(id).subscribe(
       (volume: Volume) => { alert("Egzemplarz dodany poprawnie: "+volume.volume_id) },
-      Error => { alert("Błąd dodawania książki" +Error) });
+      Error => { alert("Błąd dodawania książki" ) });
   }
   
 

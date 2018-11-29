@@ -21,6 +21,7 @@ export class UserPIModule {
   user = new User(null, "", "", "", "", null, "", "", "", true);
   updateUserForm: FormGroup;
   submitted: boolean;
+  reset: boolean;
   constructor(
     private formBuilder: FormBuilder,
     private http: Http,
@@ -31,6 +32,7 @@ export class UserPIModule {
   }
 
   ngOnInit() {
+    this.reset = true;
     this.GetUserById();
     this.submitted = false;
     //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
@@ -42,6 +44,7 @@ export class UserPIModule {
       phone_number: [this.user.phone_number, [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
       type: [this.user.user_type, Validators.required],
       password: this.user.password,
+      password2: '',
       address: [this.user.address, Validators.required], //, Validators.pattern("/^\S*$/")
     });
   }
@@ -54,10 +57,12 @@ export class UserPIModule {
     this.userService.GetUserById(localStorage.getItem("user_id")).subscribe((user: User) => this.user = user);
   }
 
-
+  NewPassword() {
+    this.reset = this.updateUserForm.get('password') == this.updateUserForm.get('password2');
+  }
 
   checkEmailExistsInDB(control: FormControl ) {
     return this.userService.IfEmailExists(control.value).pipe(
-      map(((res: any[]) => res.filter(user => user.email == control.value).length == 0 ? { 'emailTaken': false } : { 'emailTaken': true })))
+      map(((res: any[]) => res.filter(user => user.email == control.value && user.user_id != localStorage.getItem("user_id")).length == 0 ? { 'emailTaken': false } : { 'emailTaken': true })))
   };
 }

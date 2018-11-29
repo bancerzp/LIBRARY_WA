@@ -28,52 +28,60 @@ export class UserService {
   }
 
   public get() {
-    return this.http.get(this.accessPointUrl, { headers: this.headers, withCredentials: true });
+    return this.http.get(this.accessPointUrl, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
   public AddUser(user) {
-    return this.http.post(this.accessPointUrl +'/AddUser', user, { headers: this.headers});
+    return this.http.post(this.accessPointUrl + '/AddUser', user,
+      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
+
+
+  public RemoveUser(id) {
+    return this.http.delete(this.accessPointUrl + "/RemoveUser/" + id,
+      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+  }
+
 
   //-------CHECK DATA
   public IfLoginExists(login) {
-    return this.http.get(this.accessPointUrl + '/IfLoginExists/' + login, { headers: this.headers });
+    return this.http.get(this.accessPointUrl + '/IfLoginExists/' + login, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
   public IfEmailExists(email) {
-    return this.http.get(this.accessPointUrl + '/IfEmailExists/' + email, { headers: this.headers});
+    return this.http.get(this.accessPointUrl + '/IfEmailExists/' + email, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
   public SearchUser(user) {
 
-    return this.http.post(this.accessPointUrl + "/SearchUser",user, { headers: this.headers });
+    return this.http.post(this.accessPointUrl + "/SearchUser", user, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
   
   //-------------------------user Account
   public GetUserById(id) {
-    return this.http.get(this.accessPointUrl + "/GetUserById/"+id, { headers: this.headers });
+    return this.http.get(this.accessPointUrl + "/GetUserById/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
   public GetRent(id) {
-    return this.http.get(this.accessPointUrl + "/GetRent/" + id, { headers: this.headers });
+    return this.http.get(this.accessPointUrl + "/GetRent/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
   public GetReservation(id) {
-    return this.http.get(this.accessPointUrl + "/GetReservation/" + id, { headers: this.headers });
+    return this.http.get(this.accessPointUrl + "/GetReservation/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
   public GetRenth(id) {
-    return this.http.get(this.accessPointUrl + "/GetRenth/" + id, { headers: this.headers });
+    return this.http.get(this.accessPointUrl + "/GetRenth/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
 
 
 
   public remove(payload) {
-    return this.http.delete(this.accessPointUrl + '/' + payload.id, { headers: this.headers, withCredentials: true });
+    return this.http.delete(this.accessPointUrl + '/' + payload.id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
   public update(payload) {
-    return this.http.put(this.accessPointUrl + '/' + payload.id, payload, { headers: this.headers, withCredentials: true });
+    return this.http.put(this.accessPointUrl + '/' + payload.id, payload, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
  // public login(user) {

@@ -47,12 +47,13 @@
 
   <div class="form-group">
     <label for="password">Hasło</label>
-    <input type="password" formControlName="type" class="form-control" disabled="disabled" [(ngModel)]="user.password" />
+    <input type="password" formControlName="type" class="form-control" [(ngModel)]="user.password" />
   </div>
 
   <div class="form-group">
-    <label for="password">Nowe hasło</label>
-    <input type="text" formControlName="type" class="form-control" disabled="disabled" [(ngModel)]="user.password" />
+    <label for="password2">Nowe hasło</label>
+    <input type="text" formControlName="type" class="form-control" />
+    <div class="alert alert-danger " *ngIf="(!reset )">Podane hasła są różne</div>
     <button (ngSubmit)="NewPassword()" class="btn btn-primary">Resetuj hasło</button>
     <p>Aby dokończyć resetowanie hasła należy kliknąć 'Zapisz'</p>
   </div>

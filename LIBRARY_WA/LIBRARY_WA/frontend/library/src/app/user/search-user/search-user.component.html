@@ -51,7 +51,7 @@
       <td>{{ userInfo.login  }}</td>
       <td>{{ userInfo.type  }}</td>
       <td *ngIf="userType=='l'">
-        <a (click)="DeleteUser()" class='btn btn-danger m-r-5px'>
+        <a (click)="RemoveUser(userInfo.user_id)" class='btn btn-danger m-r-5px'>
           <span class='glyphicon glyphicon-remove'></span>Usuń użytkownika
         </a>
       </td>
