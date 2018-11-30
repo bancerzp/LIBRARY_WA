@@ -34,6 +34,17 @@ export class BookReservationModule {
     this.GetReservation();
   }
 
+  RentBook(reservation_d) {
+    if (this.app.IsExpired())
+      return;
+    //błędy wyłapać
+    this.bookService.RentBook(reservation_d).subscribe(data => {
+      alert("Książka została poprawnie wypożyczona")
+    },
+      Error => { alert("Błąd wypożyczania książki" + Error) });
+  }
+
+
   GetReservation() {
     if (this.app.IsExpired())
       return;

@@ -45,6 +45,13 @@ export class BookService {
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) } );
   }
 
+  public EditBook(book) {
+    return this.http.put(this.accessPointUrl, book,
+      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+
+  }
+
+
   public SearchBook(book) {
     return this.http.post(this.accessPointUrl + "/SearchBook", book,
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
@@ -82,11 +89,6 @@ export class BookService {
     return this.http.get(this.accessPointUrl + "/GetBookById/"+book_id, { headers: this.headers });
   }
 
-  public EditBook(book) {
-    return this.http.put(this.accessPointUrl,book,
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
-
-  }
 
 
 
@@ -97,12 +99,12 @@ export class BookService {
     return this.http.put(this.accessPointUrl + "/ReserveBook",values, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
-  public RentBook(book_id, user_id) {
-    return this.http.post(this.accessPointUrl + "/RentBook/" + book_id + "/" + user_id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+  public RentBook(reservation_id) {
+    return this.http.post(this.accessPointUrl + "/RentBook/" + reservation_id , { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
-  public ReturnBook(id) {
-    return this.http.post(this.accessPointUrl + "/ReturnBook/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+  public ReturnBook(rent_id) {
+    return this.http.post(this.accessPointUrl + "/ReturnBook/" + rent_id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
 

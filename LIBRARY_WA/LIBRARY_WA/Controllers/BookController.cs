@@ -323,6 +323,7 @@ namespace LIBRARY_WA.Data
             {
                 return BadRequest(ModelState);
             }
+
             if (_context.Reservation.Where(a => a.reservation_id == reservationId).Count() == 0)
             {
                 return BadRequest("Nie ma takiej rezerwacji");

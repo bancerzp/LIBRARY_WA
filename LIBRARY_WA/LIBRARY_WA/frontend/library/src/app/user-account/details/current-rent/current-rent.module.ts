@@ -43,8 +43,8 @@ export class CurrentRentModule {
       return;
     //błędy wyłapać
     this.bookService.ReturnBook(rent_id).subscribe(data => {
-      alert("Użytkownik został poprawnie usunięty")
+      alert("Książka poprawnie zwrócona")
     },
-      Error => { alert("alle"+Error) });
+      Error => { alert("Błąd zwrotu książki"+Error) });
   }
 }

@@ -13,7 +13,7 @@ namespace LIBRARY_WA.Models
         public int user_id { get; set; }
         public String login { get; set; }
         public String password { get; set; }
-        public String user_Type { get; set; }
+        public String user_type { get; set; }
         [MaxLength]
         public String fullname { get; set; }
         public DateTime date_of_birth { get; set; }

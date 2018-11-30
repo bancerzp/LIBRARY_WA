@@ -21,6 +21,7 @@ import { AppComponent } from '../../../app.component';
 })
 export class UserPIModule {
   user = new User(null, "", "", "", "", null, "", "", "", true);
+  user_type: String;
   updateUserForm: FormGroup;
   submitted: boolean;
   reset: boolean;
@@ -38,14 +39,16 @@ export class UserPIModule {
     this.reset = true;
     this.GetUserById();
     this.submitted = false;
+    this.user_type = this.user.user_type == "l" ? "Bibliotekarz" : "Czytelnik";
     //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.updateUserForm = this.formBuilder.group({
+      user_id: [this.user.user_id],
       login: [this.user.login],
       email: [this.user.email, [Validators.email, Validators.required], this.checkEmailExistsInDB.bind(this)],
       fullname: [this.user.fullname, [Validators.required]], //, Validators.pattern("\S")
       date_of_birth: [this.user.date_of_birth, Validators.required],
       phone_number: [this.user.phone_number, [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
-      type: [this.user.user_type, Validators.required],
+      user_type: this.user_type,
       password: this.user.password,
       password2: '',
       address: [this.user.address, Validators.required], //, Validators.pattern("/^\S*$/")

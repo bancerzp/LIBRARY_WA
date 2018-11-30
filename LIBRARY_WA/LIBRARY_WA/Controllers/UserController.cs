@@ -66,7 +66,7 @@ namespace LIBRARY_WA.Controllers
                 var claims = new List<Claim>
         {
                  new Claim(ClaimTypes.Name, user.fullname),
-                 new Claim(ClaimTypes.Role, user.user_Type),
+                 new Claim(ClaimTypes.Role, user.user_type),
         };
 
                 var tokeOptions = new JwtSecurityToken(
@@ -78,7 +78,7 @@ namespace LIBRARY_WA.Controllers
                 );
 
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-                return Ok(new { Token = tokenString, id = user.user_id, user_type = user.user_Type, fullname = user.fullname,expires=DateTime.Now.AddHours(5) });
+                return Ok(new { Token = tokenString, id = user.user_id, user_type = user.user_type, fullname = user.fullname,expires=DateTime.Now.AddHours(5) });
             }
             else
             {
@@ -228,9 +228,42 @@ namespace LIBRARY_WA.Controllers
             return _context.Renth;
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> CancelReservation([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var reservation = await _context.Reservation.FindAsync(id);
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+            Reservation[] resToChange = _context.Reservation.Where(a => a.book_id == reservation.book_id && a.queue > reservation.queue).ToArray();
+            foreach (Reservation res in resToChange)
+            {
+                res.queue = res.queue - 1;
+                if (res.queue == 0)
+                {
+                    res.is_active = true;
+                    res.expire_date = DateTime.Now.AddDays(8);
+                    res.volume_id = reservation.volume_id;
+                }
+            }
+
+
+            _context.Reservation.Remove(reservation);
+            await _context.SaveChangesAsync();
+
+            return Ok(reservation);
+        }
+
+
         //zarzadzanie rezerwacjami
         [HttpDelete("{id}")]
-        public async Task<IActionResult> CancelReservation([FromRoute] int reservation_id)
+        public async Task<IActionResult> CancelReservationnnn([FromRoute] int reservation_id)
         {
             if (!ModelState.IsValid)
             {
