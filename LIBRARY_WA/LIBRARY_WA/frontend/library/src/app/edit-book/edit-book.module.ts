@@ -28,6 +28,7 @@ export class EditBookComponent {
   book:Book = new Book(null,null, "", "", "", "", "", "",  true);
   public volume: Volume[] = [];
   public displayVolume: boolean;
+  public message: String;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -96,29 +97,30 @@ export class EditBookComponent {
   RemoveVolume(id) {
     if (this.app.IsExpired())
       return;
-  this.displayVolume = false;
+    this.submitted = false;
+    this.displayVolume = false;
     this.bookService.RemoveVolume(id).subscribe(data => {
-      alert("Egzemplarz został poprawnie usunięty");
+     this.message="Egzemplarz został poprawnie usunięty";
       this.volume = this.volume.filter(volume => volume.volume_id != id);
     },
-      Error => { alert("Błąd dodawania książki") });
-    
+      response => { this.message = (<any>response).error.alert});
     this.displayVolume = true;
+    this.submitted = true;
 }
   EditBook() {
     if (this.app.IsExpired())
       return;
     this.bookService.EditBook(this.book).subscribe(data => {
-      alert("Egzemplarz został poprawnie usunięty");
-     
-    });
+      this.message=("Egzemplarz został poprawnie usunięty.");
+    }, response => { this.message = (<any>response).error.alert });
 
   }
 
   GetBookById() {
     if (this.app.IsExpired())
       return;
-    return this.bookService.GetBookById(localStorage.getItem("book_id")).subscribe((book: Book) => this.book = book);
+    return this.bookService.GetBookById(localStorage.getItem("book_id")).subscribe(
+      (book: Book) => this.book = book, response => { this.message = (<any>response).error.alert });
   }
 
 }

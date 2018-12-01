@@ -1,3 +1,6 @@
+<a  style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
+  <b>            {{message}}</b>
+</a>
 
 <table class="renthTable w3-hoverable" >
   <tr>
@@ -11,8 +14,8 @@
       <td>{{ renthInfo.isbn  }}</td>
       <td>{{ renthInfo.title  }}</td>
       <td>{{ renthInfo.volume_id }}</td>
-      <td>{{ renthInfo.start_date }}</td>
-      <td>{{ renthInfo.end_date  }}</td>
+      <td>{{ renthInfo.start_date.substring(0,10) }}</td>
+      <td>{{ renthInfo.end_date.substring(0,10)  }}</td>
     </tr>
   </tbody>
 </table>

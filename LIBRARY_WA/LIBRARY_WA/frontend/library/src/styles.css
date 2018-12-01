@@ -193,8 +193,8 @@ h1 {
   margin: auto;
   text-align: center;
   overflow: hidden;
-  width: 80%;
-  white-space: nowrap;
+  width: 100%;
+  white-space: normal;
 }
 
 .searchUserResult {
@@ -207,7 +207,7 @@ h1 {
   text-align: center;
   overflow: hidden;
   width: 110%;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .renthTable, .rentTable, .reservationTable {
@@ -219,7 +219,7 @@ h1 {
   margin: auto;
   text-align: center;
   overflow: hidden;
-  width: 120%;
+  width: 100%;
   white-space: normal;
 }
 

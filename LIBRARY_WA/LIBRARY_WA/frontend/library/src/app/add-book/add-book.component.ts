@@ -22,6 +22,7 @@ export class AddBookComponent implements OnInit {
   public language = [];
   @Output() book = new EventEmitter<Book>();
   submitted: boolean;
+  message: String;
 
   constructor(private formBuilder: FormBuilder,
     private http: Http,
@@ -55,12 +56,8 @@ export class AddBookComponent implements OnInit {
     this.id = 0;
     this.submitted = true;
     var added=this.bookService.AddBook(m).subscribe(
-      (data: Book) => { this.id = Number(data.book_id), alert("Książka dodana poprawnie " + this.id); this.ngOnInit();},
-      Error => { alert("Błąd dodawania książki") });
-      //   this.user = this.addUserForm.value();
-      // this.userService.addUser(m);
-      //    .subscribe(user =>
-    //    this.user = user['records']);
+      (data: Book) => { this.id = Number(data.book_id), this.message="Książka dodana poprawnie " + this.id; this.ngOnInit();},
+      response => { this.message = (<any>response).error.alert });
     this.submitted = false;
     }
 

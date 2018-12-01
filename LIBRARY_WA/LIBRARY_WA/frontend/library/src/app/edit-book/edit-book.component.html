@@ -70,7 +70,9 @@
 </form>
 
 
-
+<a *ngIf="submitted" style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
+  <b>            {{message}}</b>
+</a>
 
 <table class="searchResult w3-hoverable" *ngIf="submitted">
   <thead>

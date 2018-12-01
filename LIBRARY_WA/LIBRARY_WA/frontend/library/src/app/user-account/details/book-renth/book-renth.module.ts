@@ -19,7 +19,8 @@ import { AppComponent } from '../../../app.component';
 export class BookRenthModule {
   renth: Renth[];
   column = ["Numer wypożyczenia", "ISBN", "Tytuł", "Numer egzemplarza", "Data wypożyczenia", "Data zwrotu"];
-  name:String
+  name: String;
+  message: String;
 
   constructor(
     private userService: UserService,
@@ -34,6 +35,7 @@ export class BookRenthModule {
     if (this.app.IsExpired())
       return;
     this.name = localStorage.getItem("user_id");
-    this.userService.GetRenth(this.name).subscribe((renths: any[]) => this.renth = renths);
+    this.userService.GetRenth(this.name).subscribe((renths: any[]) => this.renth = renths,
+      response => { this.message = (<any>response).error.alert });
   }
 }

@@ -1,5 +1,9 @@
 <title>current-rent</title>
 
+<a *ngIf="submitted" style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
+  <b>            {{message}}</b>
+</a>
+
 <table class="rentTable w3-hoverable" >
   <tr>
     <th *ngFor="let name of column">
@@ -13,8 +17,8 @@
       <td>{{ rentInfo.isbn  }}</td>
       <td>{{ rentInfo.title  }}</td>
       <td>{{ rentInfo.volume_id }}</td>
-      <td>{{ rentInfo.start_date }}</td>
-      <td>{{ rentInfo.expire_date  }}</td>
+      <td>{{ rentInfo.start_date.substring(0,10)}}</td>
+      <td>{{ rentInfo.expire_date.substring(0,10)  }}</td>
       <td *ngIf="user_type=='l'">
         <a  (click)="ReturnBook(rentInfo.rent_id)" class='btn btn-info m-r-5px'>
           Zwrot

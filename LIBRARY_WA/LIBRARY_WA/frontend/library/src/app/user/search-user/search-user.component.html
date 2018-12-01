@@ -31,6 +31,9 @@
   </div>
 </form>
 
+<a *ngIf="submitted" style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
+  <b>            {{message}}</b>
+</a>
 
 <table class="searchUserResult w3-hoverable" *ngIf="submitted">
   <tr>
@@ -45,7 +48,7 @@
     <tr *ngFor="let userInfo of userData">
       <td>{{ userInfo.user_id  }}</td>
       <td>{{ userInfo.fullname  }}</td>
-      <td>{{ userInfo.date_of_birth  }}</td>
+      <td>{{ userInfo.date_of_birth.substring(0,10)  }}</td>
       <td>{{ userInfo.email }}</td>
       <td>{{ userInfo.phone_number }}</td>
       <td>{{ userInfo.login  }}</td>

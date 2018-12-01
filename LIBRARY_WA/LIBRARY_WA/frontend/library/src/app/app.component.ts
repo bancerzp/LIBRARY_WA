@@ -13,26 +13,19 @@ export class AppComponent  {
   public addBook: MenuItem = { title: 'Dodaj książkę', path: 'app-add-book', href: '#addBook' };
   public users: MenuItem = { title: 'Użytkownicy', path: 'app-user', href: '#users' };
   public user: MenuItem = { title: 'Moje konto', path: 'app-user-account', href: '#user' };
+  public userData: MenuItem = { title: 'Konto użytkownika', path: 'app-user-account', href: '#user' };
   public searchBook: MenuItem = { title: 'Wyszukaj książkę', path: 'app-search-book', href: '#searchBook' };
   public searchUser: MenuItem = { title: 'Wyszukaj użytkownika', path: 'app-search-user', href: '#searchUser' };
 
   public menuReader: MenuItem[]=[this.searchBook,this.user];
   public menuGuest: MenuItem[] = [this.login, this.searchBook];
-  public menuLibrarian: MenuItem[] = [this.users, this.searchBook, this.addBook, this.login,this.user];
+  public menuLibrarian: MenuItem[] = [this.users, this.searchBook, this.addBook, this.login, this.userData];
   public menu: MenuItem[]; //= this.menuLibrarian;
 
-  public nn: String;
   public userFullname;
   public isLogged;
 
-  constructor(private router: Router) {
-
-  }
-
-  countChangedHandler(n: String) {
-    this.nn = n;
-    console.log(this.nn);
-  }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.isLogged = false;

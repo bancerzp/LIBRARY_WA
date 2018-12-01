@@ -3,6 +3,15 @@
 </p>
 
 <h2>Dodaj książkę</h2>
+
+<div *ngIf="submitted" class="modal-content">
+  <a  style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
+    <b>            {{message}}</b>
+  </a>
+</div>
+
+
+
 <form [formGroup]="addBookForm" (ngSubmit)="AddBook()">
   <div class="form-group">
     <label for="isbn">isbn</label>

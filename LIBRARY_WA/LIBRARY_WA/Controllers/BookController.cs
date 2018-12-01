@@ -64,7 +64,7 @@ namespace LIBRARY_WA.Data
 
             if (_context.Book.Where(a => a.isbn == book.isbn).Count() > 0)
             {
-                return BadRequest("Książka o danym ISBN już istnieje w bazie danych.");
+                return BadRequest(new {alert= "Książka o danym ISBN już istnieje w bazie danych." });
             }
 
             //  book.is_available = true;
@@ -91,7 +91,7 @@ namespace LIBRARY_WA.Data
 
             if (book == null)
             {
-                return NotFound();
+                return NotFound(new { alert = "Książka o danym id nie istnieje!" });
             }
 
             return Ok(book);
@@ -116,9 +116,6 @@ namespace LIBRARY_WA.Data
         }
 
 
-
-
-
         [HttpPost]
         public async Task<IActionResult> SearchBook([FromBody] String[] search)
         {
@@ -127,9 +124,9 @@ namespace LIBRARY_WA.Data
             {
                 return BadRequest(ModelState);
             }
-            //  search.
-            FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            BinaryWriter w = new BinaryWriter(fs);
+
+          //  FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+          //  BinaryWriter w = new BinaryWriter(fs);
             String[] name = { "book_id", "ISBN", "title", "author_fullname", "year", "language", "type" };
             String sql = "Select * from Book where is_available=true ";
             for (int i = 0; i < search.Length; i++)
@@ -151,8 +148,8 @@ namespace LIBRARY_WA.Data
                 }
 
             }
-            w.Write(sql);
-            w.Close();
+         //   w.Write(sql);
+        //    w.Close();
             var book = _context.Book.FromSql(sql);
 
             return Ok(book);
@@ -200,7 +197,6 @@ namespace LIBRARY_WA.Data
         [HttpPost("{id}")]//, Authorize(Roles = "l")]
         public async Task<IActionResult> AddVolume([FromRoute] int id)
         {
-
             Volume volume = new Volume();
             volume.is_free = true;
             volume.book_id = id;
@@ -220,19 +216,14 @@ namespace LIBRARY_WA.Data
 
             var volume = _context.Volume;
 
-            if (volume == null)
-            {
-                return NotFound();
-            }
-
             return Ok(volume);
         }
 
         //-----------------------
 
 
-        [HttpDelete("{id}"), Authorize(Roles = "l")]
-        public async Task<IActionResult> RemoveVolume([FromRoute] int volume_id)
+        [HttpDelete("{id}"), Authorize(Roles = "l")]//
+        public async Task<IActionResult> RemoveVolume([FromRoute] int id)
         {
             //jeśli ma wypożyczone książki to komunikat, że nie można usunąć użytkownika bo ma nie wszystkie książki oddane, 
             //a jesli usunięty to zmienia isValid na false
@@ -240,16 +231,17 @@ namespace LIBRARY_WA.Data
             {
                 return BadRequest(ModelState);
             }
-
-            var volume = _context.Volume.Where(a=>a.volume_id==volume_id).First();
-            if (volume == null)
+            
+            if (_context.Volume.Where(a => a.volume_id == id).Count() == 0)
             {
-                return NotFound();
+                return NotFound(new { alert = "Egzemplarz o danym id nie istnieje!" });
             }
 
-            if (_context.Rent.Where(a => a.volume_id == volume_id).Count() > 0)
+            var volume = _context.Volume.Where(a => a.volume_id == id).FirstOrDefault();
+
+            if (_context.Rent.Where(a => a.volume_id == id).Count() > 0)
             {
-                return NotFound(new { alert = "Dany egzemplarz jest wypożyczony. Nie można go usunąć" });
+                return NotFound(new { alert = "Dany egzemplarz jest wypożyczony. Nie można go usunąć!" });
             }
 
             _context.Volume.Remove(volume);
@@ -262,39 +254,46 @@ namespace LIBRARY_WA.Data
         [HttpPut, Authorize(Roles = "l,r")]
         public async Task<IActionResult> ReserveBook([FromBody] int[] data)
         {
-
+            //FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+           // BinaryWriter w = new BinaryWriter(fs);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+           
             if (_context.Book.Where(a => a.book_id == data[0]).Count() == 0)
             {
-                return NotFound("Nie znaleziono książki o podanym id");
+                return NotFound(new { alert = "Nie znaleziono książki o podanym id" });
             }
-
+          
             if (_context.User.Where(a => a.user_id == (data[1])).Count() == 0)
             {
-                return NotFound("Nie znaleziono użytkownika o podanym id");
+                return NotFound(new { alert = "Nie znaleziono użytkownika o podanym id" });
             }
-
+          
             if (_context.Volume.Where(a => a.book_id == data[0]).Count() == 0)
             {
-                return NotFound("Książka nie ma żadnych egzemplarzy!");
+                return NotFound(new { alert = "Książka nie ma żadnych egzemplarzy!" });
             }
-
+          
             Book book = _context.Book.Where(a => a.book_id == (data[0])).FirstOrDefault();
+           
             int volume_id = _context.Volume.Where(a => a.book_id == data[0]).FirstOrDefault().volume_id;
+          
             DateTime start_date = DateTime.Now;
             DateTime expire_date;
             int queue;
             Boolean is_active = true;
+          
+            
             if (_context.Volume.Where(a => a.book_id == data[0] && a.is_free == true).Count() == 0)
             {
-                queue = _context.Reservation.Where(a => a.book_id == data[0]).OrderByDescending(a => a.queue).FirstOrDefault().queue + 1;
+                if (_context.Reservation.Where(a => a.book_id == data[0]).OrderByDescending(a => a.queue).FirstOrDefault() == null)
+                    queue = 1;
+                else
+                 queue = _context.Reservation.Where(a => a.book_id == data[0]).OrderByDescending(a => a.queue).FirstOrDefault().queue + 1;
                 is_active = false;
                 expire_date = DateTime.Now;
-
             }
             else
             {
@@ -302,21 +301,23 @@ namespace LIBRARY_WA.Data
                 expire_date = DateTime.Now.AddDays(14);
                 _context.Volume.Where(a => a.volume_id == volume_id).FirstOrDefault().is_free = false;
                 queue = 0;
+              
             }
-            //    FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            //    BinaryWriter w = new BinaryWriter(fs);
+          
+         //   FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+           //     BinaryWriter w = new BinaryWriter(fs);
             //   w.Write(data[1]+"   user    "+ book.title + "    title    " + book.isbn + "  isbn     " + book.book_id + "  book_id    " + volume_id + "  volume     " + start_date + "   start    " + expire_date + "  stop     " + queue + "  kolejka     " + is_active);
-            //   w.Close();
+              
             Reservation reservation = new Reservation(data[1], book.title, book.isbn, book.book_id, volume_id, start_date, expire_date, queue, is_active);
-            await _context.Reservation.AddAsync(reservation);
+            _context.Reservation.Add(reservation);
             await _context.SaveChangesAsync();
-
+           
             return Ok(reservation);
         }
 
 
 
-        [HttpPut("{id}"), Authorize(Roles = "l")]
+        [HttpPut("{id}"), Authorize(Roles = "l")] //
         public async Task<IActionResult> RentBook([FromRoute] int reservationId)
         {
 
@@ -327,13 +328,13 @@ namespace LIBRARY_WA.Data
 
             if (_context.Reservation.Where(a => a.reservation_id == reservationId).Count() == 0)
             {
-                return Ok(new { error="Nie ma takiej rezerwacji" });
+                return Ok(new { alert="Nie ma takiej rezerwacji" });
             }
 
             Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservationId).FirstOrDefault();
             if (_context.Volume.Where(a => a.is_free == true).Count() == 0)
             {
-                return Ok(new { error = "Nie ma takiego egzemplarza" });
+                return Ok(new { alert = "Nie ma takiego egzemplarza" });
             }
             int volume_id = _context.Volume.Where(a => a.is_free == true).FirstOrDefault().volume_id;
             //zmień is free na false
@@ -354,7 +355,7 @@ namespace LIBRARY_WA.Data
 
             if (_context.Rent.Where(a => a.rent_id == rent_id).Count() == 0)
             {
-                return BadRequest(new { error = "Nie ma takiego wypożyczenia" });
+                return BadRequest(new { alert = "Nie ma takiego wypożyczenia" });
             }
 
             Rent rent = _context.Rent.Where(a => a.rent_id == rent_id).FirstOrDefault();

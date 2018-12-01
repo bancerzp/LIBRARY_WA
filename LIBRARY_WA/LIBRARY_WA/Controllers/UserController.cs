@@ -55,7 +55,7 @@ namespace LIBRARY_WA.Controllers
         {
             if (userData == null)
             {
-                return BadRequest("Invalid client request");
+                return BadRequest(new { alert = "Nieprawidłowe zapytanie" });
             }
             User user = _context.User.Where(u => u.login == userData.login && u.password == userData.password).FirstOrDefault();
             if (user != null)
@@ -100,7 +100,7 @@ namespace LIBRARY_WA.Controllers
 
             if (user == null)
             {
-                return NotFound();
+                return NotFound(new { alert = "Użytkownik o danym id nie istnieje!" });
             }
 
             return Ok(user);
@@ -150,12 +150,12 @@ namespace LIBRARY_WA.Controllers
 
             if (_context.User.Where(a => a.login == user.login).Count() > 0)
             {
-                return BadRequest("Dany login jest już zajęty");
+                return BadRequest(new { alert = "Dany login jest już zajęty" });
             }
 
             if (_context.User.Where(a => a.email == user.email).Count() > 0)
             {
-                return BadRequest("Dany email już istnieje w bazie danych.");
+                return BadRequest(new { alert = "Dany email już istnieje w bazie danych." });
             }
 
             _context.User.Add(user);
@@ -176,7 +176,7 @@ namespace LIBRARY_WA.Controllers
 
             if (_context.Rent.Where(a => a.user_id == id).Count() > 0)
             {
-                return Ok("Nie można usunąć użytkownika , bo ma nieoddane książki!!");
+                return Ok(new { alert = "Nie można usunąć użytkownika , bo ma nieoddane książki!!" });
             }
 
             var user = await _context.User.FindAsync(id);
@@ -240,7 +240,7 @@ namespace LIBRARY_WA.Controllers
             var reservation = await _context.Reservation.FindAsync(id);
             if (reservation == null)
             {
-                return NotFound();
+                return NotFound(new { alert = "Nie istnieje rezerwacja o danym id!" });
             }
             Reservation[] resToChange = _context.Reservation.Where(a => a.book_id == reservation.book_id && a.queue > reservation.queue).ToArray();
             foreach (Reservation res in resToChange)
@@ -279,7 +279,7 @@ namespace LIBRARY_WA.Controllers
             if (_context.Reservation.Find(reservation_id).queue>0)
             {
 
-                return BadRequest("Nie ma takiej rezerwacji");
+                return BadRequest(new { alert = "Nie ma takiej rezerwacji" });
             }
 
 
@@ -317,7 +317,7 @@ namespace LIBRARY_WA.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            //new {alert= 
             _context.Entry(user).State = EntityState.Modified;
             _context.User.Update(user);
             try

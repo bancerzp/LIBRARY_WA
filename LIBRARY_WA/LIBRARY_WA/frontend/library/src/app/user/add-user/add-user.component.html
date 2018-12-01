@@ -1,4 +1,9 @@
 <h2>Dodaj użytkownika</h2>
+
+<a *ngIf="submitted" style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
+  <b>            {{message}}</b>
+</a>
+
 <form [formGroup]="addUserForm" (ngSubmit)="AddUser()">
 
   <div class="form-group">

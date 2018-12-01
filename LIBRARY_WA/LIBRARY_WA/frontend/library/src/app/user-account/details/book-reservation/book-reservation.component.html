@@ -1,6 +1,10 @@
 
 <title>book-reservation</title>
 
+<a style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
+  <b>            {{message}}</b>
+</a>
+
 <table class="reservationTable w3-hoverable">
   <tr>
     <th *ngFor="let name of column">
@@ -17,8 +21,9 @@
       <td>{{ reservationInfo.title  }}</td>
       <td *ngIf=(reservationInfo.is_active)>{{ reservationInfo.volume_id }}</td>
       <td *ngIf=(!reservationInfo.is_active)></td>
-      <td>{{ reservationInfo.start_date }}</td>
-      <td>{{ reservationInfo.expire_date  }}</td>
+      <td>{{ reservationInfo.start_date.substring(0,10) }}</td>
+      <td *ngIf=(reservationInfo.is_active)>{{ reservationInfo.expire_date.substring(0,10)  }}</td>
+      <td *ngIf=(!reservationInfo.is_active)></td>
       <td>{{ reservationInfo.queue+1 }}</td>
       <td *ngIf=(reservationInfo.is_active)>Tak</td>
       <td *ngIf=(!reservationInfo.is_active)>Nie</td>

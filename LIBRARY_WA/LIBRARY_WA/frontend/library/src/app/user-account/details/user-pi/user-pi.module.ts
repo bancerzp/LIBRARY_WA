@@ -26,6 +26,7 @@ export class UserPIModule {
   submitted: boolean;
   reset: boolean;
   resetClicked: boolean;
+  message: String;
   constructor(
     private formBuilder: FormBuilder,
     private http: Http,
@@ -59,15 +60,27 @@ export class UserPIModule {
   }
 
   UpdateUser() {
+    this.submitted = false;
     if (this.app.IsExpired())
       return;
-    this.userService.UpdateUser(this.user);
+    //,
+    // response => { this.message = (<any>response).error.alert });
+    if (this.reset == false) {
+      this.submitted = false;
+      this.message="Wpisane hasła się różnią! Nie można zapisać zmian!"
+      this.submitted = true;
+      return;
+    }
+    this.userService.UpdateUser(this.user).subscribe(res => this.message="Dane zostały zaktualizowane",
+      response => { this.message = (<any>response).error.alert });
+    this.submitted = true;
   }
 
   GetUserById() {
     if (this.app.IsExpired())
       return;
-    this.userService.GetUserById(localStorage.getItem("user_id")).subscribe((user: User) => this.user = user);
+    this.userService.GetUserById(localStorage.getItem("user_id")).subscribe((user: User) => this.user = user,
+      response => { this.message = (<any>response).error.alert });
   }
 
   NewPassword() {
@@ -75,9 +88,7 @@ export class UserPIModule {
     if (this.app.IsExpired())
       return;
     this.resetClicked = true;
-    this.reset=this.updateUserForm.get('password').value == this.updateUserForm.get('password2').value;
-    
-   
+    this.reset=this.updateUserForm.get('password').value == this.updateUserForm.get('password2').value; 
   }
   CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(

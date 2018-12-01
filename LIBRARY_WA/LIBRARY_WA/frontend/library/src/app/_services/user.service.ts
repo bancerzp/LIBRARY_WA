@@ -62,8 +62,6 @@ export class UserService {
     return this.http.get(this.accessPointUrl + '/IfEmailExists/' + email, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
-
-
   
   //-------------------------user Account
   public GetUserById(id) {

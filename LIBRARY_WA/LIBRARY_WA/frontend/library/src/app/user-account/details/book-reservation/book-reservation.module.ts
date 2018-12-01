@@ -21,6 +21,7 @@ export class BookReservationModule {
   column = ["Id. rezerwacji", "ISBN", "Tytuł", "Numer egzemplarza", "Data rezerwacji", "Rezerwacja do:","Kolejka", "Czy gotowe do wypożyczenia?"];
   user_type: string;
   submitted: boolean;
+  message: String;
 
   constructor(
     private userService: UserService,
@@ -29,20 +30,23 @@ export class BookReservationModule {
   }
 
   ngOnInit() {
-    this.submitted = true;
     this.user_type = localStorage.getItem("user_type");
     this.GetReservation();
+    this.submitted = true;
   }
 
   RentBook(reservation_d) {
+    this.submitted = false;
     if (this.app.IsExpired())
       return;
     //błędy wyłapać
         this.bookService.RentBook(reservation_d).subscribe(data => {
-     alert("Książka została poprawnie wypożyczona")
-        }, response => {let error = (<any>response).error; alert("Błąd wypożyczania książki" + error); alert("Błąd wypożyczania książki" + response) });
-  }
+          this.message = "Książka została poprawnie wypożyczona";
 
+        },
+      response => { this.message = (<any>response).error.alert });
+    this.submitted = true;}
+  
        
  //    this.bookService.RentBook(reservation_d).map((response: Response) => {
 //  alert("Książka została poprawnie wypożyczona")
@@ -60,7 +64,8 @@ export class BookReservationModule {
   GetReservation() {
     if (this.app.IsExpired())
       return;
-    this.userService.GetReservation(localStorage.getItem("user_id")).subscribe((reservations: any[]) => this.reservation = reservations);
+    this.userService.GetReservation(localStorage.getItem("user_id")).subscribe((reservations: any[]) => this.reservation = reservations,
+      response => { this.message = (<any>response).error.alert });
   }
 
   CancelReservation(reservationId) {
@@ -69,8 +74,9 @@ export class BookReservationModule {
     this.submitted = false;
     this.userService.CancelReservation(reservationId).subscribe(data => {
       this.reservation = this.reservation.filter(reservation => reservation.reservation_id != reservationId);
+      this.message="Rezerwacja została anulowana";
     },
-      Error => { alert(Error.text()) });
+      response => { this.message = (<any>response).error.alert });
     this.submitted = true;
   }
 }

@@ -21,6 +21,8 @@ export class CurrentRentModule {
   rent: Rent[];
   column = ["Numer wypożyczenia", "ISBN", "Tytuł", "Numer egzemplarza", "Data wypożyczenia", "Wypożyczenie do"];
   user_type: String;
+  message: String;
+  submitted: boolean;
 
   constructor(
     private userService: UserService,
@@ -31,20 +33,25 @@ export class CurrentRentModule {
   ngOnInit() {
     this.user_type = localStorage.getItem("user_type");
     this.GetRent();
+    this.submitted = true;
   }
 
   GetRent() {
     if (this.app.IsExpired())
       return;
-    this.userService.GetRent(localStorage.getItem("user_id")).subscribe((rents: any[]) => this.rent = rents);
+    this.userService.GetRent(localStorage.getItem("user_id")).subscribe((rents: any[]) => this.rent = rents,
+      response => { this.message = (<any>response).error });
   }
   ReturnBook(rent_id) {
+    this.submitted = false;
     if (this.app.IsExpired())
       return;
     //błędy wyłapać
     this.bookService.ReturnBook(rent_id).subscribe(data => {
-      alert("Książka poprawnie zwrócona")
+      this.message = "Książka poprawnie zwrócona";
     },
-      Error => { alert("Błąd zwrotu książki" + Error.error); alert("Błąd zwrotu książki" + Error) });
+      response => { this.message = (<any>response).error });
+    this.submitted = true;
   }
+  
 }

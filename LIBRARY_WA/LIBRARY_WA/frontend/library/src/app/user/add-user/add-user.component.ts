@@ -25,6 +25,7 @@ export class AddUserComponent implements OnInit {
   ifEmailExists: any;
   ifLoginExists: any[];
   maxDate = new Date().toString();
+  message: String;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -68,8 +69,8 @@ export class AddUserComponent implements OnInit {
    //   return;
    // }
     this.userService.AddUser(this.user).subscribe(
-      data => { alert("Użytkownik dodany poprawnie"); this.ngOnInit() },
-      Error => { alert("Błąd dodawania użytkownika") });
+      data => { this.message="Użytkownik dodany poprawnie"; this.ngOnInit() },
+      response => { this.message = (<any>response).error.alert });
 
  //   this.user = this.addUserForm.value();
    // this.userService.addUser(m);

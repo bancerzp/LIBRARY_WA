@@ -26,6 +26,7 @@ export class SearchUserComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   userType: string;
+  message: String;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -78,7 +79,8 @@ export class SearchUserComponent implements OnInit {
     });
     this.submitted = true;
 
-    return this.userService.SearchUser(this.values).subscribe((data: User[]) => this.userData = data)
+    return this.userService.SearchUser(this.values).subscribe((data: User[]) => this.userData = data,
+      response => { this.message = (<any>response).error.alert });
   }
 
   RemoveUser(id) {
@@ -88,8 +90,9 @@ export class SearchUserComponent implements OnInit {
     this.userService.RemoveUser(id).subscribe(data =>
     {
       this.userData = this.userData.filter(user => user.user_id != id);
+      this.message="Użytkownik o id: "+id+" został usunięty";
     },
-      Error => { alert(Error.message) });
+      response => { this.message = (<any>response).error.alert });
     this.submitted = true;
   }
 
@@ -99,6 +102,8 @@ export class SearchUserComponent implements OnInit {
     this.app.RouteTo("app-user-account");
       localStorage.setItem("user_id",id)
     }
+
+
 
     
     // http.post('my/php/login.php?action=login', this.loginForm.login, this.loginForm.password).then(function (user) {

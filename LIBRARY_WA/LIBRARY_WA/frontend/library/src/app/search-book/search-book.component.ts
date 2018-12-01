@@ -26,24 +26,26 @@ export class SearchBookComponent implements OnInit {
   public userAction = [];
   searchBookForm: FormGroup;
   column: String[] = ["Id. książki", "Tytuł", "ISBN", "Autor", "Rok wydania", "Język wydania", "Rodzaj"];
-  columnAddReader: UserAction[] = [ new UserAction("Zarezerwuj","Reserve")]
+  columnAddReader: UserAction[] = [new UserAction("Zarezerwuj", "Reserve")]
   columnAddLibrarian: UserAction[] = [new UserAction("Zarezerwuj", "Reserve()"), new UserAction("Edytuj", "Update()"), new UserAction("Usuń", "Delete()"), new UserAction("Dodaj egzemplarz", "AddVolume()")]
   user_id: String;
+  message: String;
+
   constructor(
     private formBuilder: FormBuilder,
     private http: Http,
     private bookService: BookService,
     private app: AppComponent,
   ) {
-   // bookService.get().subscribe((data: any) => this.resultData = data);
+    // bookService.get().subscribe((data: any) => this.resultData = data);
   }
 
 
   ngOnInit() {
-   // this.recordDeleted.emit("Wydarzenie wyemitowane");
+    // this.recordDeleted.emit("Wydarzenie wyemitowane");
     //w zależności od typu użytkownika różne akcje
     this.userType = localStorage.getItem("user_type");
-   
+
     this.submitted = false;
     //pobranie wartości do list rozwijanych
     this.GetBookType();
@@ -52,18 +54,18 @@ export class SearchBookComponent implements OnInit {
 
     var names = this.column;
     this.searchBookForm = this.formBuilder.group({
-    book_id:'',
-    isbn: [''],
-    title: '',
-    author_fullname: [''],
-    year: [''],
-    language: '',
-    type: ''
+      book_id: '',
+      isbn: [''],
+      title: '',
+      author_fullname: [''],
+      year: [''],
+      language: '',
+      type: ''
     });
   }
 
   SearchBook() {
-    
+
     this.submitted = false;
     this.values = [];
 
@@ -75,12 +77,13 @@ export class SearchBookComponent implements OnInit {
       else {
         this.values.push(s.replace("'", ""));
       }
-     
+
     });
     this.submitted = true;
 
-    return this.bookService.SearchBook(this.values).subscribe((data: Book[]) => this.bookData = data)
-    
+    return this.bookService.SearchBook(this.values).subscribe((data: Book[]) => this.bookData = data,
+      response => { this.message = (<any>response).error.alert });
+
   }
 
   clearForm() {
@@ -92,7 +95,7 @@ export class SearchBookComponent implements OnInit {
   }
 
   GetBookType() {
-    return this.bookService.GetBookType().subscribe((types: any[]) => this.bookType=types);
+    return this.bookService.GetBookType().subscribe((types: any[]) => this.bookType = types);
   };
 
   GetLanguage() {
@@ -100,20 +103,26 @@ export class SearchBookComponent implements OnInit {
   };
 
   ReserveBookLibrarian(book_id, user_id) {
+    this.submitted = false;
     if (this.app.IsExpired())
       return;
     //wypisywanie błędu
     this.bookService.ReserveBook(book_id, Number.parseInt(user_id)).subscribe((res: Response) => {
-      alert("Książka została zarezerwowana. Miejsce w kolejce: " + res.json)
+      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + (<any>res)
     },
-      (Error: Response) => { alert("Błąd dodawania książki " + Error.json) });
+      response => { this.message = (<any>response).error.alert });
+    this.submitted = true;
   }
 
   ReserveBookReader(book_id) {
+    this.submitted = false;
     if (this.app.IsExpired())
       return;
-    this.bookService.ReserveBook(book_id, Number.parseInt(localStorage.getItem("user_id"))).subscribe();
-    this.app.RouteTo("/app-edit-book");
+    this.bookService.ReserveBook(book_id, Number.parseInt(localStorage.getItem("user_id"))).subscribe((res: Response) => {
+      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + (<any>res)
+    },
+      response => { this.message = (<any>response).error.alert });
+    this.submitted = true;
   }
 
   //nie zrobione
@@ -122,7 +131,9 @@ export class SearchBookComponent implements OnInit {
       return;
     localStorage.setItem("book_id", book_id);
     this.app.RouteTo("app-edit-book");
-  //  this.bookService.update(book_id, localStorage.getItem("user_id")).subscribe();
+    //  this.bookService.update(book_id, localStorage.getItem("user_id")).subscribe();
+    //,
+    //  response => { this.message = (<any>response).error.alert });
   }
 
   RemoveBook(id) {
@@ -131,24 +142,26 @@ export class SearchBookComponent implements OnInit {
 
     this.submitted = false;
     this.bookService.RemoveBook(id).subscribe(data => {
-      alert("Książka została poprawnie usunięta");
+      this.message = "Książka została poprawnie usunięta.";
       this.bookData = this.bookData.filter(book => book.book_id != id);
-     },
-      Error => { alert("Błąd usuwania książki") });
- //   this.bookData.splice(this.bookData.indexOf(this.bookData.find(book => book.book_id = id)), 1);
- //   this.SearchBook();
+    },
+      response => { this.message = (<any>response).error.alert });
+    //   this.bookData.splice(this.bookData.indexOf(this.bookData.find(book => book.book_id = id)), 1);
+    //   this.SearchBook();
     this.submitted = true;
   }
 
   AddVolume(id) {
     if (this.app.IsExpired())
       return;
-
+    this.submitted = false;
     this.bookService.AddVolume(id).subscribe(
-      (volume: Volume) => { alert("Egzemplarz dodany poprawnie: "+volume.volume_id) },
-      Error => { alert("Błąd dodawania książki" ) });
+      (volume: Volume) => {
+      this.message = "Egzemplarz dodany poprawnie: " + volume.volume_id
+  },
+      response => { this.message = (<any>response).error.alert });
   }
-  
+  this.submitted = true;
 }
 
 export class UserAction {
