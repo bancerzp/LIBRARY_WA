@@ -86,16 +86,18 @@ export class BookService {
   public ReserveBook(book_id, user_id) {
     var values = [book_id, user_id]
     return this.http.put(this.accessPointUrl + "/ReserveBook", values,
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+    { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
   public RentBook(reservation_id) {
-    return this.http.put(this.accessPointUrl + "/RentBook/" + reservation_id,
+    var values = [reservation_id]
+    return this.http.put(this.accessPointUrl + "/RentBook",values,
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
   public ReturnBook(rent_id) {
-    return this.http.post(this.accessPointUrl + "/ReturnBook/" + rent_id,
+    var values = [rent_id];
+    return this.http.post(this.accessPointUrl + "/ReturnBook",values,
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
   

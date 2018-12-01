@@ -320,27 +320,22 @@ namespace LIBRARY_WA.Data
 
 
 
-        [HttpPut("{reservationId}"), Authorize] //, (Roles = "l")
-        public async Task<IActionResult> RentBook([FromRoute] int reservationId)
+        [HttpPut, Authorize(Roles = "l")] //, 
+        public async Task<IActionResult> RentBook([FromRoute] int[] reservation_id)
         {
-            FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            BinaryWriter w = new BinaryWriter(fs);
-            w.Write("1");
-            
-
-
+           
+          
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            w.Write("2");
-            w.Close();
-            if (_context.Reservation.Where(a => a.reservation_id == reservationId).Count() == 0)
+        
+            if (_context.Reservation.Where(a => a.reservation_id == reservation_id[0]).Count() == 0)
             {
                 return BadRequest(new { alert="Nie ma takiej rezerwacji" });
             }
 
-            Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservationId).FirstOrDefault();
+            Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservation_id[0]).FirstOrDefault();
             if (_context.Volume.Where(a => a.is_free == true).Count() == 0)
             {
                 return BadRequest(new { alert = "Nie ma takiego egzemplarza" });
@@ -355,8 +350,8 @@ namespace LIBRARY_WA.Data
             return Ok();
         }
 
-        [HttpPost("{id}"), Authorize(Roles = "l")] //, , 
-        public async Task<IActionResult> ReturnBook([FromRoute] int id)
+        [HttpPost, Authorize(Roles = "l")] //, , 
+        public async Task<IActionResult> ReturnBook([FromRoute] int[] rent_id)
         {
 
 
@@ -365,12 +360,12 @@ namespace LIBRARY_WA.Data
                 return BadRequest(ModelState);
             }
 
-            if (_context.Rent.Where(a => a.rent_id == id).Count() == 0)
+            if (_context.Rent.Where(a => a.rent_id == rent_id[0]).Count() == 0)
             {
                 return BadRequest(new { alert = "Nie ma takiego wypożyczenia" });
             }
 
-            Rent rent = _context.Rent.Where(a => a.rent_id == id).FirstOrDefault();
+            Rent rent = _context.Rent.Where(a => a.rent_id == rent_id[0]).FirstOrDefault();
             Volume volume = _context.Volume.Where(a => a.volume_id == rent.volume_id).FirstOrDefault();
             Reservation[] reservations = _context.Reservation.Where(a => a.book_id == rent.book_id).ToArray();
             Renth renth = new Renth(rent.user_id, rent.title, rent.isbn, rent.book_id, rent.volume_id, rent.start_date, DateTime.Now);
