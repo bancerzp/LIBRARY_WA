@@ -75,7 +75,7 @@
 <table class="searchResult w3-hoverable" *ngIf="submitted">
   <thead>
     <tr>
-      <th *ngFor="let name of column">
+      <th>
        Id egzemplarza
       </th>
       <th style="column-width:200px">
@@ -87,40 +87,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let bookInfo of bookData">
-      <td>{{ bookInfo.book_id  }}</td>
-      <td>{{ bookInfo.title  }}</td>
-      <td>{{ bookInfo.isbn  }}</td>
-      <td>{{ bookInfo.author_fullname }}</td>
-      <td>{{ bookInfo.year }}</td>
-      <td>{{ bookInfo.language  }}</td>
-      <td>{{ bookInfo.type  }}</td>
-
-      <td *ngIf="userType=='r'">
-        <a class='btn btn-info m-r-5px' (click)="ReserveBookReader(bookInfo.book_id)">
-          <span class='glyphicon glyphicon-edit'></span> Zarezerwuj
-        </a>
-      </td>
-      <td *ngIf="userType=='l'" style="width:auto; min-width:150px">
-
+    <tr *ngFor="let volume of volume">
+      <td>{{ volume.volume_id  }}</td>
+      <td *ngIf=(volume.is_free)>Nie</td>
+      <td *ngIf=(!volume.is_free)>Tak</td>
+     
+      <td>
         <div class="button-group">
-          <button class='btn btn-info m-r-5px' (click)="ReserveBookLibrarian(bookInfo.book_id,user_id)" [disabled]="!user_id">
-            <span class='glyphicon glyphicon-check'></span> Zarezerwuj
-          </button>
-          <input #user style="width:80px" [(ngModel)]="user_id" />
-
-        </div>
-        <div class="button-group">
-          <button [routerLink]="['app-edit-book']" [queryParams]="{book_id: bookInfo.book_id}" class='btn btn-info m-r-5px'>
-            <span class='glyphicon glyphicon-edit'></span> Edytuj
-          </button>
-          <button (click)="RemoveBook(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
+          <button (click)="RemoveVolume(volume.volume_id)" class='btn btn-danger m-r-5px'>
             <span class='glyphicon glyphicon-remove'></span> Usuń
           </button>
         </div>
-        <button (click)="AddVolume(bookInfo.book_id)" class='btn btn-info m-r-5px'>
-          <span class='glyphicon glyphicon-plus'></span> Dodaj egzemplarz
-        </button>
       </td>
     </tr>
   </tbody>

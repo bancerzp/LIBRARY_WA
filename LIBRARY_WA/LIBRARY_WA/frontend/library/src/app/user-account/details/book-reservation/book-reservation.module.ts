@@ -18,7 +18,7 @@ import { BookService } from '../../../_services/book.service';
 })
 export class BookReservationModule {
   reservation: Reservation[];
-  column = ["Id. rezerwacji", "ISBN", "Tytuł", "Numer egzemplarza", "Data rezerwacji", "Rezerwacja do:", "Czy gotowe do wypożyczenia?"];
+  column = ["Id. rezerwacji", "ISBN", "Tytuł", "Numer egzemplarza", "Data rezerwacji", "Rezerwacja do:","Kolejka", "Czy gotowe do wypożyczenia?"];
   user_type: string;
   submitted: boolean;
 
@@ -38,11 +38,23 @@ export class BookReservationModule {
     if (this.app.IsExpired())
       return;
     //błędy wyłapać
-    this.bookService.RentBook(reservation_d).subscribe(data => {
-      alert("Książka została poprawnie wypożyczona")
-    },
-      Error => { alert("Błąd wypożyczania książki" + Error) });
+        this.bookService.RentBook(reservation_d).subscribe(data => {
+     alert("Książka została poprawnie wypożyczona")
+        }, response => {let error = (<any>response).error; alert("Błąd wypożyczania książki" + error); alert("Błąd wypożyczania książki" + response) });
   }
+
+       
+ //    this.bookService.RentBook(reservation_d).map((response: Response) => {
+//  alert("Książka została poprawnie wypożyczona")
+//}, (Error: Response) => { alert(Error.json); alert("Błąd wypożyczania książki" + alert(JSON.stringify(Error.json))); alert("Błąd wypożyczania książki" + Error.json) });
+
+
+
+ //   this.bookService.RentBook(reservation_d).subscribe(data => {
+ //     alert("Książka została poprawnie wypożyczona")
+ //   },
+ //     (Error: Response) => { alert("Błąd wypożyczania książki" + Error); alert("Błąd wypożyczania książki" + alert(JSON.stringify(Error.json())); alert("Błąd wypożyczania książki" + Error.json) });
+ 
 
 
   GetReservation() {

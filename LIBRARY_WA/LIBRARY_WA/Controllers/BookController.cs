@@ -29,19 +29,19 @@ namespace LIBRARY_WA.Data
         [HttpGet]
         public List<String> GetAuthor()
         {
-            return _context.Book.Select(a => a.author_fullname).Distinct().ToList();
+            return _context.Book.Where(a=>a.is_available==true).Select(a => a.author_fullname).Distinct().ToList();
         }
 
         [HttpGet]
         public List<String> GetBookType()
         {
-            return _context.Book.Select(a => a.type).Distinct().ToList();
+            return _context.Book.Where(a => a.is_available == true).Select(a => a.type).Distinct().ToList();
         }
 
         [HttpGet]
         public List<String> GetLanguage()
         {
-            return _context.Book.Select(a => a.language).Distinct().ToList();
+            return _context.Book.Where(a => a.is_available == true).Select(a => a.language).Distinct().ToList();
         }
 
         [HttpGet("{isbn}")]
@@ -128,8 +128,8 @@ namespace LIBRARY_WA.Data
                 return BadRequest(ModelState);
             }
             //  search.
-            //FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            //BinaryWriter w = new BinaryWriter(fs);
+            FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            BinaryWriter w = new BinaryWriter(fs);
             String[] name = { "book_id", "ISBN", "title", "author_fullname", "year", "language", "type" };
             String sql = "Select * from Book where is_available=true ";
             for (int i = 0; i < search.Length; i++)
@@ -151,11 +151,12 @@ namespace LIBRARY_WA.Data
                 }
 
             }
+            w.Write(sql);
+            w.Close();
             var book = _context.Book.FromSql(sql);
 
             return Ok(book);
-            //w.Write(sql);
-            //w.Close();
+          
 
         }
 
@@ -240,15 +241,15 @@ namespace LIBRARY_WA.Data
                 return BadRequest(ModelState);
             }
 
-            if (_context.Rent.Where(a => a.volume_id == volume_id).Count() > 0)
-            {
-                return NotFound(new { alert = "Dany egzemplarz jest wypożyczony. Nie można go usunąć" });
-            }
-
-            var volume = await _context.Volume.FindAsync(volume_id);
+            var volume = _context.Volume.Where(a=>a.volume_id==volume_id).First();
             if (volume == null)
             {
                 return NotFound();
+            }
+
+            if (_context.Rent.Where(a => a.volume_id == volume_id).Count() > 0)
+            {
+                return NotFound(new { alert = "Dany egzemplarz jest wypożyczony. Nie można go usunąć" });
             }
 
             _context.Volume.Remove(volume);
@@ -321,18 +322,18 @@ namespace LIBRARY_WA.Data
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Ok(ModelState);
             }
 
             if (_context.Reservation.Where(a => a.reservation_id == reservationId).Count() == 0)
             {
-                return BadRequest("Nie ma takiej rezerwacji");
+                return Ok(new { error="Nie ma takiej rezerwacji" });
             }
 
             Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservationId).FirstOrDefault();
             if (_context.Volume.Where(a => a.is_free == true).Count() == 0)
             {
-                return BadRequest(ModelState);
+                return Ok(new { error = "Nie ma takiego egzemplarza" });
             }
             int volume_id = _context.Volume.Where(a => a.is_free == true).FirstOrDefault().volume_id;
             //zmień is free na false
@@ -353,7 +354,7 @@ namespace LIBRARY_WA.Data
 
             if (_context.Rent.Where(a => a.rent_id == rent_id).Count() == 0)
             {
-                return BadRequest("Nie ma takiego wypożyczenia");
+                return BadRequest(new { error = "Nie ma takiego wypożyczenia" });
             }
 
             Rent rent = _context.Rent.Where(a => a.rent_id == rent_id).FirstOrDefault();

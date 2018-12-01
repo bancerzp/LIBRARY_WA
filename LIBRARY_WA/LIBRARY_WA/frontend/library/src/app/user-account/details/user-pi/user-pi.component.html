@@ -1,5 +1,5 @@
 <h2>Dane użytkownika</h2>
-<form [formGroup]="updateUserForm">
+<form [formGroup]="updateUserForm" (ngSubmit)="UpdateUser()">
 
   <div class="form-group">
     <label for="user_id">Id użytkownika</label>
@@ -13,22 +13,16 @@
 
   <div class="form-group">
     <label for="email">E-mail</label>
-    <input type="email" formControlName="email" class="form-control" [(ngModel)]="user.email" ng-change="checkEmailExistsInDB()" />
+    <input type="email" formControlName="email" class="form-control" [(ngModel)]="user.email" ng-change="CheckEmailExistsInDB()" />
     <div class="alert alert-danger " *ngIf="(sumbitted && updateUserForm.get('email').hasError('required'))||(updateUserForm.get('email').hasError('required')  && updateUserForm.get('email').touched)">Pole email nie może być puste</div>
     <div class="alert alert-danger " *ngIf="!sumbitted && updateUserForm.get('email').hasError('email') && updateUserForm.get('email').dirty && updateUserForm.get('email').touched">Nieprawidłowy format email</div>
-    <div class="alert alert-danger " *ngIf="updateUserForm.get('email').hasError('emailTaken') && updateUserForm.get('email').touched">Podany email już jest przypisany do użytkownika</div>
+    <div class="alert alert-danger " *ngIf="updateUserForm.get('email').invalid && !updateUserForm.get('email').hasError('email') && !updateUserForm.get('email').hasError('required') && updateUserForm.get('email').touched">Podany email już jest przypisany do użytkownika</div>
   </div>
 
   <div class="form-group">
     <label for="fullname">Imię i nazwisko</label>
     <input type="text" formControlName="fullname" class="form-control" [(ngModel)]="user.fullname" />
     <div class="alert alert-danger " *ngIf="(sumbitted && (updateUserForm.get('fullname').hasError('required') || updateUserForm.get('fullname').hasError('pattern'))) || (updateUserForm.get('fullname').hasError('required') && updateUserForm.get('fullname').dirty)">Pole imię i nazwisko nie może byc puste</div>
-  </div>
-
-  <div class="form-group">
-    <label for="date_of_birth">Data urodzenia</label>
-    <input type="date" formControlName="date_of_birth" class="form-control" [(ngModel)]="user.date_of_birth" max="{{maxDate | date:'yyyy-MM-dd'}}" />
-    <div class="alert alert-danger " *ngIf="sumbitted && updateUserForm.get('date_of_birth').hasError('required') ">Pole data urodzenia nie może byc puste</div>
   </div>
 
   <div class="form-group">
@@ -46,8 +40,8 @@
 
   <div class="form-group">
     <label for="user_type">Typ użytkownika</label>
-    <input type="text" formControlName="user_type" class="form-control" [(ngModel)]="user.user_type" disabled="disabled" *ngif="user.user_type=='r'" />czyt
-    <input type="text" formControlName="user_type" class="form-control" [(ngModel)]="user.user_type" disabled="disabled"  *ngif="user.user_type=='l'"/>bib
+    <input type="text"  class="form-control" disabled="disabled" *ngIf="user.user_type=='r'" value="Czytelnik"/>
+    <input type="text"  class="form-control"  disabled="disabled" *ngIf="user.user_type=='l'" value="Bibliotekarz"/>
   </div>
 
   <div class="form-group">
@@ -58,8 +52,9 @@
   <div class="form-group">
     <label for="password2">Nowe hasło</label>
     <input type="password" formControlName="password2" class="form-control" />
-    <div class="alert alert-danger " *ngIf="(!reset )">Podane hasła są różne</div>
-    <button (ngSubmit)="NewPassword()" class="btn btn-primary">Resetuj hasło</button>
+    <div class="alert alert-danger " *ngIf="(!reset && resetClicked )">Podane hasła są różne</div>
+    <div class="alert alert-info " *ngIf="(reset && resetClicked)">Hasła są poprawne</div>
+    <button (click)="NewPassword()" class="btn btn-primary">Resetuj hasło</button>
     <p>Aby dokończyć resetowanie hasła należy kliknąć 'Zapisz'</p>
   </div>
 
@@ -69,7 +64,7 @@
    </div>
    -->
   <div class="form-group">
-    <button type="submit" (ngSubmit)="updateUser()" [disabled]="loading || !updateUserForm.valid" class="btn btn-primary">Zapisz</button>
+    <button type="submit"  [disabled]="loading || !updateUserForm.valid" class="btn btn-primary">Zapisz</button>
   </div>
 </form>
 

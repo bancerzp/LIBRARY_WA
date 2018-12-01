@@ -100,7 +100,7 @@ export class BookService {
   }
 
   public RentBook(reservation_id) {
-    return this.http.post(this.accessPointUrl + "/RentBook/" + reservation_id , { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+    return this.http.put(this.accessPointUrl + "/RentBook/" + reservation_id , { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
   public ReturnBook(rent_id) {

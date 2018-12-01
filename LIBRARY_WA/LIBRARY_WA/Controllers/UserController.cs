@@ -125,7 +125,7 @@ namespace LIBRARY_WA.Controllers
                 {
                     if (name[i] == "fullname")
                     {
-                        sql += "and " + name[i] + "like('%" + search[i] + "%') ";
+                        sql += "and " + name[i] + " like('%" + search[i] + "%') ";
                     }
                     else
                     {
@@ -200,6 +200,7 @@ namespace LIBRARY_WA.Controllers
                 _context.SaveChanges();
             }
 
+            _context.User.Remove(user);
             user.is_valid=false;
             await _context.SaveChangesAsync();
 
@@ -309,35 +310,23 @@ namespace LIBRARY_WA.Controllers
 
         //----------------------------
         // PUT: api/User/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser([FromRoute] Int32 id, [FromBody] User user)
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser( [FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id.ToString() == user.user_id.ToString())
-            {
-                return BadRequest();
-            }
-
             _context.Entry(user).State = EntityState.Modified;
-
+            _context.User.Update(user);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+               
             }
 
             return NoContent();

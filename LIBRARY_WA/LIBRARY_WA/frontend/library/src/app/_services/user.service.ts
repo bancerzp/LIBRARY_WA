@@ -42,6 +42,16 @@ export class UserService {
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
+  public SearchUser(user) {
+
+    return this.http.post(this.accessPointUrl + "/SearchUser", user, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+  }
+
+  public UpdateUser(user) {
+
+    return this.http.put(this.accessPointUrl + "/UpdateUser", user, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+  }
+
 
   //-------CHECK DATA
   public IfLoginExists(login) {
@@ -52,10 +62,7 @@ export class UserService {
     return this.http.get(this.accessPointUrl + '/IfEmailExists/' + email, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
-  public SearchUser(user) {
 
-    return this.http.post(this.accessPointUrl + "/SearchUser", user, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
-  }
 
   
   //-------------------------user Account

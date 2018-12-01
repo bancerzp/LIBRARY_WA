@@ -15,10 +15,6 @@ import { AppComponent } from '../app.component';
 })
 export class SearchBookComponent implements OnInit {
   @Output() book = new EventEmitter<Book>();
-  @Output() recordDeleted = new EventEmitter<any>();
-  @Output() newClicked = new EventEmitter<any>();
-  @Output() editClicked = new EventEmitter<any>();
-  //@Input()
 
   submitted: boolean;
   userType: string;
@@ -41,20 +37,7 @@ export class SearchBookComponent implements OnInit {
   ) {
    // bookService.get().subscribe((data: any) => this.resultData = data);
   }
- /*
-  public deleteRecord(record) {
-    this.recordDeleted.emit(record);
-  }
 
-  public editRecord(record) {
-    const clonedRecord = Object.assign({}, record);
-    this.editClicked.emit(clonedRecord);
-  }
-
-  public newRecord() {
-    this.newClicked.emit();
-  }
-  */
 
   ngOnInit() {
    // this.recordDeleted.emit("Wydarzenie wyemitowane");

@@ -19,6 +19,7 @@
       <td *ngIf=(!reservationInfo.is_active)></td>
       <td>{{ reservationInfo.start_date }}</td>
       <td>{{ reservationInfo.expire_date  }}</td>
+      <td>{{ reservationInfo.queue+1 }}</td>
       <td *ngIf=(reservationInfo.is_active)>Tak</td>
       <td *ngIf=(!reservationInfo.is_active)>Nie</td>
       <td style="width:auto; min-width:150px">

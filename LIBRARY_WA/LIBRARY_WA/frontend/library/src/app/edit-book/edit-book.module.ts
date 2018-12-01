@@ -51,7 +51,6 @@ export class EditBookComponent {
     //  )
     
     this.GetBookById();
-    alert("done")
     this.GetVolumeByBookId();
 
     this.submitted = true;
@@ -101,7 +100,8 @@ export class EditBookComponent {
     this.bookService.RemoveVolume(id).subscribe(data => {
       alert("Egzemplarz został poprawnie usunięty");
       this.volume = this.volume.filter(volume => volume.volume_id != id);
-    });
+    },
+      Error => { alert("Błąd dodawania książki") });
     
     this.displayVolume = true;
 }
@@ -110,7 +110,7 @@ export class EditBookComponent {
       return;
     this.bookService.EditBook(this.book).subscribe(data => {
       alert("Egzemplarz został poprawnie usunięty");
-     ;
+     
     });
 
   }

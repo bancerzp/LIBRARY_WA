@@ -57,15 +57,11 @@ export class AddBookComponent implements OnInit {
     var added=this.bookService.AddBook(m).subscribe(
       (data: Book) => { this.id = Number(data.book_id), alert("Książka dodana poprawnie " + this.id); this.ngOnInit();},
       Error => { alert("Błąd dodawania książki") });
-
-
       //   this.user = this.addUserForm.value();
       // this.userService.addUser(m);
       //    .subscribe(user =>
     //    this.user = user['records']);
     this.submitted = false;
-    
-  
     }
 
   ClearForm() { this.book = new EventEmitter<Book>();}

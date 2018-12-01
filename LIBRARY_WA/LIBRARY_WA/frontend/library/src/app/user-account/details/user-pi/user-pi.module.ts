@@ -25,6 +25,7 @@ export class UserPIModule {
   updateUserForm: FormGroup;
   submitted: boolean;
   reset: boolean;
+  resetClicked: boolean;
   constructor(
     private formBuilder: FormBuilder,
     private http: Http,
@@ -36,29 +37,31 @@ export class UserPIModule {
   }
 
   ngOnInit() {
+    this.resetClicked = false;
     this.reset = true;
     this.GetUserById();
     this.submitted = false;
     this.user_type = this.user.user_type == "l" ? "Bibliotekarz" : "Czytelnik";
+    
     //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.updateUserForm = this.formBuilder.group({
       user_id: [this.user.user_id],
       login: [this.user.login],
-      email: [this.user.email, [Validators.email, Validators.required], this.checkEmailExistsInDB.bind(this)],
-      fullname: [this.user.fullname, [Validators.required]], //, Validators.pattern("\S")
-      date_of_birth: [this.user.date_of_birth, Validators.required],
-      phone_number: [this.user.phone_number, [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
+      email: ['', [Validators.email, Validators.required], this.CheckEmailExistsInDB.bind(this)],
+      fullname: [this.user.fullname, [Validators.required]],// //, Validators.pattern("\S")
+      date_of_birth: [this.user.date_of_birth],//, Validators.required
+      phone_number: [this.user.phone_number, [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],//
       user_type: this.user_type,
       password: this.user.password,
       password2: '',
-      address: [this.user.address, Validators.required], //, Validators.pattern("/^\S*$/")
+      address: [this.user.address, [Validators.required]], //, Validators.pattern("/^\S*$/")
     });
   }
 
   UpdateUser() {
     if (this.app.IsExpired())
       return;
-  //  this.userService.GetUserById(localStorage.getItem("user_id"));
+    this.userService.UpdateUser(this.user);
   }
 
   GetUserById() {
@@ -68,13 +71,16 @@ export class UserPIModule {
   }
 
   NewPassword() {
+    this.resetClicked = false;
     if (this.app.IsExpired())
       return;
-    this.reset = this.updateUserForm.get('password') == this.updateUserForm.get('password2');
+    this.resetClicked = true;
+    this.reset=this.updateUserForm.get('password').value == this.updateUserForm.get('password2').value;
+    
+   
   }
-
-  checkEmailExistsInDB(control: FormControl ) {
+  CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(
-      map(((res: any[]) => res.filter(user => user.email == control.value && user.user_id != localStorage.getItem("user_id")).length == 0 ? { 'emailTaken': false } : { 'emailTaken': true })))
+      map(((res: any[]) => res.filter(user => user.email == control.value && user.user_id != this.user.user_id).length > 0 ? { 'emailTaken': false } : null)))
   };
 }

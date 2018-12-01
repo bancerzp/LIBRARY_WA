@@ -34,12 +34,14 @@
     </li>-->
 
       </ul>
-      <div *ngIf="isLogged" class="nav navbar-nav navbar-right" style="text-align-last:center;">
-        <a  class="glyphicon glyphicon-user" style="word-spacing:normal"><br />Jesteś zalogowany jako: <br />{{userFullname}}</a>
-        <button (click)="Logout()">Wyloguj</button>
+      <div *ngIf="isLogged" class="nav navbar-nav navbar-right" style="text-align-last:center;align-content:center;align-items:center">
+        <br />
+        <a  class="glyphicon glyphicon-user" style="font-size:50px"><br />
+         <p style="word-spacing:normal;font-size:10px">Jesteś zalogowany jako:<br />{{userFullname}}</p>
+        </a><br />
+         <button (click)="Logout()" class="btn btn-primary">Wyloguj</button>
       </div>
     
-
     </nav>
      <a class="navbar-brand" href="#home" style="height:200%">
         <div id="clock">
