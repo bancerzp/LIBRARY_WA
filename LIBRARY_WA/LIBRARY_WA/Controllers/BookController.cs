@@ -417,8 +417,40 @@ namespace LIBRARY_WA.Data
         }
         */
 
-        
-          // PUT: api/Book/5
+        [HttpPut]
+        public async Task<IActionResult> UpdateBook([FromBody] Book book)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (_context.Book.Where(a => a.book_id == book.book_id).Count() == 0)
+            {
+                return NotFound("Nie znaleziono książki!");
+            }
+         
+
+            //new {alert= 
+            _context.Entry(book).State = EntityState.Modified;
+            _context.Book.Update(book);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+            }
+
+            return Ok();
+        }
+
+
+
+
+
+        // PUT: api/Book/5
         [HttpPut]
         public async Task<IActionResult> EditBook( [FromBody] Book book)
         {

@@ -1,5 +1,5 @@
 <p> Edytuj książkę</p>
-<form [formGroup]="editBookForm" (ngSubmit)="EditBook()">
+<form [formGroup]="editBookForm" (ngSubmit)="UpdateBook()">
   <div class="form-group">
     <label for="book_id">Id. książki</label>
     <input type="text" formControlName="book_id" class="form-control" [(ngModel)]="book.book_id" disabled="disabled" />

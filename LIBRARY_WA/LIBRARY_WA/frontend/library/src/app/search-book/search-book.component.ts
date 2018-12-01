@@ -160,9 +160,9 @@ export class SearchBookComponent implements OnInit {
       this.message = "Egzemplarz dodany poprawnie: " + volume.volume_id
   },
       response => { this.message = (<any>response).error.alert });
-  }
+  
   this.submitted = true;
-}
+}}
 
 export class UserAction {
   text: string;

@@ -34,7 +34,7 @@
 
   <div class="form-group">
     <label for="language">Język</label>
-    <input type="text" list="language" formControlName="language" class="form-control"  />
+    <input type="text" list="language" formControlName="language" class="form-control" />
     <datalist id="language">
       <option *ngFor="let language of language" value="{{language}}">{{language}}</option>
     </datalist>
@@ -53,12 +53,10 @@
   </div>
 </form>
 
+<a style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
+  <b>            {{message}}</b>
+</a>
 
-<div *ngIf="submitted" class="modal-content">
-  <a style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
-    <b>            {{message}}</b>
-  </a>
-</div>
 
 <table class="searchResult w3-hoverable" *ngIf="submitted">
   <thead>
@@ -91,7 +89,7 @@
           <button class='btn btn-info m-r-5px' (click)="ReserveBookLibrarian(bookInfo.book_id,user_id)" [disabled]="!user_id">
             <span class='glyphicon glyphicon-check'></span> Zarezerwuj
           </button>
-          <input #user style="width:80px" [(ngModel)]="user_id"/>
+          <input #user style="width:80px" [(ngModel)]="user_id" />
 
         </div>
         <div class="button-group">
@@ -101,10 +99,10 @@
           <button (click)="RemoveBook(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
             <span class='glyphicon glyphicon-remove'></span> Usuń
           </button>
-          </div>
-          <button (click)="AddVolume(bookInfo.book_id)" class='btn btn-info m-r-5px'>
-            <span class='glyphicon glyphicon-plus'></span> Dodaj egzemplarz
-          </button>
+        </div>
+        <button (click)="AddVolume(bookInfo.book_id)" class='btn btn-info m-r-5px'>
+          <span class='glyphicon glyphicon-plus'></span> Dodaj egzemplarz
+        </button>
       </td>
     </tr>
   </tbody>

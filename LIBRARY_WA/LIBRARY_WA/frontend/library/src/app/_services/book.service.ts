@@ -45,8 +45,8 @@ export class BookService {
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) } );
   }
 
-  public EditBook(book) {
-    return this.http.put(this.accessPointUrl, book,
+  public UpdateBook(book) {
+    return this.http.put(this.accessPointUrl +"/UpdateBook", book,
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
 
   }

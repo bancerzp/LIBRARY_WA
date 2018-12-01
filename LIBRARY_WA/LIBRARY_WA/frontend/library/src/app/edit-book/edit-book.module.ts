@@ -107,12 +107,12 @@ export class EditBookComponent {
     this.displayVolume = true;
     this.submitted = true;
 }
-  EditBook() {
+  UpdateBook() {
     if (this.app.IsExpired())
       return;
-    this.bookService.EditBook(this.book).subscribe(data => {
+    this.bookService.UpdateBook(this.book).subscribe(data => {
       this.message=("Egzemplarz został poprawnie usunięty.");
-    }, response => { this.message = (<any>response).error.alert });
+    }, response => { this.message = (<any>response).error });
 
   }
 
