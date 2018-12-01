@@ -25,6 +25,7 @@ export class UserPIModule {
   updateUserForm: FormGroup;
   submitted: boolean;
   reset: boolean;
+  pass: String;
   resetClicked: boolean;
   message: String;
   constructor(
@@ -42,7 +43,7 @@ export class UserPIModule {
     this.reset = true;
     this.GetUserById();
     this.submitted = false;
-    this.user_type = this.user.user_type == "l" ? "Bibliotekarz" : "Czytelnik";
+    this.pass = this.user.password;
     
     //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.updateUserForm = this.formBuilder.group({
@@ -53,7 +54,7 @@ export class UserPIModule {
       date_of_birth: [this.user.date_of_birth],//, Validators.required
       phone_number: [this.user.phone_number, [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],//
       user_type: this.user_type,
-      password: this.user.password,
+      password: [this.user.password, [Validators.pattern("/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/")]],
       password2: '',
       address: [this.user.address, [Validators.required]], //, Validators.pattern("/^\S*$/")
     });
@@ -70,6 +71,9 @@ export class UserPIModule {
       this.message="Wpisane hasła się różnią! Nie można zapisać zmian!"
       this.submitted = true;
       return;
+    }
+    if (this.resetClicked == false) {
+      this.user.password = this.pass;
     }
     this.userService.UpdateUser(this.user).subscribe(res => this.message="Dane zostały zaktualizowane",
       response => { this.message = (<any>response).error.alert });

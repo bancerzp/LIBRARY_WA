@@ -48,6 +48,7 @@ export class CurrentRentModule {
       return;
     //błędy wyłapać
     this.bookService.ReturnBook(rent_id).subscribe(data => {
+      this.rent = this.rent.filter(rent => rent.rent_id != rent_id);
       this.message = "Książka poprawnie zwrócona";
     },
       response => { this.message = (<any>response).error });

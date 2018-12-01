@@ -30,21 +30,23 @@ export class BookReservationModule {
   }
 
   ngOnInit() {
+    
     this.user_type = localStorage.getItem("user_type");
     this.GetReservation();
     this.submitted = true;
   }
 
-  RentBook(reservation_d) {
+  RentBook(reservation_id) {
     this.submitted = false;
     if (this.app.IsExpired())
       return;
     //błędy wyłapać
-        this.bookService.RentBook(reservation_d).subscribe(data => {
+    this.bookService.RentBook(reservation_id).subscribe(data => {
+        this.reservation = this.reservation.filter(reservation => reservation.reservation_id != reservation_id);
           this.message = "Książka została poprawnie wypożyczona";
 
         },
-      response => { this.message = (<any>response).error.alert });
+      response => { this.message = (<any>response).error });
     this.submitted = true;}
   
        

@@ -20,7 +20,8 @@ export class AddBookComponent implements OnInit {
   public author=[];
   public bookType = [];
   public language = [];
-  @Output() book = new EventEmitter<Book>();
+  //@Output() book = new EventEmitter<Book>();
+  book: Book;
   submitted: boolean;
   message: String;
 
@@ -35,7 +36,7 @@ export class AddBookComponent implements OnInit {
     this.GetBookType();  
     this.GetAuthor();    
     this.GetLanguage();
-
+    this.book = new Book(null, "", "", "", "", "", "", "", true);
     this.addBookForm = this.formBuilder.group({
       isbn: ['', [Validators.pattern("[0-9]{13}"),
         Validators.required], this.CheckISBNExistsInDB.bind(this)],
@@ -53,6 +54,7 @@ export class AddBookComponent implements OnInit {
     if (this.app.IsExpired())
       return;
     var m = this.book;
+    m.is_available = true;
     this.id = 0;
     this.submitted = true;
     var added=this.bookService.AddBook(m).subscribe(
@@ -61,7 +63,7 @@ export class AddBookComponent implements OnInit {
     this.submitted = false;
     }
 
-  ClearForm() { this.book = new EventEmitter<Book>();}
+ // ClearForm() { this.book = new EventEmitter<Book>();}
 
   CheckISBNExistsInDB(control: FormControl) {
     return this.bookService.IfISBNExists(control.value).pipe(

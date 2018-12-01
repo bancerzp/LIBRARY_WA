@@ -48,15 +48,17 @@
   </div>
 
   <div class="form-group">
-    <label for="password">Hasło</label>
+    <label for="password">Nowe hasło</label>
     <input type="password" formControlName="password" class="form-control" [(ngModel)]="user.password" />
+    <div class="alert alert-danger " *ngIf="updateUserForm.get('password').hasError('pattern')">Hasło musi spełniać warunki:</div>
+
   </div>
 
   <div class="form-group">
-    <label for="password2">Nowe hasło</label>
+    <label for="password2">Powtórz hasło</label>
     <input type="password" formControlName="password2" class="form-control" />
     <div class="alert alert-danger " *ngIf="(!reset && resetClicked )">Podane hasła są różne</div>
-    <div class="alert alert-info " *ngIf="(reset && resetClicked)">Hasła są poprawne</div>
+    <div class="alert alert-info " *ngIf="(reset && resetClicked)">Hasła się zgadzają</div>
     <button (click)="NewPassword()" class="btn btn-primary">Resetuj hasło</button>
     <p>Aby dokończyć resetowanie hasła należy kliknąć 'Zapisz'</p>
   </div>

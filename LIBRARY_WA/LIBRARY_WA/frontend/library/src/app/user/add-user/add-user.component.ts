@@ -17,7 +17,9 @@ import { AppComponent } from '../../app.component';
 
 })
 export class AddUserComponent implements OnInit {
-  @Output() user = new EventEmitter<User>();
+  // @Output() user = new EventEmitter<User>();
+
+  user: User = new User(null, "", "", "", "", new Date('1968-11-16T00:00:00'), "", "", "", true)
   addUserForm: FormGroup;
   loading = false;
   submitted = false;
@@ -34,18 +36,20 @@ export class AddUserComponent implements OnInit {
     private app: AppComponent,) { }
 
   createForm() {
-    
+    this.user.password = Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
+   
     this.addUserForm = this.formBuilder.group({
       login: ['', [Validators.required, Validators.minLength(5)], this.CheckLoginExistsInDB.bind(this)],//Validators.pattern("[/S]*"),
       email: ['', [Validators.email, Validators.required], this.CheckEmailExistsInDB.bind(this)],
-      fullname: ['', [Validators.required]], //, Validators.pattern("\S")
+      fullname: ['', [Validators.required]],
       date_of_birth: ['', Validators.required],
       phone_number: ['',[Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
       type: ['', Validators.required],
-      password: '',
+      password: this.user.password,
       address: ['', Validators.required], //, Validators.pattern("/^\S*$/")
       is_valid: [true]
     });
+   
   }
 
   ngOnInit() {
@@ -67,7 +71,8 @@ export class AddUserComponent implements OnInit {
   //  if (this.addUserForm.invalid) {
    //   this.submitted = true;
    //   return;
-   // }
+    // }
+    this.user.is_valid = true;
     this.userService.AddUser(this.user).subscribe(
       data => { this.message="Użytkownik dodany poprawnie"; this.ngOnInit() },
       response => { this.message = (<any>response).error.alert });

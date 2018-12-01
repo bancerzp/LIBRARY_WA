@@ -9,7 +9,7 @@
   <div class="form-group">
     <label for="login">Login</label>
     <input type="text" formControlName="login" class="form-control" [(ngModel)]="user.login" ng-change="CheckLoginExistsInDB()" maxlength="10" minlength="5"/>
-    <div class="alert alert-danger " *ngIf="(sumbitted && (addUserForm.get('login').hasError('required') || addUserForm.get('login').hasError('pattern')))
+    <div class="alert alert-danger " *ngIf="(submitted && (addUserForm.get('login').hasError('required') || addUserForm.get('login').hasError('pattern')))
               ||(addUserForm.get('login').hasError('required') && addUserForm.get('login').dirty && addUserForm.get('login').touched) || (addUserForm.get('login').hasError('required') && addUserForm.get('login').touched)">Pole login nie może byc puste</div>
     <div class="alert alert-danger " *ngIf="addUserForm.get('login').hasError('minlength')  &&  addUserForm.get('login').touched">Za krótki login(min.5 znaków)</div>
     <div class="alert alert-danger " *ngIf="addUserForm.get('login').invalid && !addUserForm.get('login').hasError('required') &&  addUserForm.get('login').touched && !addUserForm.get('login').hasError('minlength')">Login jest już zajęty</div>
@@ -23,48 +23,48 @@
 
   <div class="form-group">
     <label for="email">E-mail</label>
-    <input type="email" formControlName="email" class="form-control" [(ngModel)]="user.email" ng-change="CheckEmailExistsInDB()"/>
-    <div class="alert alert-danger " *ngIf="(sumbitted && addUserForm.get('email').hasError('required'))||(addUserForm.get('email').hasError('required')  && addUserForm.get('email').touched)">Pole email nie może być puste</div>
-    <div class="alert alert-danger " *ngIf="!sumbitted && addUserForm.get('email').hasError('email') && addUserForm.get('email').dirty && addUserForm.get('email').touched">Nieprawidłowy format email</div>
+    <input type="email" formControlName="email" class="form-control" [(ngModel)]="user.email" ng-change="CheckEmailExistsInDB()" maxlength="60"/>
+    <div class="alert alert-danger " *ngIf="(submitted && addUserForm.get('email').hasError('required'))||(addUserForm.get('email').hasError('required')  && addUserForm.get('email').touched)">Pole email nie może być puste</div>
+    <div class="alert alert-danger " *ngIf="!submitted && addUserForm.get('email').hasError('email') && addUserForm.get('email').dirty && addUserForm.get('email').touched">Nieprawidłowy format email</div>
     <div class="alert alert-danger " *ngIf="addUserForm.get('email').invalid && !addUserForm.get('email').hasError('email') && !addUserForm.get('email').hasError('required') && addUserForm.get('email').touched">Podany email już jest przypisany do użytkownika</div>
   </div>
 
     <div class="form-group">
       <label for="fullname">Imię i nazwisko</label>
-      <input type="text" formControlName="fullname" class="form-control" [(ngModel)]="user.fullname" />
-      <div class="alert alert-danger " *ngIf="(sumbitted && (addUserForm.get('fullname').hasError('required') || addUserForm.get('fullname').hasError('pattern'))) || (addUserForm.get('fullname').hasError('required') && addUserForm.get('fullname').dirty)">Pole imię i nazwisko nie może byc puste</div>
+      <input type="text" formControlName="fullname" class="form-control" [(ngModel)]="user.fullname" maxlength="50"/>
+      <div class="alert alert-danger " *ngIf="(submitted && (addUserForm.get('fullname').hasError('required') || addUserForm.get('fullname').hasError('pattern'))) || (addUserForm.get('fullname').hasError('required') && addUserForm.get('fullname').dirty)">Pole imię i nazwisko nie może byc puste</div>
     </div>
 
     <div class="form-group">
       <label for="date_of_birth">Data urodzenia</label>
       <input type="date" formControlName="date_of_birth" class="form-control" [(ngModel)]="user.date_of_birth" max="{{maxDate | date:'yyyy-MM-dd'}}" />
-      <div class="alert alert-danger " *ngIf="sumbitted && addUserForm.get('date_of_birth').hasError('required') ">Pole data urodzenia nie może byc puste</div>
+      <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('date_of_birth').hasError('required') ">Pole data urodzenia nie może byc puste</div>
     </div>
 
     <div class="form-group">
       <label for="phone_number">Numer telefonu</label>
       <input type="tel" formControlName="phone_number" class="form-control" [(ngModel)]="user.phone_number" placeholder="format. 000-000-000" />
-      <div class="alert alert-danger " *ngIf="(sumbitted && addUserForm.get('phone_number').hasError('required')) || (addUserForm.get('phone_number').hasError('required') && addUserForm.get('phone_number').dirty)">Pole telefon musi być wypełnione</div>
-      <div class="alert alert-danger " *ngIf="!sumbitted && addUserForm.get('phone_number').hasError('pattern') && addUserForm.get('phone_number').dirty && addUserForm.get('phone_number').touched">Nieprawidłowy format numeru telefonu</div>
+      <div class="alert alert-danger " *ngIf="(submitted && addUserForm.get('phone_number').hasError('required')) || (addUserForm.get('phone_number').hasError('required') && addUserForm.get('phone_number').dirty)">Pole telefon musi być wypełnione</div>
+      <div class="alert alert-danger " *ngIf="!submitted && addUserForm.get('phone_number').hasError('pattern') && addUserForm.get('phone_number').dirty && addUserForm.get('phone_number').touched">Nieprawidłowy format numeru telefonu</div>
     </div>
 
     <div class="form-group">
       <label for="address">Adres</label>
-      <input type="text" formControlName="address" class="form-control" [(ngModel)]="user.address" />
-      <div class="alert alert-danger " *ngIf="(sumbitted && (addUserForm.get('address').hasError('required') || addUserForm.get('address').hasError('required'))) || (addUserForm.get('address').hasError('required') && addUserForm.get('address').dirty)">Pole email lub telefon muszą być wypełnione</div>
+      <input type="text" formControlName="address" class="form-control" [(ngModel)]="user.address" maxlength="100"/>
+      <div class="alert alert-danger " *ngIf="(submitted && (addUserForm.get('address').hasError('required') || addUserForm.get('address').hasError('required'))) || (addUserForm.get('address').hasError('required') && addUserForm.get('address').dirty)">Pole email lub telefon muszą być wypełnione</div>
     </div>
 
     <div class="form-group">
       <label for="type">Typ użytkownika:</label><br />
       <input type="radio" formControlName="type" [(ngModel)]="user.user_type" value="r">Czytelnik
       <input type="radio" formControlName="type" [(ngModel)]="user.user_type" value="l">Bibliotekarz
-      <div class="alert alert-danger " *ngIf="sumbitted && addUserForm.get('user_type').hasError('required')">Typ użytkownika nie może byc pusty</div>
+      <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('user_type').hasError('required')">Typ użytkownika nie może byc pusty</div>
     </div>
 
     <div class="radio-group">
       <label for="password">Hasło</label>
-      <input type="text" formControlName="type" class="form-control" disabled="disabled" [(ngModel)]="user.password" />
-    </div>
+      <input type="text" formControlName="type" class="form-control" disabled="disabled" [(ngModel)]="user.password" maxlength="50" />
+ </div>
 
     <div class="form-group">
       <button type="submit" [disabled]="loading || !addUserForm.valid" class="btn btn-primary">Dodaj użytkownika</button>

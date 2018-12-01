@@ -10,8 +10,6 @@
   </a>
 </div>
 
-
-
 <form [formGroup]="addBookForm" (ngSubmit)="AddBook()">
   <div class="form-group">
     <label for="isbn">isbn</label>
@@ -20,19 +18,18 @@
     <div class="alert alert-danger " *ngIf="addBookForm.get('isbn').hasError('pattern')  && addBookForm.get('isbn').touched  ">Nieprawidłowy format ISBN</div>
      <div class="alert alert-danger " *ngIf="addBookForm.get('isbn').invalid && !addBookForm.get('isbn').hasError('pattern')
           && !addBookForm.get('isbn').hasError('required') && addBookForm.get('isbn').touched">Podany isbn jest już przypisany do książki</div>
-
   </div>
 
   <div class="form-group">
     <label for="title">Tytuł książki</label>
-    <input type="text" formControlName="title" class="form-control" [(ngModel)]="book.title" />
+    <input type="text" formControlName="title" class="form-control" [(ngModel)]="book.title" maxlength="50"/>
     <div class="alert alert-danger " *ngIf="(sumbitted && (addBookForm.get('title').hasError('required') || addBookForm.get('title').hasError('pattern'))) || (addBookForm.get('title').hasError('required') && addBookForm.get('title').dirty)">Pole imię i nazwisko nie może byc puste</div>
     <div class="alert alert-danger " *ngIf="addBookForm.get('title').hasError('maxLength') ">Za długi tytuł(max.50znaków)</div>
   </div>
 
   <div class="form-group">
     <label for="author_fullname">Imię i nazwisko autora</label>
-    <input type="text" list="author" formControlName="author_fullname" class="form-control" [(ngModel)]="book.author_fullname" />
+    <input type="text" list="author" formControlName="author_fullname" class="form-control" [(ngModel)]="book.author_fullname" maxlength="50"/>
     <datalist id="author">
       <option *ngFor="let author of author" value="{{author}}">{{author}}</option>
     </datalist>
@@ -49,27 +46,27 @@
 
   <div class="form-group">
     <label for="language">Język</label>
-    <input type="text" list="language" formControlName="language" class="form-control" [(ngModel)]="book.language" />
+    <input type="text" list="language" formControlName="language" class="form-control" [(ngModel)]="book.language" maxlength="20"/>
     <datalist id="language">
       <option *ngFor="let language of language" value="{{language}}">{{language}}</option>
     </datalist>
-    <div class="alert alert-danger " *ngIf="(sumbitted && (addBookForm.get('language').hasError('required') || addBookForm.get('language').hasError('pattern'))) || (addBookForm.get('language').hasError('required') && addBookForm.get('language').dirty)">Pole język nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf="(sumbitted && (addBookForm.get('language').hasError('required') || addBookForm.get('language').hasError('pattern'))) || (addBookForm.get('language').hasError('required') && addBookForm.get('language').dirty)" >Pole język nie może byc puste</div>
     <div class="alert alert-danger " *ngIf="addBookForm.get('language').hasError('maxLength') && addBookForm.get('language').dirty && addBookForm.get('language').touched">Za długa nazwa języka(max.20znaków)</div>
   </div>
 
   <div class="form-group">
     <label for="type">Typ</label>
-    <input type="text" list="type" formControlName="type" class="form-control" [(ngModel)]="book.type" />
+    <input type="text" list="type" formControlName="type" class="form-control" [(ngModel)]="book.type" maxlength="30"/>
     <datalist id="type">
       <option *ngFor="let bookType of bookType" value="{{bookType}}">{{bookType}}</option>
     </datalist>
-    <div class="alert alert-danger " *ngIf="(sumbitted && (addBookForm.get('type').hasError('required') || addBookForm.get('type').hasError('pattern'))) || (addBookForm.get('type').hasError('required') && addBookForm.get('type').dirty)">Pole typ książki nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf="(sumbitted && (addBookForm.get('type').hasError('required') || addBookForm.get('type').hasError('pattern'))) || (addBookForm.get('type').hasError('required') && addBookForm.get('type').dirty)" >Pole typ książki nie może byc puste</div>
     <div class="alert alert-danger " *ngIf="addBookForm.get('type').hasError('maxLength') && addBookForm.get('type').dirty && addBookForm.get('type').touched">Za długi typ książki(max.30znaków)</div>
   </div>
 
   <div class="form-group">
     <label for="description">Opis(opcjonalny):</label>
-    <textarea type="text"  formControlName="description" class="form-control" [(ngModel)]="book.description"></textarea>
+    <textarea type="text"  formControlName="description" class="form-control" [(ngModel)]="book.description" maxlength="300"></textarea>
     <div class="alert alert-danger" *ngIf="addBookForm.get('description').hasError('maxLength') && addBookForm.get('description').dirty && addBookForm.get('description').touched">Za długi opis(max.300 znaków)</div>
   </div>
  
