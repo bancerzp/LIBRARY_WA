@@ -10,56 +10,18 @@
         <li class="nav-item">
           <a class="nav-link waves-light" [routerLink]=[item.path] routerLinkActive="active" href=item.href mdbWavesEffect>{{item.title}}</a>
         </li>
-
-        <!--   <li class="nav-item">
-      <a class="nav-link waves-light" routerLink="app-login" routerLinkActive="active" href="#login" mdbWavesEffect>Logowanie</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link waves-light" routerLink="app-add-user" routerLinkActive="active" href="#addUser" mdbWavesEffect>Dodaj użytkownika</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link waves-light" routerLink="app-add-resource" routerLinkActive="active" href="#addResources" mdbWavesEffect>Zasoby dodaj</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link waves-light" routerLink="app-user" routerLinkActive="active" href="#user" mdbWavesEffect>Użytkownicy</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link waves-light" routerLink="app-search-resource" routerLinkActive="active" href="#search-resources" mdbWavesEffect>Szukaj zasoby</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link waves-light" routerLink="app-search-user" routerLinkActive="active" href="#search-user" mdbWavesEffect>Szukaj użytkowników</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link waves-light" routerLink="app-user-account" routerLinkActive="active" href="#user-account" mdbWavesEffect>Konto użytkownika</a>
-    </li>-->
-
       </ul>
-      <div *ngIf="isLogged" class="nav navbar-nav navbar-right" style="text-align-last:center;align-content:center;align-items:center">
+
+      <div *ngIf="isLogged"  style="text-align-last:center;align-content:center;align-items:center">
         <br />
         <a  class="glyphicon glyphicon-user" style="font-size:50px"><br />
          <p style="word-spacing:normal;font-size:10px">Jesteś zalogowany jako:<br />{{userFullname}}</p>
         </a><br />
-         <button (click)="Logout()" class="btn btn-primary">Wyloguj</button>
+         <button (click)="Logout()" class="btn btn-primary " style="width:auto">Wyloguj</button>
       </div>
-    
     </nav>
-     <a class="navbar-brand" href="#home" style="height:200%">
-        <div id="clock">
-          21:06:00
-        </div>
-        <br />
-      </a>
-    <!--   <div *ngFor="let menuItem of menus">
-      <button md-button [mdMenuTriggerFor]="menu">
-        <span>{{menuItem.title}}</span>
-      </button>
-      <md-menu #menu="mdMenu">
-        <button md-menu-item>Refresh - {{menuItem.title}}</button>
-        <button md-menu-item>Settings - {{menuItem.title}}</button>
-      </md-menu>
-    </div>
-     -->
-    {{nn}}
+
+  
     <div class="jumbotron">
       <div class="container">
         <div class="row">

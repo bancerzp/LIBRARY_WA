@@ -1,10 +1,10 @@
-<title>current-rent</title>
+
 
 <a *ngIf="submitted" style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
   <b>            {{message}}</b>
 </a>
 
-<table class="rentTable w3-hoverable" >
+<table *ngIf="submitted" class="rentTable w3-hoverable" >
   <tr>
     <th *ngFor="let name of column">
       {{name}}

@@ -1,4 +1,6 @@
-<p> Edytuj książkę</p>
+<h1 style="text-align:center">
+  Edytowanie książki
+</h1>
 <form [formGroup]="editBookForm" (ngSubmit)="UpdateBook()">
   <div class="form-group">
     <label for="book_id">Id. książki</label>
@@ -96,7 +98,10 @@
      
       <td>
         <div class="button-group">
-          <button (click)="RemoveVolume(volume.volume_id)" class='btn btn-danger m-r-5px'>
+          <button (click)="RemoveVolume(volume.volume_id)" class='btn btn-danger m-r-5px' disabled="disabled" *ngIf=!(volume.is_free) >
+            <span class='glyphicon glyphicon-remove'></span> Usuń
+          </button>
+          <button (click)="RemoveVolume(volume.volume_id)" class='btn btn-danger m-r-5px' *ngIf=(volume.is_free)>
             <span class='glyphicon glyphicon-remove'></span> Usuń
           </button>
         </div>

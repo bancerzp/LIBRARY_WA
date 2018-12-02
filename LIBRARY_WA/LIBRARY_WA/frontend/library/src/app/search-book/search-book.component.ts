@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Volume } from '../_models/Volume';
 import { AppComponent } from '../app.component';
+import { Reservation } from '../_models/reservation';
 @Component({
   selector: 'app-search-book',
   templateUrl: './search-book.component.html',
@@ -30,6 +31,7 @@ export class SearchBookComponent implements OnInit {
   columnAddLibrarian: UserAction[] = [new UserAction("Zarezerwuj", "Reserve()"), new UserAction("Edytuj", "Update()"), new UserAction("Usuń", "Delete()"), new UserAction("Dodaj egzemplarz", "AddVolume()")]
   user_id: String;
   message: String;
+  reservation: Reservation;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -107,8 +109,9 @@ export class SearchBookComponent implements OnInit {
     if (this.app.IsExpired())
       return;
     //wypisywanie błędu
-    this.bookService.ReserveBook(book_id, Number.parseInt(user_id)).subscribe((res: Response) => {
-      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + (<any>res)
+    this.bookService.ReserveBook(book_id, Number.parseInt(user_id)).subscribe((res: any) => {
+      this.reservation = res;
+      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + this.reservation.queue;
     },
       response => { this.message = (<any>response).error.alert });
     this.submitted = true;
@@ -159,7 +162,7 @@ export class SearchBookComponent implements OnInit {
       (volume: Volume) => {
       this.message = "Egzemplarz dodany poprawnie: " + volume.volume_id
   },
-      response => { this.message = (<any>response).error.alert });
+      response => { this.message = (<any>response).error });
   
   this.submitted = true;
 }}

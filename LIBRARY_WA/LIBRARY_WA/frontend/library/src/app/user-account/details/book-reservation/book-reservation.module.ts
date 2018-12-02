@@ -44,7 +44,6 @@ export class BookReservationModule {
     this.bookService.RentBook(reservation_id).subscribe(data => {
         this.reservation = this.reservation.filter(reservation => reservation.reservation_id != reservation_id);
           this.message = "Książka została poprawnie wypożyczona";
-
         },
       response => { this.message = (<any>response).error });
     this.submitted = true;}

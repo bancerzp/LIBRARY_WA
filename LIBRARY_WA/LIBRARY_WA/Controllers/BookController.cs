@@ -230,6 +230,7 @@ namespace LIBRARY_WA.Data
         {
             //jeśli ma wypożyczone książki to komunikat, że nie można usunąć użytkownika bo ma nie wszystkie książki oddane, 
             //a jesli usunięty to zmienia isValid na false
+           
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -247,6 +248,30 @@ namespace LIBRARY_WA.Data
                 return NotFound(new { alert = "Dany egzemplarz jest wypożyczony. Nie można go usunąć!" });
             }
 
+            if (_context.Reservation.Where(a => a.volume_id == id && a.is_active==true).Count() > 0)
+            {
+                Reservation reservation = _context.Reservation.Where(a => a.volume_id == id && a.is_active == true).FirstOrDefault();
+
+                foreach (Reservation reserv in _context.Reservation.Where(a => a.book_id == volume.book_id && a.is_active == false)) {
+                    reserv.queue = reserv.queue + 1;
+                }
+                if(_context.Volume.Where(a => a.book_id == volume.book_id).Count() > 1)
+                {
+                    var n = _context.Volume.Where(a => a.book_id == volume.book_id && a.volume_id!=id).FirstOrDefault();
+                    Reservation r = new Reservation(reservation.user_id, reservation.title, reservation.isbn, reservation.book_id, n.volume_id, reservation.start_date, reservation.expire_date, 1, false);
+                    r.reservation_id = reservation.reservation_id;
+                    _context.Reservation.Remove(reservation);
+                    _context.SaveChanges();
+                    _context.Reservation.Add(r);
+                }
+                else
+                {
+                    _context.Reservation.Remove(reservation);
+                }
+               
+                _context.SaveChanges();
+            }
+            
             _context.Volume.Remove(volume);
             await _context.SaveChangesAsync();
 
@@ -321,7 +346,7 @@ namespace LIBRARY_WA.Data
 
 
         [HttpPut, Authorize(Roles = "l")] //, 
-        public async Task<IActionResult> RentBook([FromRoute] int[] reservation_id)
+        public async Task<IActionResult> RentBook([FromBody] int[] reservation_id)
         {
            
           
@@ -351,10 +376,9 @@ namespace LIBRARY_WA.Data
         }
 
         [HttpPost, Authorize(Roles = "l")] //, , 
-        public async Task<IActionResult> ReturnBook([FromRoute] int[] rent_id)
+        public async Task<IActionResult> ReturnBook([FromBody] int[] rent_id)
         {
-
-
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -390,13 +414,50 @@ namespace LIBRARY_WA.Data
 
             //usuń z rent
             _context.Rent.Remove(rent);
-
-            await _context.SaveChangesAsync();
-            return Ok("Książka została poprawnie zwrócona");
-
+            _context.SaveChanges();
+            return Ok(new { message = "Książka została poprawnie zwrócona" });
         }
 
-     
+        [HttpGet("{user_id}"), Authorize(Roles = "l")]
+        public async Task<IActionResult> GetSuggestion([FromRoute] int user_id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (_context.User.Where(a => a.user_id == user_id).Count() == 0)
+            {
+                return BadRequest(new { alert = "Nie ma takiego użytkownika" });
+            }
+            var sql = @"select top(5) from( 
+                    select* from book where AUTHOR_FULLNAME in (select distinct AUTHOR_FULLNAME from renth where user_id =="+ user_id+ @") 
+                    union
+                    select* from book where type in (select distinct type from renth where user_id==" + user_id + @") 
+                    union
+                    select* from book where language in (select distinct language from renth where user_id ==" + user_id + @") ) a
+                    where a.title not in(select distinct title from renth where user_id ==" + user_id + @") ";
+            return Ok("ok");
+
+//            select top 5 from(
+//            select * from book where AUTHOR_FULLNAME in (select distinct AUTHOR_FULLNAME from renth re, book bo where user_id = 2 and re.BOOK_ID = bo.book_id)
+
+//            union
+
+//            select* from book where type in (select distinct type from renth re,book bo where user_id = 2 and re.BOOK_ID = bo.book_id) 
+//			union
+
+//            select* from book where language in (select distinct language from renth re,book bo where user_id = 2 and re.BOOK_ID = bo.book_id)) a
+//   where a.book_id not in(select r.book_id
+//                           from renth r, book b
+//                            where r.user_id = 2
+//                        and r.title = b.title
+//                        and b.AUTHOR_FULLNAME = (select AUTHOR_FULLNAME
+//                                                  from book bo
+//                                                where r.book_id = bo.book_id) )
+//and is_active = true
+//group by title
+        }
 
 
         private bool BookExists(int id)

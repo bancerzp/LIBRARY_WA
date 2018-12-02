@@ -19,7 +19,7 @@ export class AppComponent  {
 
   public menuReader: MenuItem[]=[this.searchBook,this.user];
   public menuGuest: MenuItem[] = [this.login, this.searchBook];
-  public menuLibrarian: MenuItem[] = [this.users, this.searchBook, this.addBook, this.login, this.userData];
+  public menuLibrarian: MenuItem[] = [this.users, this.searchBook, this.addBook, this.userData];
   public menu: MenuItem[]; //= this.menuLibrarian;
 
   public userFullname;
@@ -47,7 +47,7 @@ export class AppComponent  {
   Logout() {
     localStorage.clear();
     window.location.reload();
-    this.router.navigateByUrl('/app-login')
+   // this.router.navigateByUrl('/app-login')
   }
 
   IsExpired() {
