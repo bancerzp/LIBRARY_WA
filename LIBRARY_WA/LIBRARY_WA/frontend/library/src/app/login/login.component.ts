@@ -73,16 +73,6 @@ export class LoginComponent implements OnInit {
       this.valid= false;
     });
     this.submitted = true;
-  /*  if (this.user === null) {
-      this.valid = false;
-     
-      return;
-    }
-    else {
-      this.logedUser.emit(this.user);
-      this.router.navigate(['app-home']);*/
-     // this.logedUser.emit(this.user);
-    //  this.router.navigate(['home']);
   }
 
  

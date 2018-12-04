@@ -13,7 +13,7 @@
     <input type="text" formControlName="login" class="form-control" [(ngModel)]="user.login" ng-change="CheckLoginExistsInDB()" maxlength="10" minlength="5"/>
     <div class="alert alert-danger " *ngIf="(submitted && (addUserForm.get('login').hasError('required') || addUserForm.get('login').hasError('pattern')))
               ||(addUserForm.get('login').hasError('required') && addUserForm.get('login').dirty && addUserForm.get('login').touched) || (addUserForm.get('login').hasError('required') && addUserForm.get('login').touched)">Pole login nie może byc puste</div>
-    <div class="alert alert-danger " *ngIf="addUserForm.get('login').hasError('minlength')  &&  addUserForm.get('login').touched">Za krótki login(min.5 znaków)</div>
+    <div class="alert alert-danger " *ngIf="addUserForm.get('login').hasError('minlength')  &&  addUserForm.get('login').touched">Za krótki login(5-10 znaków)</div>
     <div class="alert alert-danger " *ngIf="addUserForm.get('login').invalid && !addUserForm.get('login').hasError('required') &&  addUserForm.get('login').touched && !addUserForm.get('login').hasError('minlength')">Login jest już zajęty</div>
 
 

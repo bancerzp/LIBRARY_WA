@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LIBRARY_WA.Models;
@@ -66,8 +65,7 @@ namespace LIBRARY_WA.Data
             {
                 return BadRequest(new {alert= "Książka o danym ISBN już istnieje w bazie danych." });
             }
-
-            //  book.is_available = true;
+            
             _context.Book.Add(book);
             await _context.SaveChangesAsync();
             Volume volume = new Volume();
@@ -124,9 +122,7 @@ namespace LIBRARY_WA.Data
             {
                 return BadRequest(ModelState);
             }
-
-          //  FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-          //  BinaryWriter w = new BinaryWriter(fs);
+            
             String[] name = { "book_id", "ISBN", "title", "author_fullname", "year", "language", "type" };
             String sql = "Select * from Book where is_available=true ";
             for (int i = 0; i < search.Length; i++)
@@ -148,16 +144,10 @@ namespace LIBRARY_WA.Data
                 }
 
             }
-
-            //  FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            //  BinaryWriter w = new BinaryWriter(fs);
-            //   w.Write(sql);
-            //    w.Close();
+            
             var book = _context.Book.FromSql(sql);
 
             return Ok(book);
-          
-
         }
 
 
@@ -186,7 +176,6 @@ namespace LIBRARY_WA.Data
             foreach (Volume volume in _context.Volume.Where(a => a.book_id == id))
             {
                 _context.Volume.Remove(volume);
-                //volume.is_free = false;
             }
             book.is_available = false;
             //usuń wszystkie rezerwacje
@@ -194,9 +183,7 @@ namespace LIBRARY_WA.Data
             await _context.SaveChangesAsync();
             return Ok(book);
         }
-
-
-
+        
         //Volume function
         [HttpPost, Authorize(Roles = "l")]//, ]
         public async Task<IActionResult> AddVolume([FromBody] int id)
@@ -283,8 +270,6 @@ namespace LIBRARY_WA.Data
         [HttpPut, Authorize(Roles = "l,r")]
         public async Task<IActionResult> ReserveBook([FromBody] int[] data)
         {
-            //FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-           // BinaryWriter w = new BinaryWriter(fs);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -338,10 +323,6 @@ namespace LIBRARY_WA.Data
               
             }
           
-         //   FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-           //     BinaryWriter w = new BinaryWriter(fs);
-            //   w.Write(data[1]+"   user    "+ book.title + "    title    " + book.isbn + "  isbn     " + book.book_id + "  book_id    " + volume_id + "  volume     " + start_date + "   start    " + expire_date + "  stop     " + queue + "  kolejka     " + is_active);
-              
             Reservation reservation = new Reservation(data[1], book.title, book.isbn, book.book_id, volume_id, start_date, expire_date, queue, is_active);
             _context.Reservation.Add(reservation);
             await _context.SaveChangesAsync();
@@ -402,11 +383,7 @@ namespace LIBRARY_WA.Data
             //wstaw do historii rezerwacji
             await _context.Renth.AddAsync(renth);
             await _context.SaveChangesAsync();
-
-            //z rezerwacji pozmieniać numerki, który w kolejce-->czy gotowa do odebrania na tak i zmienić queue
-            // this.expire_date = expire_date; data dziiejsza plus tydzien
-            //this.queue = queue;  -1
-            //this.is_active = is_active;
+            
             foreach (Reservation reservation in reservations)
             {
                 reservation.queue = reservation.queue - 1;
@@ -440,26 +417,6 @@ namespace LIBRARY_WA.Data
             _context.Database.ExecuteSqlCommand(sql);
             var suggestion = _context.Suggestion;
             return Ok(suggestion);
-
-//            select top 5 from(
-//            select * from book where AUTHOR_FULLNAME in (select distinct AUTHOR_FULLNAME from renth re, book bo where user_id = 2 and re.BOOK_ID = bo.book_id)
-
-//            union
-
-//            select* from book where type in (select distinct type from renth re,book bo where user_id = 2 and re.BOOK_ID = bo.book_id) 
-//            select* from book where type in (select distinct type from renth re,book bo where user_id = 2 and re.BOOK_ID = bo.book_id) 
-//			union
-
-//            select* from book where language in (select distinct language from renth re,book bo where user_id = 2 and re.BOOK_ID = bo.book_id)) a
-//   where a.book_id not in(select r.book_id
-//                           from renth r, book b
-//                            where r.user_id = 2
-//                        and r.title = b.title
-//                        and b.AUTHOR_FULLNAME = (select AUTHOR_FULLNAME
-//                                                  from book bo
-//                                                where r.book_id = bo.book_id) )
-//and is_active = true
-//group by title
         }
 
 
@@ -481,8 +438,6 @@ namespace LIBRARY_WA.Data
                 return NotFound("Nie znaleziono książki!");
             }
          
-
-            //new {alert= 
             _context.Entry(book).State = EntityState.Modified;
             _context.Book.Update(book);
             try
@@ -491,17 +446,10 @@ namespace LIBRARY_WA.Data
             }
             catch (DbUpdateConcurrencyException)
             {
-
             }
-
             return Ok();
         }
-
-
-
-
-
-        // PUT: api/Book/5
+        
         [HttpPut]
         public async Task<IActionResult> EditBook( [FromBody] Book book)
         {

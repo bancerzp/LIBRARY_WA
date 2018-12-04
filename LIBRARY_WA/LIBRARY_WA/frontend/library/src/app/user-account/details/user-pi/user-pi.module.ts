@@ -34,9 +34,6 @@ export class UserPIModule {
     private userService: UserService,
     private app: AppComponent,) { }
 
-  createForm() {
-    
-  }
 
   ngOnInit() {
     if (this.app.IsExpired("l,r"))
@@ -47,7 +44,6 @@ export class UserPIModule {
     this.submitted = false;
     this.pass = this.user.password;
     
-    //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.updateUserForm = this.formBuilder.group({
       user_id: [this.user.user_id],
       login: [this.user.login],
@@ -66,8 +62,6 @@ export class UserPIModule {
     this.submitted = false;
     if (this.app.IsExpired("l,r"))
       return;
-    //,
-    // response => { this.message = (<any>response).error.alert });
     if (this.reset == false) {
       this.submitted = false;
       this.message="Wpisane hasła się różnią! Nie można zapisać zmian!"
@@ -97,7 +91,7 @@ export class UserPIModule {
     if (this.app.IsExpired("l,r"))
       return;
     this.resetClicked = true;
-    this.reset = (this.updateUserForm.get('password').value == this.updateUserForm.get('password2').value && this.updateUserForm.get('password').value.length() > 4 && this.updateUserForm.get('password').value.length() <21); 
+    this.reset = (this.updateUserForm.get('password').value == this.updateUserForm.get('password2').value && this.updateUserForm.get('password').value.length > 4 && this.updateUserForm.get('password').value.length <21); 
   }
   CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(

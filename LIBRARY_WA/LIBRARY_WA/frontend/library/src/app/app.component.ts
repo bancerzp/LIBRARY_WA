@@ -106,7 +106,3 @@ export class MenuItem {
   href: string;
   
 }
-
-//w zależności od otrzymanego typu osoby menu=.
-//obserwatorzy do zmiany typu użytkownika.
-//W komponencie login ustawienie na początku typu użytkownika jako g(gość)
