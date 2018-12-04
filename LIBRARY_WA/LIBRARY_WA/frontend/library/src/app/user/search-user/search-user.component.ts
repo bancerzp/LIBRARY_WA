@@ -38,6 +38,8 @@ export class SearchUserComponent implements OnInit {
   // private alertService: AlertService) { }*/
 
   ngOnInit() {
+    if (this.app.IsExpired("l"))
+      return;
     this.submitted = false;
     this.userType = localStorage.getItem("user_type");
     this.submitted = false;
@@ -63,7 +65,7 @@ export class SearchUserComponent implements OnInit {
   // get f() { return this.loginForm.controls; }
 
   SearchUser() {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
     this.submitted = false;
     this.values = [];
@@ -84,7 +86,7 @@ export class SearchUserComponent implements OnInit {
   }
 
   RemoveUser(id) {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
     this.submitted = false;
     this.userService.RemoveUser(id).subscribe(data =>
@@ -97,7 +99,7 @@ export class SearchUserComponent implements OnInit {
   }
 
   UserAccount(id){
-      if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
         return;
     this.app.RouteTo("app-user-account");
       localStorage.setItem("user_id",id)

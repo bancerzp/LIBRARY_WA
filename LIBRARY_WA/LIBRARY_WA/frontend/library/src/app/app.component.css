@@ -3,9 +3,11 @@
   color: coral;
 }
 
-
-ul{
-  color:coral;
+.userContainer{
+  padding-left:10%;
+}
+ul {
+  color: coral;
 }
 .nav-link {
   font-size: medium;
@@ -31,6 +33,7 @@ li.link-active a:focus {
   left: 0;
   right: 0;
   z-index: 1;
+  color:darksalmon;
 }
 
 @media (min-width: 768px) {
@@ -44,6 +47,7 @@ li.link-active a:focus {
     border-radius: 0px;
     border-width: 0px;
     height: 100%;
+
   }
 
   .navbar-header {

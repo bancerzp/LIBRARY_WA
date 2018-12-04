@@ -65,8 +65,11 @@
 
     <div class="radio-group">
       <label for="password">Hasło</label>
-      <input type="text" formControlName="type" class="form-control" disabled="disabled" [(ngModel)]="user.password" maxlength="50" />
- </div>
+      <input type="text" formControlName="type" class="form-control" disabled="disabled" [(ngModel)]="user.password" maxlength="20" />
+      <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('password').hasError('minlength')">Hasło musi mieć długość 5-20znaków</div>
+      <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('password').hasError('required')">Hasło nie może być puste</div>
+
+    </div>
 
     <div class="form-group">
       <button type="submit" [disabled]="loading || !addUserForm.valid" class="btn btn-primary">Dodaj użytkownika</button>

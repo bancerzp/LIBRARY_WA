@@ -39,6 +39,8 @@ export class UserPIModule {
   }
 
   ngOnInit() {
+    if (this.app.IsExpired("l,r"))
+      return;
     this.resetClicked = false;
     this.reset = true;
     this.GetUserById();
@@ -54,7 +56,7 @@ export class UserPIModule {
       date_of_birth: [this.user.date_of_birth],//, Validators.required
       phone_number: [this.user.phone_number, [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],//
       user_type: this.user_type,
-      password: [this.user.password, [Validators.pattern("/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/")]],
+      password: [this.user.password],
       password2: '',
       address: [this.user.address, [Validators.required]], //, Validators.pattern("/^\S*$/")
     });
@@ -62,7 +64,7 @@ export class UserPIModule {
 
   UpdateUser() {
     this.submitted = false;
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l,r"))
       return;
     //,
     // response => { this.message = (<any>response).error.alert });
@@ -81,18 +83,21 @@ export class UserPIModule {
   }
 
   GetUserById() {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l,r"))
       return;
+    if (this.app.GetUserType()=="r") {
+      localStorage.setItem("user_id", this.app.GetUserId());
+    }
     this.userService.GetUserById(localStorage.getItem("user_id")).subscribe((user: User) => this.user = user,
       response => { this.message = (<any>response).error.alert });
   }
 
   NewPassword() {
     this.resetClicked = false;
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l,r"))
       return;
     this.resetClicked = true;
-    this.reset=this.updateUserForm.get('password').value == this.updateUserForm.get('password2').value; 
+    this.reset = (this.updateUserForm.get('password').value == this.updateUserForm.get('password2').value && this.updateUserForm.get('password').value.length() > 4 && this.updateUserForm.get('password').value.length() <21); 
   }
   CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(

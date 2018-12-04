@@ -30,7 +30,8 @@ export class BookReservationModule {
   }
 
   ngOnInit() {
-    
+    if (this.app.IsExpired("l,r"))
+      return;
     this.user_type = localStorage.getItem("user_type");
     this.GetReservation();
     this.submitted = true;
@@ -38,7 +39,7 @@ export class BookReservationModule {
 
   RentBook(reservation_id) {
     this.submitted = false;
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
     //błędy wyłapać
     this.bookService.RentBook(reservation_id).subscribe(data => {
@@ -63,14 +64,18 @@ export class BookReservationModule {
 
 
   GetReservation() {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l,r"))
       return;
+   
+    if (this.app.GetUserType() == "r") {
+      localStorage.setItem("user_id", this.app.GetUserId()) 
+    }
     this.userService.GetReservation(localStorage.getItem("user_id")).subscribe((reservations: any[]) => this.reservation = reservations,
       response => { this.message = (<any>response).error.alert });
   }
 
   CancelReservation(reservationId) {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l,r"))
       return;
     this.submitted = false;
     this.userService.CancelReservation(reservationId).subscribe(data => {

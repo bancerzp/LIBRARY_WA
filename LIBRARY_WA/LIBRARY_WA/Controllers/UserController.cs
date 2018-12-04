@@ -67,6 +67,7 @@ namespace LIBRARY_WA.Controllers
         {
                  new Claim(ClaimTypes.Name, user.fullname),
                  new Claim(ClaimTypes.Role, user.user_type),
+                 new Claim(ClaimTypes.NameIdentifier, user.user_id.ToString())
         };
 
                 var tokeOptions = new JwtSecurityToken(
@@ -213,20 +214,20 @@ namespace LIBRARY_WA.Controllers
         //----------------------userdata
 
         [HttpGet("{id}"), Authorize]
-        public IEnumerable<Rent> GetRent()
+        public IEnumerable<Rent> GetRent([FromRoute] int id)
         {
-            return _context.Rent;
+            return _context.Rent.Where(a=>a.user_id==id);
         }
         [HttpGet("{id}"), Authorize]
-        public IEnumerable<Reservation> GetReservation()
+        public IEnumerable<Reservation> GetReservation([FromRoute] int id)
         {
-            return _context.Reservation;
+            return _context.Reservation.Where(a => a.user_id == id);
         }
 
         [HttpGet("{id}"), Authorize]
-        public IEnumerable<Renth> GetRenth()
+        public IEnumerable<Renth> GetRenth([FromRoute] int id)
         {
-            return _context.Renth;
+            return _context.Renth.Where(a => a.user_id == id);
         }
 
         [HttpDelete("{id}")]
@@ -249,7 +250,7 @@ namespace LIBRARY_WA.Controllers
                 if (res.queue == 0)
                 {
                     res.is_active = true;
-                    res.expire_date = DateTime.Now.AddDays(8);
+                    res.expire_date = DateTime.Now.AddMinutes(1);
                     res.volume_id = reservation.volume_id;
                 }
             }

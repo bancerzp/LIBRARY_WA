@@ -36,6 +36,8 @@ export class AddUserComponent implements OnInit {
     private app: AppComponent,) { }
 
   createForm() {
+    if (this.app.IsExpired("l"))
+      return;
     this.user.password = Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
    
     this.addUserForm = this.formBuilder.group({
@@ -45,7 +47,7 @@ export class AddUserComponent implements OnInit {
       date_of_birth: ['', Validators.required],
       phone_number: ['',[Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
       type: ['', Validators.required],
-      password: this.user.password,
+      password: [this.user.password, [Validators.minLength(5), Validators.required]],
       address: ['', Validators.required], //, Validators.pattern("/^\S*$/")
       is_valid: [true]
     });
@@ -59,28 +61,16 @@ export class AddUserComponent implements OnInit {
   }
 
   clearForm() {
-  
     this.createForm();
   }
   
   AddUser() {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
-  //  var result=this.userService.ifUserExists(this.user);
-   
-  //  if (this.addUserForm.invalid) {
-   //   this.submitted = true;
-   //   return;
-    // }
     this.user.is_valid = true;
     this.userService.AddUser(this.user).subscribe(
       data => { this.message="Użytkownik dodany poprawnie"; this.ngOnInit() },
       response => { this.message = (<any>response).error.alert });
-
- //   this.user = this.addUserForm.value();
-   // this.userService.addUser(m);
-  //    .subscribe(user =>
-    //    this.user = user['records']);
     this.submitted = true;
   }
 

@@ -1,5 +1,4 @@
 export class Reservation {
-
   reservation_id: Number;
   book_id: Number;
   user_id: Number;

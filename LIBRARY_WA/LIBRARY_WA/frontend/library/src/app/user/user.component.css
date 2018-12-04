@@ -3,5 +3,9 @@
   font-size: medium;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
+}
 
+.containerUserMenu{
+  width:120%;
+  margin-left:10%;
 }

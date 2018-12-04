@@ -31,8 +31,10 @@ export class AddBookComponent implements OnInit {
     private app: AppComponent) { }
 
   ngOnInit() {
+    if (this.app.IsExpired("l"))
+      return;
     this.submitted = false;
-  
+    this.message = "";
     this.GetBookType();  
     this.GetAuthor();    
     this.GetLanguage();
@@ -51,19 +53,26 @@ export class AddBookComponent implements OnInit {
   }
 
   AddBook() {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
     var m = this.book;
     m.is_available = true;
+  
     this.id = 0;
-    this.submitted = true;
-    var added=this.bookService.AddBook(m).subscribe(
-      (data: Book) => { this.id = Number(data.book_id), this.message="Książka dodana poprawnie " + this.id; this.ngOnInit();},
-      response => { this.message = (<any>response).error.alert });
     this.submitted = false;
+    var added=this.bookService.AddBook(m).subscribe(
+      (data: Book) => { this.id = Number(data.book_id); this.message = "Książka dodana poprawnie " + this.id; this.clearForm();},
+      response => { this.message = (<any>response).error.alert });
+    this.submitted = true;
     }
 
- // ClearForm() { this.book = new EventEmitter<Book>();}
+  clearForm() {
+    Object.keys(this.addBookForm.controls).forEach((name) => {
+      this.addBookForm.controls[name].setValue("");
+      this.addBookForm.controls[name].reset();
+    });
+    
+  }
 
   CheckISBNExistsInDB(control: FormControl) {
     return this.bookService.IfISBNExists(control.value).pipe(

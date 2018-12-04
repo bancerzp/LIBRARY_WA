@@ -7,6 +7,7 @@ import { Http } from '@angular/http';
 import { UserService } from '../_services/user.service';
 import { User } from '../_models/User';
 import { appRoutes } from '../app.module';
+import { AppComponent } from "../app.component";
 //import { AlertService, AuthenticationService } from '../_services';
 
 @Component({
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private userService: UserService,
-    private router: Router) { }
+    private router: Router,
+    private app:AppComponent) { }
 
   ngOnInit() {
     this.valid = true;
@@ -62,12 +64,11 @@ export class LoginComponent implements OnInit {
       localStorage.setItem("user_fullname", fullname);
       localStorage.setItem("expires", expires);
       localStorage.setItem("user_type", user_type);
-      
+      this.app.SetVariable(user_type,user_id);
       this.valid = true;
       window.location.reload();
       this.router.navigateByUrl('/')
         
-    //   this.router.navigate["/"];
       }, err => {
       this.valid= false;
     });

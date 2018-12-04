@@ -185,7 +185,8 @@ namespace LIBRARY_WA.Data
 
             foreach (Volume volume in _context.Volume.Where(a => a.book_id == id))
             {
-                volume.is_free = false;
+                _context.Volume.Remove(volume);
+                //volume.is_free = false;
             }
             book.is_available = false;
             //usuń wszystkie rezerwacje
@@ -197,8 +198,8 @@ namespace LIBRARY_WA.Data
 
 
         //Volume function
-        [HttpPost("{id}"), Authorize(Roles = "l")]//, ]
-        public async Task<IActionResult> AddVolume([FromRoute] int id)
+        [HttpPost, Authorize(Roles = "l")]//, ]
+        public async Task<IActionResult> AddVolume([FromBody] int id)
         {
             Volume volume = new Volume();
             volume.is_free = true;
@@ -298,7 +299,12 @@ namespace LIBRARY_WA.Data
             {
                 return NotFound(new { alert = "Nie znaleziono użytkownika o podanym id" });
             }
-          
+
+            if (_context.Reservation.Where(a => a.book_id == data[0] && a.user_id==data[1]).Count()> 0)
+            {
+                return BadRequest(new { alert = "Użytkownik ma już zarezerwowaną tę książkę!" });
+            }
+
             if (_context.Volume.Where(a => a.book_id == data[0]).Count() == 0)
             {
                 return NotFound(new { alert = "Książka nie ma żadnych egzemplarzy!" });
@@ -418,7 +424,7 @@ namespace LIBRARY_WA.Data
             return Ok(new { message = "Książka została poprawnie zwrócona" });
         }
 
-        [HttpGet("{user_id}"), Authorize(Roles = "l")]
+        [HttpGet("{user_id}"), Authorize(Roles = "l,r")]
         public async Task<IActionResult> GetSuggestion([FromRoute] int user_id)
         {
             if (!ModelState.IsValid)
@@ -430,20 +436,17 @@ namespace LIBRARY_WA.Data
             {
                 return BadRequest(new { alert = "Nie ma takiego użytkownika" });
             }
-            var sql = @"select top(5) from( 
-                    select* from book where AUTHOR_FULLNAME in (select distinct AUTHOR_FULLNAME from renth where user_id =="+ user_id+ @") 
-                    union
-                    select* from book where type in (select distinct type from renth where user_id==" + user_id + @") 
-                    union
-                    select* from book where language in (select distinct language from renth where user_id ==" + user_id + @") ) a
-                    where a.title not in(select distinct title from renth where user_id ==" + user_id + @") ";
-            return Ok("ok");
+            var sql = "CALL Get_suggestion(" + user_id + ")";
+            _context.Database.ExecuteSqlCommand(sql);
+            var suggestion = _context.Suggestion;
+            return Ok(suggestion);
 
 //            select top 5 from(
 //            select * from book where AUTHOR_FULLNAME in (select distinct AUTHOR_FULLNAME from renth re, book bo where user_id = 2 and re.BOOK_ID = bo.book_id)
 
 //            union
 
+//            select* from book where type in (select distinct type from renth re,book bo where user_id = 2 and re.BOOK_ID = bo.book_id) 
 //            select* from book where type in (select distinct type from renth re,book bo where user_id = 2 and re.BOOK_ID = bo.book_id) 
 //			union
 

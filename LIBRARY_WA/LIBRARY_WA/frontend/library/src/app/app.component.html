@@ -5,35 +5,36 @@
 <body>
   <div id="container">
     <nav class="navbar navbar-expand-md navbar-dark green">
-        <span class=" glyphicon glyphicon-book" style="font-size:80px;color:black"></span>
-      <ul class="navbar-nav navbar-left" style=" color:red" *ngFor="let item of menu">
+      <a routerLink='/' class="navbar-header" style="text-decoration : none">
+        <p class=" glyphicon glyphicon-book" style="font-size:80px;color:black;text-align:center"></p>
+        <p style="font-size:25px;color:cadetblue;text-align:left;font-family:'Josefin+Sans';">Biblioteka publiczna</p>
+      </a>
+
+      <ul class="navbar-nav navbar-left"  *ngFor="let item of menu">
         <li class="nav-item">
-          <a class="nav-link waves-light" [routerLink]=[item.path] routerLinkActive="active" href=item.href mdbWavesEffect>{{item.title}}</a>
+          <a class="nav-link waves" style="color:cadetblue" [routerLink]=[item.path] routerLinkActive="active" href=item.href mdbWavesEffect><b>{{item.title}}</b></a>
         </li>
       </ul>
 
       <div *ngIf="isLogged"  style="text-align-last:center;align-content:center;align-items:center">
         <br />
-        <a  class="glyphicon glyphicon-user" style="font-size:50px"><br />
-         <p style="word-spacing:normal;font-size:10px">Jesteś zalogowany jako:<br />{{userFullname}}</p>
+        <a  class="glyphicon glyphicon-user" style="font-size:60px"><br />
+         <p style="word-spacing:normal;font-size:12px">Jesteś zalogowany jako:<br />{{userFullname}}</p>
         </a><br />
          <button (click)="Logout()" class="btn btn-primary " style="width:auto">Wyloguj</button>
       </div>
     </nav>
 
-  
     <div class="jumbotron">
-      <div class="container">
-        <div class="row">
+      <div class="userContainer">
           <div class="col-lg-9 offset-sm-1">
-            <router-outlet (countChanged)="countChangedHandler($event)"></router-outlet>
-          </div>
+            <router-outlet></router-outlet>
         </div>
       </div>
     </div>
 
     <div class="container">
-      <footer style="font-size:70%">
+      <footer style="font-size:9px">
         <div class=" col-lg-3">
           <p>Biblioteka<br />Patrycja Bancerz </p>
         </div>

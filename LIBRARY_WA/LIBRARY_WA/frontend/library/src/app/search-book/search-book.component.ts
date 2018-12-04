@@ -1,10 +1,8 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { Validators, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
+import {  FormBuilder, FormGroup } from '@angular/forms';
 import { Http, Response } from '@angular/http';
 import { BookService } from '../_services/book.service';
 import { Book } from '../_models/book';
-import { map } from 'rxjs/operators';
-import { forEach } from '@angular/router/src/utils/collection';
 import { Volume } from '../_models/Volume';
 import { AppComponent } from '../app.component';
 import { Reservation } from '../_models/reservation';
@@ -12,14 +10,16 @@ import { Reservation } from '../_models/reservation';
   selector: 'app-search-book',
   templateUrl: './search-book.component.html',
   styleUrls: ['./search-book.component.css'],
-  providers: [BookService, AppComponent]
+  providers: [BookService, AppComponent, SearchBookComponent]
 })
 export class SearchBookComponent implements OnInit {
   @Output() book = new EventEmitter<Book>();
 
   submitted: boolean;
   userType: string;
-  bookData: Book[] = []; // [{ book_id: 'test', title: 'test', ISBN: 'test', author_fullname: 'test', year: 'test', language: 'test',  type: 'test',description: 'test'}];
+  title: String;
+  author_fullname: String;
+  bookData: Book[] = [];
   public author = [];
   public bookType = [];
   public language = [];
@@ -39,13 +39,10 @@ export class SearchBookComponent implements OnInit {
     private bookService: BookService,
     private app: AppComponent,
   ) {
-    // bookService.get().subscribe((data: any) => this.resultData = data);
   }
 
 
   ngOnInit() {
-    // this.recordDeleted.emit("Wydarzenie wyemitowane");
-    //w zależności od typu użytkownika różne akcje
     this.userType = localStorage.getItem("user_type");
 
     this.submitted = false;
@@ -53,8 +50,7 @@ export class SearchBookComponent implements OnInit {
     this.GetBookType();
     this.GetAuthor();
     this.GetLanguage();
-
-    var names = this.column;
+    
     this.searchBookForm = this.formBuilder.group({
       book_id: '',
       isbn: [''],
@@ -64,10 +60,14 @@ export class SearchBookComponent implements OnInit {
       language: '',
       type: ''
     });
+    if (localStorage.getItem("title") != null) {
+      this.searchBookForm.controls['title'].setValue(localStorage.getItem("title"));
+      this.searchBookForm.controls['author_fullname'].setValue(localStorage.getItem("author_fullname"));
+      this.SearchBook();
+    }
   }
 
   SearchBook() {
-
     this.submitted = false;
     this.values = [];
 
@@ -82,14 +82,16 @@ export class SearchBookComponent implements OnInit {
 
     });
     this.submitted = true;
-
-    return this.bookService.SearchBook(this.values).subscribe((data: Book[]) => this.bookData = data,
+     this.bookService.SearchBook(this.values).subscribe((data: Book[]) => { this.bookData = data },
       response => { this.message = (<any>response).error.alert });
-
+   
   }
 
   clearForm() {
-    this.searchBookForm.reset();
+    Object.keys(this.searchBookForm.controls).forEach((name) => {
+      this.searchBookForm.controls[name].setValue("");
+    });
+
   }
 
   GetAuthor() {
@@ -106,9 +108,9 @@ export class SearchBookComponent implements OnInit {
 
   ReserveBookLibrarian(book_id, user_id) {
     this.submitted = false;
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
-    //wypisywanie błędu
+   
     this.bookService.ReserveBook(book_id, Number.parseInt(user_id)).subscribe((res: any) => {
       this.reservation = res;
       this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + this.reservation.queue;
@@ -119,28 +121,25 @@ export class SearchBookComponent implements OnInit {
 
   ReserveBookReader(book_id) {
     this.submitted = false;
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("r"))
       return;
-    this.bookService.ReserveBook(book_id, Number.parseInt(localStorage.getItem("user_id"))).subscribe((res: Response) => {
-      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + (<any>res)
+    this.bookService.ReserveBook(book_id, this.app.GetUserId()).subscribe((res: Response) => {
+      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + this.reservation.queue
     },
       response => { this.message = (<any>response).error.alert });
     this.submitted = true;
   }
 
-  //nie zrobione
+  
   EditBook(book_id) {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
     localStorage.setItem("book_id", book_id);
     this.app.RouteTo("app-edit-book");
-    //  this.bookService.update(book_id, localStorage.getItem("user_id")).subscribe();
-    //,
-    //  response => { this.message = (<any>response).error.alert });
   }
 
   RemoveBook(id) {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
 
     this.submitted = false;
@@ -149,13 +148,12 @@ export class SearchBookComponent implements OnInit {
       this.bookData = this.bookData.filter(book => book.book_id != id);
     },
       response => { this.message = (<any>response).error.alert });
-    //   this.bookData.splice(this.bookData.indexOf(this.bookData.find(book => book.book_id = id)), 1);
-    //   this.SearchBook();
+   
     this.submitted = true;
   }
 
   AddVolume(id) {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
     this.submitted = false;
     this.bookService.AddVolume(id).subscribe(
@@ -165,7 +163,12 @@ export class SearchBookComponent implements OnInit {
       response => { this.message = (<any>response).error });
   
   this.submitted = true;
-}}
+  }
+
+  Redirect() {
+    this.ngOnInit();
+  }
+}
 
 export class UserAction {
   text: string;

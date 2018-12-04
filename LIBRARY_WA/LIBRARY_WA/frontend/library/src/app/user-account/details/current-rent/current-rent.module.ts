@@ -31,30 +31,28 @@ export class CurrentRentModule {
   }
 
   ngOnInit() {
-    this.user_type = localStorage.getItem("user_type");
+    if (this.app.IsExpired("l,r"))
+      return;
+    this.user_type = this.app.GetUserType();
     this.GetRent();
     this.submitted = true;
   }
 
   GetRent() {
-   // var decoded = jwt.decode(token);
-
-    let jwtData = localStorage.getItem("token").split('.')[1]
-    let decodedJwtJsonData = window.atob(jwtData)
-    let decodedJwtData = JSON.parse(decodedJwtJsonData)
-    let isAdmin = decodedJwtData.l
-    
     this.submitted = false;
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l,r"))
       return;
+    if (this.app.GetUserType() == "r") {
+      localStorage.setItem("user_id", this.app.GetUserId())
+    }
     this.userService.GetRent(localStorage.getItem("user_id")).subscribe((rents: any[]) => this.rent = rents,
       response => { this.message = (<any>response).error });
     this.submitted = true;
-    this.message = isAdmin;
   }
+
   ReturnBook2(rent_id) {
     this.submitted = false;
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
     //błędy wyłapać
     this.bookService.ReturnBook(rent_id).subscribe(data => {
@@ -67,7 +65,7 @@ export class CurrentRentModule {
 
   ReturnBook(rent_id) {
     this.submitted = false;
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
     //błędy wyłapać
     this.bookService.ReturnBook(rent_id).subscribe(data => {

@@ -64,7 +64,7 @@ export class BookService {
 
   //Volume function
   public AddVolume(id) {
-    return this.http.post(this.accessPointUrl + "/AddVolume/" + id,
+    return this.http.post(this.accessPointUrl + "/AddVolume/" , id,
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
@@ -99,6 +99,12 @@ export class BookService {
     var values = [rent_id];
     return this.http.post(this.accessPointUrl + "/ReturnBook",values,
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+  }
+
+  public GetSuggestion(user_id) {
+    return this.http.get(this.accessPointUrl + "/GetSuggestion/"+user_id,
+      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+
   }
   
 }

@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { JwtHelper } from 'angular2-jwt';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent  {
  
   public login: MenuItem = { title: 'Logowanie', path: 'app-login', href: '#login' };
@@ -23,9 +25,11 @@ export class AppComponent  {
   public menu: MenuItem[]; //= this.menuLibrarian;
 
   public userFullname;
+  public user_type;
+  public user_id;
   public isLogged;
-
-  constructor(private router: Router) {}
+    
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.isLogged = false;
@@ -47,15 +51,48 @@ export class AppComponent  {
   Logout() {
     localStorage.clear();
     window.location.reload();
-   // this.router.navigateByUrl('/app-login')
+    this.router.navigateByUrl('/app-login');
+   
   }
 
-  IsExpired() {
-    if (localStorage.getItem("expires") && (Date.now() > Date.parse(localStorage.getItem("expires")))) {
+  GetUserId() {
+    if (localStorage.getItem('token') == null)
+      return;
+    return localStorage.getItem("user_id");
+  }
+
+  GetUserType() {
+    if (localStorage.getItem('token') == null)
+      return;
+    return localStorage.getItem("user_type");
+  }
+
+  IsExpired(user_type) {
+      
+   //false bo nie wygasł token
+  //  var token = localStorage.getItem('token');
+    if (localStorage.getItem('token') == null) {
+       this.router.navigateByUrl('/app-login');
       this.Logout();
+      
       return true;
     }
-      return false;
+    let jwtHelper: JwtHelper = new JwtHelper();
+
+    if (jwtHelper.isTokenExpired(localStorage.getItem('token'))) {
+      this.Logout();
+      return true;
+    } else
+      if (user_type == "l,r")
+        return false;
+      return (!this.GetUserType()==user_type);
+  }
+
+  SetVariable(user_type, user_id) {
+   
+    this.user_id = user_id;
+    this.user_type = user_type;
+ 
   }
 
   RouteTo(path) {

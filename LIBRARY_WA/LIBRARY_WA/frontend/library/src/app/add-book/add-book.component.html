@@ -4,14 +4,14 @@
 </h1>
 
 <div *ngIf="submitted" class="modal-content">
-  <a  style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
+  <a  style="text-align:center;font-size:15px;align-content:center;color:darkseagreen" class="modal-content">
     <b>            {{message}}</b>
   </a>
 </div>
 
 <form [formGroup]="addBookForm" (ngSubmit)="AddBook()">
   <div class="form-group">
-    <label for="isbn">isbn</label>
+    <label for="isbn">ISBN</label>
     <input type="text" formControlName="isbn" class="form-control" [(ngModel)]="book.isbn" ng-change="CheckisbnExistsInDB()" placeholder="format: 9999999999999" />
     <div class="alert alert-danger " *ngIf="(sumbitted && addBookForm.get('isbn').hasError('required'))||(addBookForm.get('isbn').hasError('required')  && addBookForm.get('isbn').touched)">Pole isbn nie może być puste</div>
     <div class="alert alert-danger " *ngIf="addBookForm.get('isbn').hasError('pattern')  && addBookForm.get('isbn').touched  ">Nieprawidłowy format ISBN</div>

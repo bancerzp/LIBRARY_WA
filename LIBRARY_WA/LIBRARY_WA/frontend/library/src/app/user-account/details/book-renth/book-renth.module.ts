@@ -28,13 +28,20 @@ export class BookRenthModule {
   }
 
   ngOnInit() {
+    if (this.app.IsExpired("l,r"))
+      return;
     this.GetRenth();
   }
 
   GetRenth() {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l,r"))
       return;
-    this.name = localStorage.getItem("user_id");
+    if (this.app.GetUserType() == "l") {
+      this.name = localStorage.getItem("user_id");
+    }
+    else {
+     this.name = this.app.GetUserId();
+    }
     this.userService.GetRenth(this.name).subscribe((renths: any[]) => this.renth = renths,
       response => { this.message = (<any>response).error.alert });
   }

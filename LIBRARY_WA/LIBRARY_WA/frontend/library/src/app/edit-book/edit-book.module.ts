@@ -41,6 +41,8 @@ export class EditBookComponent {
 
 
   ngOnInit() {
+    if (this.app.IsExpired("l"))
+      return;
     this.displayVolume = true;
     
     //this.route.queryParams
@@ -95,7 +97,7 @@ export class EditBookComponent {
   }
 
   RemoveVolume(id) {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
     this.submitted = false;
     this.displayVolume = false;
@@ -108,16 +110,16 @@ export class EditBookComponent {
     this.submitted = true;
 }
   UpdateBook() {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
     this.bookService.UpdateBook(this.book).subscribe(data => {
-      this.message=("Egzemplarz został poprawnie usunięty.");
+      this.message=("Książki została poprawnie zapisana");
     }, response => { this.message = (<any>response).error });
 
   }
 
   GetBookById() {
-    if (this.app.IsExpired())
+    if (this.app.IsExpired("l"))
       return;
     return this.bookService.GetBookById(localStorage.getItem("book_id")).subscribe(
       (book: Book) => this.book = book, response => { this.message = (<any>response).error.alert });

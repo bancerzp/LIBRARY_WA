@@ -18,4 +18,6 @@ public class LibraryContext : DbContext
     public DbSet<Reservation> Reservation { get; set; }
     public DbSet<Rent> Rent { get; set; }
     public DbSet<Renth> Renth { get; set; }
+    public DbSet<Suggestion> Suggestion { get; set; }
+    
 }
