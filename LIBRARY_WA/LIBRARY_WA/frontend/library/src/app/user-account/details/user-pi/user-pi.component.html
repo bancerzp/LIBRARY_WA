@@ -52,6 +52,8 @@
   <div class="form-group">
     <label for="password">Nowe hasło</label>
     <input type="password" formControlName="password" class="form-control" [(ngModel)]="user.password" />
+  
+
   </div>
 
   <div class="form-group">
@@ -63,6 +65,11 @@
     <p>Aby dokończyć resetowanie hasła należy kliknąć 'Zapisz'</p>
   </div>
 
+  <!-- <div class="radio-group">
+     <label for="password">Powtórz hasło</label>
+     <input type="text" formControlName="type" class="form-control" disabled="disabled" [(ngModel)]="user.password" />
+   </div>
+   -->
   <div class="form-group">
     <button type="submit" (click)="UpdateUser()" [disabled]="loading || !updateUserForm.valid" class="btn btn-primary">Zapisz</button>
   </div>

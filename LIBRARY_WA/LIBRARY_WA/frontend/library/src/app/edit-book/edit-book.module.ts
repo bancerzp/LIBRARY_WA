@@ -45,6 +45,14 @@ export class EditBookComponent {
       return;
     this.displayVolume = true;
     
+    //this.route.queryParams
+    //  .subscribe(params => {
+       
+    //    alert(params.book_id.value());
+    //    this.book.book_id = params.book_id;
+    //  }
+    //  )
+    
     this.GetBookById();
     this.GetVolumeByBookId();
 

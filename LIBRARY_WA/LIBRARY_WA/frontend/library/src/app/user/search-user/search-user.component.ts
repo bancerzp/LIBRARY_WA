@@ -7,6 +7,7 @@ import { Http, Response } from '@angular/http';
 import { User } from '../../_models/User';
 import { UserService } from '../../_services/user.service';
 import { AppComponent } from '../../app.component';
+//import { AlertService, AuthenticationService } from '../_services';
 
 @Component({
   selector: 'app-search-user',
@@ -32,7 +33,9 @@ export class SearchUserComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private app: AppComponent,) { }
-
+  //  private router: Router,
+  // private authenticationService: AuthenticationService,
+  // private alertService: AlertService) { }*/
 
   ngOnInit() {
     if (this.app.IsExpired("l"))
@@ -48,10 +51,19 @@ export class SearchUserComponent implements OnInit {
       login: '',
       phone_number: ''
     });
-  
+   // this.SearchUser();
   }
- 
-  
+  /*
+  // reset login status
+  this.authenticationService.logout();
+
+  // get return url from route parameters or default to '/'
+  this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';*/
+
+
+  // convenience getter for easy access to form fields
+  // get f() { return this.loginForm.controls; }
+
   SearchUser() {
     if (this.app.IsExpired("l"))
       return;
@@ -92,7 +104,44 @@ export class SearchUserComponent implements OnInit {
     this.app.RouteTo("app-user-account");
       localStorage.setItem("user_id",id)
     }
+
+
+
+    
+    // http.post('my/php/login.php?action=login', this.loginForm.login, this.loginForm.password).then(function (user) {
+    //get data here
+    // })
+   
+
+    /*  // stop here if form is invalid
+      if (this.loginForm.invalid) {
+        return;
+      }
   
+     this.loading = true;
+      this.authenticationService.login(this.f.username.value, this.f.password.value)
+        .pipe(first())
+        .subscribe(
+          data => {
+            this.router.navigate([this.returnUrl]);
+          },
+          error => {
+            this.alertService.error(error);
+            this.loading = false;
+      }
+      );*/
+
 }
 
 
+
+/*interface User {
+  userId: String;
+  personId: String;
+  login: String;
+  password: String;
+  pesel: String;
+  userType: String;
+  person: String;
+}
+*/

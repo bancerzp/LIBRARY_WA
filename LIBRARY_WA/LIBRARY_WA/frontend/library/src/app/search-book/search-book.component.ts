@@ -40,7 +40,8 @@ export class SearchBookComponent implements OnInit {
     private app: AppComponent,
   ) {
   }
-  
+
+
   ngOnInit() {
     this.userType = localStorage.getItem("user_type");
 

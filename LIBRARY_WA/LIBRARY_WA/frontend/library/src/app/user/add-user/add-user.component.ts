@@ -6,6 +6,9 @@ import { UserService } from '../../_services/user.service';
 import { map } from 'rxjs/operators';
 import { AppComponent } from '../../app.component';
 
+//import { createConnection } from 'net';
+//import { createConnection } from 'mysql';
+//import * as mysql from 'mysql';
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
@@ -14,6 +17,7 @@ import { AppComponent } from '../../app.component';
 
 })
 export class AddUserComponent implements OnInit {
+  // @Output() user = new EventEmitter<User>();
 
   user: User = new User(null, "", "", "", "", new Date('1968-11-16T00:00:00'), "", "", "", true)
   addUserForm: FormGroup;
@@ -52,6 +56,7 @@ export class AddUserComponent implements OnInit {
 
   ngOnInit() {
     this.submitted = false;
+    //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.createForm();
   }
 
