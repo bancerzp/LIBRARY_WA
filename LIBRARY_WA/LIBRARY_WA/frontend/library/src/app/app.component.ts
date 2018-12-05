@@ -50,9 +50,9 @@ export class AppComponent  {
 
   Logout() {
     localStorage.clear();
-    window.location.reload();
+    this.menu = this.menuGuest;
+  //  window.location.reload();
     this.router.navigateByUrl('/app-login');
-   
   }
 
   GetUserId() {
@@ -68,7 +68,6 @@ export class AppComponent  {
   }
 
   IsExpired(user_type) {
-      
    //false bo nie wygasł token
   //  var token = localStorage.getItem('token');
     if (localStorage.getItem('token') == null) {
