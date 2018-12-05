@@ -1,32 +1,12 @@
 <p style="font-size:20px;align-content:center;">Witaj na stronie biblioteki publicznej!</p>
+<div>
+  <p *ngIf="user_type=='r'" style="font-size:medium;text-align:center">
+    Mogą Ci się spodobać:
+  </p>
 
-<p *ngIf="user_type=='r'">
-  Mogą Ci się spodobać:
-</p>
-
-<div class="square">
+  <form class="square">
     <a class="tile" *ngFor="let suggestionInfo of suggestion" (click)="SearchBook(suggestionInfo.title,suggestionInfo.author_fullname)">
       {{suggestionInfo.title}}<br />{{suggestionInfo.author_fullname}}
     </a>
+  </form>
 </div>
-
-
-
-
-<table class="renthTable w3-hoverable">
-  <tr>
-    <th *ngFor="let name of column">
-      {{name}}
-    </th>
-  </tr>
-  <tbody>
-    <tr *ngFor="let renthInfo of renth">
-      <td>{{ renthInfo.rent_id_h  }}</td>
-      <td>{{ renthInfo.isbn  }}</td>
-      <td>{{ renthInfo.title  }}</td>
-      <td>{{ renthInfo.volume_id }}</td>
-      <td>{{ renthInfo.start_date.substring(0,10) }}</td>
-      <td>{{ renthInfo.end_date.substring(0,10)  }}</td>
-    </tr>
-  </tbody>
-</table>

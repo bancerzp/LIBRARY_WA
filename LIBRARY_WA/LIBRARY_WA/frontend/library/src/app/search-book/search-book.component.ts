@@ -67,6 +67,7 @@ export class SearchBookComponent implements OnInit {
   }
 
   SearchBook() {
+    this.message = "";
     this.submitted = false;
     this.values = [];
 
@@ -106,6 +107,7 @@ export class SearchBookComponent implements OnInit {
   };
 
   ReserveBookLibrarian(book_id, user_id) {
+    this.message = "";
     this.submitted = false;
     if (this.app.IsExpired("l"))
       return;
@@ -119,11 +121,13 @@ export class SearchBookComponent implements OnInit {
   }
 
   ReserveBookReader(book_id) {
+    this.message = "";
     this.submitted = false;
     if (this.app.IsExpired("r"))
       return;
-    this.bookService.ReserveBook(book_id, this.app.GetUserId()).subscribe((res: Response) => {
-      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + this.reservation.queue
+    this.bookService.ReserveBook(book_id, this.app.GetUserId()).subscribe((res: any) => {
+      this.reservation = res;
+      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + this.reservation.queue;
     },
       response => { this.message = (<any>response).error.alert });
     this.submitted = true;
@@ -131,6 +135,7 @@ export class SearchBookComponent implements OnInit {
 
   
   EditBook(book_id) {
+    this.message = "";
     if (this.app.IsExpired("l"))
       return;
     localStorage.setItem("book_id", book_id);
@@ -138,6 +143,7 @@ export class SearchBookComponent implements OnInit {
   }
 
   RemoveBook(id) {
+    this.message = "";
     if (this.app.IsExpired("l"))
       return;
 
@@ -152,6 +158,7 @@ export class SearchBookComponent implements OnInit {
   }
 
   AddVolume(id) {
+    this.message = "";
     if (this.app.IsExpired("l"))
       return;
     this.submitted = false;

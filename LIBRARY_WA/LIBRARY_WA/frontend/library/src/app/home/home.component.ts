@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     if (this.app.IsExpired("r"))
       return;
+    if (localStorage.getItem("user_type")=="r")
     this.getSuggestion();
   }
 
