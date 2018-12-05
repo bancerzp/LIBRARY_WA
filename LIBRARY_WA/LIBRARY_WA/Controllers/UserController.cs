@@ -35,10 +35,17 @@ namespace LIBRARY_WA.Controllers
 
         //----Data verifying
         [HttpGet("{email}")]
-        public IEnumerable<User> IfEmailExists([FromRoute] String email)
+        public IActionResult IfEmailExists([FromRoute] String email)
         {
-            String email2 = email.Replace("'", "");
-            return _context.User.Where(u => u.email == email2);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+          
+        //    String email2 = email.Replace("'", "");
+           
+            return Ok(_context.User.Where(u => u.email == email));
+
         }
 
         [HttpGet("{login}")]
@@ -55,9 +62,9 @@ namespace LIBRARY_WA.Controllers
         {
             if (userData == null)
             {
-                return BadRequest(new { alert = "Nieprawidłowe zapytanie" });
+                return BadRequest(new { alert = "Nieprawidłowe dane logowania" });
             }
-            User user = _context.User.Where(u => u.login == userData.login && u.password == userData.password).FirstOrDefault();
+            User user = _context.User.Where(u => u.login == userData.login.Replace("'","\'") && u.password == userData.password.Replace("'", "\'")).FirstOrDefault();
             if (user != null)
 
             {
@@ -126,11 +133,11 @@ namespace LIBRARY_WA.Controllers
                 {
                     if (name[i] == "fullname")
                     {
-                        sql += "and " + name[i] + " like('%" + search[i] + "%') ";
+                        sql += "and " + name[i] + " like('%" + search[i].Replace("'", "\'") + "%') ";
                     }
                     else
                     {
-                        sql += "and " + name[i] + "='" + search[i] + "' ";
+                        sql += "and " + name[i] + "='" + search[i].Replace("'", "\'") + "' ";
                     }
                 }
             }
@@ -144,7 +151,7 @@ namespace LIBRARY_WA.Controllers
         [HttpPost,Authorize(Roles ="l")]
         public async Task<IActionResult> AddUser([FromBody] User user)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || user.login.Contains("'"))
             {
                 return BadRequest(ModelState);
             }
@@ -262,55 +269,7 @@ namespace LIBRARY_WA.Controllers
             return Ok(reservation);
         }
 
-
-        //zarzadzanie rezerwacjami
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> CancelReservationnnn([FromRoute] int reservation_id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            BinaryWriter w = new BinaryWriter(fs);
-
-            w.Write(_context.Reservation.FirstOrDefault().book_id);
-            w.Close();
-            if (_context.Reservation.Find(reservation_id).queue>0)
-            {
-
-                return BadRequest(new { alert = "Nie ma takiej rezerwacji" });
-            }
-
-
-            //     Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservation_id).FirstOrDefault();
-            //    Reservation[] resToChange = _context.Reservation.Where(a => a.book_id == reservation.book_id && a.queue > reservation.queue).ToArray();
-            //    foreach (Reservation res in resToChange)
-            //    {
-            //        res.queue = res.queue - 1;
-            //        if (res.queue == 0)
-            //        {
-            //           res.is_active = true;
-            //           res.expire_date = DateTime.Now.AddDays(8);
-            //            res.volume_id = reservation.volume_id;
-            //        }
-            //     }
-            //     _context.Reservation.Remove(reservation);
-            //   await _context.SaveChangesAsync();
-            return Ok("Rezerwacja została usunięta");
-        }
-
-        //    return this.http.delete(this.accessPointUrl + "/CancelReservation/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
-        //}
-
-
-        //-----------------------
-
-        //------------NIEPOTRZEBNE
-
-        //----------------------------
-        // PUT: api/User/5
+       
         [HttpPut]
         public async Task<IActionResult> UpdateUser( [FromBody] User user)
         {
@@ -334,7 +293,7 @@ namespace LIBRARY_WA.Controllers
         }
 
        
-        // DELETE: api/User/5
+     
       
 
         private bool UserExists(Int32 id)

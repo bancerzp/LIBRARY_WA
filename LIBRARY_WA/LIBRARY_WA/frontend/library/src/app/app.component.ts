@@ -87,6 +87,15 @@ export class AppComponent  {
       return (!this.GetUserType()==user_type);
   }
 
+  Login(user_type) {
+    if (user_type == "l") {
+      this.menu = this.menuLibrarian;
+    } else if (user_type == "r") {
+      this.menu = this.menuReader;
+    }
+    this.router.navigateByUrl('/');
+  }
+
   SetVariable(user_type, user_id) {
    
     this.user_id = user_id;

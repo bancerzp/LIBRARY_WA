@@ -47,7 +47,7 @@ namespace LIBRARY_WA.Data
         [HttpGet("{isbn}")]
         public IEnumerable<Book> IfISBNExists([FromRoute] String isbn)
         {
-            return _context.Book.Where(a => (a.isbn == isbn)); //&& (a.is_available == true)
+            return _context.Book.Where(a => (a.isbn == isbn.Replace("'","\'"))); //&& (a.is_available == true)
         }
 
 
@@ -138,12 +138,12 @@ namespace LIBRARY_WA.Data
                         String[] words = search[i].ToLower().Split(" ");
                         for (int j = 0; j < words.Length; j++)
                         {
-                            sql += " and title like('%" + words[j] + "%') ";
+                            sql += " and title like('%" + words[j].Replace("'", "\'") + "%') ";
                         }
                     }
                     else
                     {
-                        sql += "and " + name[i] + "='" + search[i] + "'";
+                        sql += "and " + name[i] + "='" + search[i].Replace("'", "\'") + "'";
                     }
                 }
 

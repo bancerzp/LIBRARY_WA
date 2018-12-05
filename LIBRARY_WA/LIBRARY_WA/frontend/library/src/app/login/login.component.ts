@@ -66,8 +66,9 @@ export class LoginComponent implements OnInit {
       localStorage.setItem("user_type", user_type);
       this.app.SetVariable(user_type,user_id);
       this.valid = true;
-      window.location.reload();
-      this.router.navigateByUrl('/')
+        // window.location.reload();
+      this.app.Login(localStorage.getItem("user_type"));
+      //this.router.navigateByUrl('/')
         
       }, err => {
       this.valid= false;

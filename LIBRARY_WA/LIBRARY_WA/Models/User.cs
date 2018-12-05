@@ -11,6 +11,7 @@ namespace LIBRARY_WA.Models
     {
         [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int user_id { get; set; }
+        
         public String login { get; set; }
         public String password { get; set; }
         public String user_type { get; set; }
@@ -18,6 +19,7 @@ namespace LIBRARY_WA.Models
         public String fullname { get; set; }
         public DateTime date_of_birth { get; set; }
         public String phone_number { get; set; }
+        [EmailAddress]
         public String email { get; set; }
         public String address { get; set; }
         public Boolean is_valid { get; set; }
