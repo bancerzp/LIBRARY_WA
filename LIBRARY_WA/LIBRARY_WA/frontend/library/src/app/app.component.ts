@@ -95,6 +95,7 @@ export class AppComponent  {
       this.menu = this.menuReader;
     }
     this.isLogged = true;
+    this.userFullname = localStorage.getItem("user_fullname");
     this.router.navigateByUrl('/');
   }
 

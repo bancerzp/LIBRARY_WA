@@ -7,9 +7,21 @@ using System.Threading.Tasks;
 
 namespace LIBRARY_WA.Models
 {
-    public class Book
+    public class Book_DTO
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Book_DTO(int book_id, string title, string isbn, string author_fullname, string year, string language, string type, string description, bool is_available)
+        {
+            this.book_id = book_id;
+            this.title = title;
+            this.isbn = isbn;
+            this.author_fullname = author_fullname;
+            this.year = year;
+            this.language = language;
+            this.type = type;
+            this.description = description;
+            this.is_available = is_available;
+        }
+
         public int book_id { get; set; }
 
         [MaxLength(50, ErrorMessage = "Za długi tytuł")]

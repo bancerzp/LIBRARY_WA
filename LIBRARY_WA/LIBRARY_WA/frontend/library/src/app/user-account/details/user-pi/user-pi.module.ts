@@ -97,7 +97,9 @@ export class UserPIModule {
     if (this.app.IsExpired("l,r"))
       return;
     this.resetClicked = true;
-    this.reset = (this.updateUserForm.get('password').value == this.updateUserForm.get('password2').value && this.updateUserForm.get('password').value.length() > 4 && this.updateUserForm.get('password').value.length() <21); 
+    if (this.updateUserForm.get('password').value.length > 4 && this.updateUserForm.get('password').value.length < 21)
+      this.reset = false;
+    this.reset = (this.updateUserForm.get('password').value == this.updateUserForm.get('password2').value ); 
   }
   CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(

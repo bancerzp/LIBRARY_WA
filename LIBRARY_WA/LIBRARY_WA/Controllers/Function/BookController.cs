@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Authorization;
 using System.IO;
+using LIBRARY_WA.Controllers.Services;
 
 namespace LIBRARY_WA.Data
 {
@@ -18,64 +19,58 @@ namespace LIBRARY_WA.Data
     [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly LibraryContext _context;
+        private BookService _bookService;
 
-        public BookController(LibraryContext context)
+        public BookController(BookService bookService)
         {
-            _context = context;
+            _bookService = bookService;
         }
 
         // get data to combobox
         [HttpGet]
         public List<String> GetAuthor()
         {
-            return _context.Book.Where(a=>a.is_available==true).Select(a => a.author_fullname).Distinct().ToList();
+            return _bookService.GetAuthor();
         }
 
         [HttpGet]
         public List<String> GetBookType()
         {
-            return _context.Book.Where(a => a.is_available == true).Select(a => a.type).Distinct().ToList();
+            return _bookService.GetBookType();
         }
 
         [HttpGet]
         public List<String> GetLanguage()
         {
-            return _context.Book.Where(a => a.is_available == true).Select(a => a.language).Distinct().ToList();
+            return _bookService.GetLanguage();
         }
 
         [HttpGet("{isbn}")]
-        public IEnumerable<Book> IfISBNExists([FromRoute] String isbn)
+        public ActionResult<Boolean> IfISBNExists([FromRoute] String isbn)
         {
-            return _context.Book.Where(a => (a.isbn == isbn.Replace("'","\'"))); //&& (a.is_available == true)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return _bookService.IfISBNExists(isbn);
         }
-
-
-
+        
         //BOOK function
 
         [HttpPost, Authorize(Roles = "l")]
-        public async Task<IActionResult> AddBook([FromBody] Book book)
+        public ActionResult<Book_DTO>  AddBook([FromBody] Book_DTO book)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (_context.Book.Where(a => a.isbn == book.isbn).Count() > 0)
+            if (_bookService.IfISBNExists(book.isbn))
             {
                 return BadRequest(new {alert= "Książka o danym ISBN już istnieje w bazie danych." });
             }
-
-            //  book.is_available = true;
-            _context.Book.Add(book);
-            await _context.SaveChangesAsync();
-            Volume volume = new Volume();
-            volume.is_free = true;
-            volume.book_id = book.book_id;
-            _context.Volume.Add(volume);
-            _context.SaveChanges();
-
+            _bookService.AddBook(book);
+            
             return CreatedAtAction("AddBook", new { id = book.book_id }, book);
         }
 
@@ -87,7 +82,7 @@ namespace LIBRARY_WA.Data
                 return BadRequest(ModelState);
             }
 
-            var book = await _context.Book.FindAsync(id);
+            var book = GetBookById(id);
 
             if (book == null)
             {
@@ -98,14 +93,14 @@ namespace LIBRARY_WA.Data
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetVolumeByBookId([FromRoute] int id)
+        public ActionResult<Volume> GetVolumeByBookId([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var volume = _context.Volume.Where(a=>a.book_id==id);
+            Volume_DTO volume = _bookService.GetVolumeByBookId(id);
 
             if (volume == null)
             {
@@ -117,99 +112,53 @@ namespace LIBRARY_WA.Data
 
 
         [HttpPost]
-        public async Task<IActionResult> SearchBook([FromBody] String[] search)
+        public ActionResult<Book> SearchBook([FromBody] String[] search)
         {
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-          //  FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-          //  BinaryWriter w = new BinaryWriter(fs);
-            String[] name = { "book_id", "ISBN", "title", "author_fullname", "year", "language", "type" };
-            String sql = "Select * from Book where is_available=true ";
-            for (int i = 0; i < search.Length; i++)
-            {
-                if (search[i] != "%")
-                {
-                    if (name[i] == "title")
-                    {
-                        String[] words = search[i].ToLower().Split(" ");
-                        for (int j = 0; j < words.Length; j++)
-                        {
-                            sql += " and title like('%" + words[j].Replace("'", "\'") + "%') ";
-                        }
-                    }
-                    else
-                    {
-                        sql += "and " + name[i] + "='" + search[i].Replace("'", "\'") + "'";
-                    }
-                }
-
-            }
-
-            //  FileStream fs = new FileStream("textt.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            //  BinaryWriter w = new BinaryWriter(fs);
-            //   w.Write(sql);
-            //    w.Close();
-            var book = _context.Book.FromSql(sql);
-
-            return Ok(book);
-          
-
+            return Ok(_bookService.SearchBook(search));
         }
 
 
         [HttpDelete("{id}"), Authorize(Roles = "l")]
-        public async Task<IActionResult> RemoveBook([FromRoute] int id)
+        public ActionResult RemoveBook([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var book = await _context.Book.FindAsync(id);
-            if (book == null)
+            if (_bookService.GetBookById(id) == null)
             {
                 return NotFound(new { alert = "Nie znaleziono książki o danym id." });
             }
 
-            if (_context.Rent.Where(a => a.book_id == id).Count() > 0)
+            if (!_bookService.GetRentById(id))
             {
                 return NotFound(new { alert = "Dana książka jest wypożyczona. Nie można jej usunąć" });
             }
-
-
-            _context.Reservation.FromSql("DELETE from Reservation where book_id='" + id + "'");
-
-            foreach (Volume volume in _context.Volume.Where(a => a.book_id == id))
-            {
-                _context.Volume.Remove(volume);
-                //volume.is_free = false;
-            }
-            book.is_available = false;
-            //usuń wszystkie rezerwacje
-
-            await _context.SaveChangesAsync();
-            return Ok(book);
+            
+            _bookService.RemoveBook(id);
+            return Ok();
         }
 
 
 
         //Volume function
         [HttpPost, Authorize(Roles = "l")]//, ]
-        public async Task<IActionResult> AddVolume([FromBody] int id)
+        public ActionResult<Volume_DTO> AddVolume([FromBody] int id)
         {
-            Volume volume = new Volume();
-            volume.is_free = true;
-            volume.book_id = id;
-            _context.Volume.Add(volume);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("AddVolume", new { id = volume.volume_id }, volume);
-            // return Ok(2);
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            Volume_DTO volume= _bookService.AddVolume(id);
+            return CreatedAtAction("AddVolume", new { id = volume.volume_id }, volume);
+        }
+/*
         [HttpGet]
         public async Task<IActionResult> GetVolume()
         {
@@ -222,7 +171,7 @@ namespace LIBRARY_WA.Data
 
             return Ok(volume);
         }
-
+        */
         //-----------------------
 
 

@@ -19,5 +19,6 @@ public class LibraryContext : DbContext
     public DbSet<Rent> Rent { get; set; }
     public DbSet<Renth> Renth { get; set; }
     public DbSet<Suggestion> Suggestion { get; set; }
-    
+    public DbSet<Author> Author { get; set; }
+
 }
