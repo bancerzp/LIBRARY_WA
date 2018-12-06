@@ -50,6 +50,7 @@ export class AppComponent  {
 
   Logout() {
     localStorage.clear();
+    this.isLogged = false;
     this.menu = this.menuGuest;
   //  window.location.reload();
     this.router.navigateByUrl('/app-login');
@@ -93,6 +94,7 @@ export class AppComponent  {
     } else if (user_type == "r") {
       this.menu = this.menuReader;
     }
+    this.isLogged = true;
     this.router.navigateByUrl('/');
   }
 

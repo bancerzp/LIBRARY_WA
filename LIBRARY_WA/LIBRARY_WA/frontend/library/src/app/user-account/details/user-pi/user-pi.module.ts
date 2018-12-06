@@ -88,7 +88,7 @@ export class UserPIModule {
     if (this.app.GetUserType()=="r") {
       localStorage.setItem("user_id", this.app.GetUserId());
     }
-    this.userService.GetUserById(localStorage.getItem("user_id")).subscribe((user: User) => this.user = user,
+    this.userService.GetUserById(localStorage.getItem("user_id")).subscribe((user: User) => { this.user = user; this.pass = this.user.password },
       response => { this.message = (<any>response).error.alert });
   }
 
