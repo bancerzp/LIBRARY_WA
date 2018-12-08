@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using LIBRARY_WA.Models;
+using LIBRARY_WA.Models.database;
 
 public class LibraryContext : DbContext
 {

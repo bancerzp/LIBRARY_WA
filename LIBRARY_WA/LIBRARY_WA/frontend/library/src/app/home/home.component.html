@@ -5,8 +5,10 @@
   </p>
 
   <form class="square">
-    <a class="tile" *ngFor="let suggestionInfo of suggestion" (click)="SearchBook(suggestionInfo.title,suggestionInfo.author_fullname)">
-      {{suggestionInfo.title}}<br />{{suggestionInfo.author_fullname}}
+    <a class="tile tileCover1" *ngFor="let suggestionInfo of suggestion" (click)="SearchBook(suggestionInfo.title,suggestionInfo.author_fullname)">
+      <div>
+        {{suggestionInfo.title}}<br />{{suggestionInfo.author_fullname}}
+      </div>
     </a>
   </form>
 </div>

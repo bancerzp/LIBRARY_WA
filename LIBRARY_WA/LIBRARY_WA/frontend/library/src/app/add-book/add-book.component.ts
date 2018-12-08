@@ -40,11 +40,11 @@ export class AddBookComponent implements OnInit {
     this.GetLanguage();
     this.book = new Book(null, "", "", "", "", "", "", "", true);
     this.addBookForm = this.formBuilder.group({
-      isbn: ['', [Validators.pattern("[0-9]{13}"),
-        Validators.required], this.CheckISBNExistsInDB.bind(this)],
+      isbn: [''],//, [Validators.pattern("[0-9]{13}"),
+      //  Validators.required], this.CheckISBNExistsInDB.bind(this)],
       title: ['', [Validators.required, Validators.maxLength(50)]],
       author_fullname: ['', [Validators.required, Validators.maxLength(100)]],
-      year: ['', [Validators.required, Validators.pattern("[1-9][0-9]{3}")]],
+      year: [''],//, [Validators.required, Validators.pattern("[1-9][0-9]{3}")]],
       language:['', [Validators.required, Validators.maxLength(20)]],
       type: ['', [Validators.required, Validators.maxLength(30)]],
       description: ['', [Validators.maxLength(300)]],

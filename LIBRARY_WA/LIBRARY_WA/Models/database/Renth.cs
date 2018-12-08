@@ -9,7 +9,7 @@ namespace LIBRARY_WA.Models
 {
     public class Renth
     {
-        public Renth( int user_id, string title, string isbn, int book_id, int volume_id, DateTime start_date, DateTime end_date)
+        public Renth( int user_id, int book_id, int volume_id, DateTime start_date, DateTime end_date)
         {
             this.user_id = user_id;
             this.book_id = book_id;

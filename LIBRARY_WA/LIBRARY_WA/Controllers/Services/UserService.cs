@@ -13,107 +13,93 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.IO;
+using AutoMapper;
 
 namespace LIBRARY_WA.Controllers.Services
 {
 
-    public class UserService 
+    public class UserService
     {
         public IConfiguration Configuration { get; }
-
-
+        
         private readonly LibraryContext _context;
-
+       
         public UserService(LibraryContext context, IConfiguration configuration)
         {
             Configuration = configuration;
             this._context = context;
-        }
+            Mapper.Reset();
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<User, User_DTO>();
+                cfg.CreateMap<User_DTO, User>();
+
+            });
+                
+             
+               
+            }
 
 
-        public List<String> GetEmail(String email)
+        public Boolean IfEmailExists(String email)
         {
-            return _context.User.Where(u => u.email == email).ToList();
+            return _context.User.Where(u => u.email == email).Count() > 0;
         }
 
-        //----Data verifying
-
-        public IActionResult IfEmailExists([FromRoute] String email)
-        {
-           
-            //    String email2 = email.Replace("'", "");
-
-            return Ok();
-
-        }
-
-
-        public IEnumerable<User> IfLoginExists([FromRoute] String login)
+        public Boolean IfLoginExists(String login)
         {
             String login2 = login.Replace("'", "");
-            return _context.User.Where(u => u.login == login2);
+            return _context.User.Where(u => u.login == login2).Count() > 0;
         }
 
-
-        public IActionResult IsLogged([FromBody] User userData)
+        public Boolean IsLoggedCheckData(User_DTO userData)
         {
-            if (userData == null)
-            {
-                return BadRequest(new { alert = "Nieprawidłowe dane logowania" });
-            }
+            return _context.User.Where(u => u.login == userData.login.Replace("'", "\'") && u.password == userData.password.Replace("'", "\'")).Count() > 0;
+        }
+
+        public (String Token, int id, String user_type, String fullname, DateTime expires) IsLogged(User_DTO userData)
+        {
             User user = _context.User.Where(u => u.login == userData.login.Replace("'", "\'") && u.password == userData.password.Replace("'", "\'")).FirstOrDefault();
-            if (user != null)
 
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
+            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var claims = new List<Claim>
             {
-                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
-                var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-                var claims = new List<Claim>
-        {
-                 new Claim(ClaimTypes.Name, user.fullname),
-                 new Claim(ClaimTypes.Role, user.user_type),
-                 new Claim(ClaimTypes.NameIdentifier, user.user_id.ToString())
-        };
+                     new Claim(ClaimTypes.Name, user.fullname),
+                     new Claim(ClaimTypes.Role, user.user_type),
+                     new Claim(ClaimTypes.NameIdentifier, user.user_id.ToString())
+            };
 
-                var tokeOptions = new JwtSecurityToken(
-                    issuer: "http://localhost:5000",
-                    audience: "http://localhost:5000",
-                    claims: claims,
-                    expires: DateTime.Now.AddHours(5),
-                    signingCredentials: signinCredentials
-                );
+            var tokeOptions = new JwtSecurityToken(
+                issuer: "http://localhost:5000",
+                audience: "http://localhost:5000",
+                claims: claims,
+                expires: DateTime.Now.AddHours(5),
+                signingCredentials: signinCredentials
+            );
 
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-                return Ok(new { Token = tokenString, id = user.user_id, user_type = user.user_type, fullname = user.fullname, expires = DateTime.Now.AddHours(5) });
-            }
-            else
-            {
-                return Unauthorized();
-            }
-
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+            return (Token: tokenString, id: user.user_id, user_type: user.user_type, fullname: user.fullname, expires: DateTime.Now.AddHours(5));
         }
 
 
 
-        public async Task<IActionResult> GetUserById([FromRoute] int id)
+        public User_DTO GetUserById(int id)
         {
-           
-            var user = await _context.User.FindAsync(id);
+
+            var user = _context.User.Find(id);
 
             if (user == null)
             {
-                return NotFound(new { alert = "Użytkownik o danym id nie istnieje!" });
+                return null;
             }
-
-            return Ok(user);
+          
+            return Mapper.Map<User_DTO>(user);
         }
 
 
-
-
-        public async Task<IActionResult> SearchUser([FromBody] String[] search)
+        public List<User_DTO> SearchUser(String[] search)
         {
-            
-
             String[] name = { "user_id", "fullname", "email", "login", "phone_number" };
             String sql = "Select * from User where 1=1 ";
             for (int i = 0; i < search.Length; i++)
@@ -131,54 +117,56 @@ namespace LIBRARY_WA.Controllers.Services
                 }
             }
 
-            var user = _context.User.FromSql(sql);
-
-            return Ok(user);
-        }
-
-
-
-        public async Task<IActionResult> AddUser([FromBody] User user)
-        {
-            if (!ModelState.IsValid || user.login.Contains("'"))
+            List<User> user_db = _context.User.FromSql(sql).ToList();
+            List<User_DTO> user_dto = new List<User_DTO>();
+            foreach (User userr in user_db)
             {
-                return BadRequest(ModelState);
+                user_dto.Add(Mapper.Map<User_DTO>(userr));
             }
 
+            return user_dto;
+        }
+
+        public String AddUserCheckData(User_DTO user)
+        {
             if (_context.User.Where(a => a.login == user.login).Count() > 0)
             {
-                return BadRequest(new { alert = "Dany login jest już zajęty" });
+                return "Dany login jest już zajęty";
             }
 
             if (_context.User.Where(a => a.email == user.email).Count() > 0)
             {
-                return BadRequest(new { alert = "Dany email już istnieje w bazie danych." });
+                return "Dany email już istnieje w bazie danych.";
             }
-
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("AddUser", new { id = user.user_id }, user);
+            return "";
         }
 
-
-        public async Task<IActionResult> RemoveUser([FromRoute] int id)
+        public User_DTO AddUser(User_DTO user)
         {
+           
+            _context.User.Add(Mapper.Map<User>(user));
+            _context.SaveChanges();
+            return Mapper.Map<User_DTO>(user);
+        }
 
-            //jeśli ma wypożyczone książki to komunikat, że nie można usunąć użytkownika bo ma niewyszystkie książki oddane, 
-            //a jesli usunięty to zmienia isValid na false
-          
+        public String RemoveUserCheckData(int id)
+        {
+            var user = _context.User.Find(id);
+            if (user == null)
+            {
+                return ("Użytkownik nie istnieje!");
+            }
 
             if (_context.Rent.Where(a => a.user_id == id).Count() > 0)
             {
-                return Ok(new { alert = "Nie można usunąć użytkownika , bo ma nieoddane książki!!" });
+                return "Nie można usunąć użytkownika , bo ma nieoddane książki!!";
             }
+            return "";
+        }
 
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
+        public void RemoveUser(int id)
+        {
+            User user = _context.User.Find(id);
             Reservation[] reservation = _context.Reservation.Where(a => a.user_id == id).ToArray();
             int[] bookId = reservation.Select(a => a.book_id).ToArray();
 
@@ -196,39 +184,64 @@ namespace LIBRARY_WA.Controllers.Services
 
             _context.User.Remove(user);
             user.is_valid = false;
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
-            return Ok();
         }
-
-
-
-
-        public IEnumerable<Rent> GetRent([FromRoute] int id)
+        
+        public IEnumerable<Rent_DTO> GetRent(int id)
         {
-            return _context.Rent.Where(a => a.user_id == id);
-        }
 
-        public IEnumerable<Reservation> GetReservation([FromRoute] int id)
-        {
-            return _context.Reservation.Where(a => a.user_id == id);
-        }
-
-
-        public IEnumerable<Renth> GetRenth([FromRoute] int id)
-        {
-            return _context.Renth.Where(a => a.user_id == id);
-        }
-
-
-        public async Task<IActionResult> CancelReservation([FromRoute] int id)
-        {
-      
-            var reservation = await _context.Reservation.FindAsync(id);
-            if (reservation == null)
+            List<Rent> rent_db = _context.Rent.Where(a => a.user_id == id).ToList();
+            List<Rent_DTO> rent_dto = new List<Rent_DTO>();
+          
+            foreach (Rent rent in rent_db)
             {
-                return NotFound(new { alert = "Nie istnieje rezerwacja o danym id!" });
+                Book book = _context.Book.Where(a => a.book_id == rent.book_id).FirstOrDefault(); 
+                rent_dto.Add(new Rent_DTO(rent.rent_id, rent.user_id, rent.book_id,book.title,book.isbn,rent.volume_id,rent.start_date,rent.expire_date));
             }
+            return rent_dto;
+        }
+
+        public IEnumerable<Reservation_DTO> GetReservation(int id)
+        {
+            List<Reservation> reservation_db = _context.Reservation.Where(a => a.user_id == id).ToList();
+            List<Reservation_DTO> reservation_dto = new List<Reservation_DTO>();
+           
+            foreach (Reservation reservation in reservation_db)
+            {
+                Book book = _context.Book.Where(a => a.book_id == reservation.book_id).FirstOrDefault();
+                reservation_dto.Add(new Reservation_DTO(reservation.reservation_id,reservation.user_id, book.title, book.isbn, reservation.book_id, reservation.volume_id, reservation.start_date, reservation.expire_date,reservation.queue,reservation.is_active));
+            }
+            return reservation_dto;
+
+        }
+
+
+        public IEnumerable<Renth_DTO> GetRenth(int id)
+        {
+            List<Renth> renth_db = _context.Renth.Where(a => a.user_id == id).ToList();
+            List<Renth_DTO> renth_dto = new List<Renth_DTO>();
+            
+            foreach (Renth renth in renth_db)
+            {
+                Book book = _context.Book.Where(a => a.book_id == renth.book_id).FirstOrDefault();
+                renth_dto.Add(new Renth_DTO(renth.rent_id_h,renth.user_id, book.title, book.isbn, renth.book_id, renth.volume_id, renth.start_date, renth.end_date));
+
+            }
+            return renth_dto;
+
+        }
+
+        public Boolean CancelReservationCheckData(int id)
+        {
+           
+            return _context.Reservation.Where(a=>a.reservation_id==id).Count()>0;
+        }
+
+        public void CancelReservation(int id)
+        {
+
+            Reservation reservation = _context.Reservation.Find(id);
             Reservation[] resToChange = _context.Reservation.Where(a => a.book_id == reservation.book_id && a.queue > reservation.queue).ToArray();
             foreach (Reservation res in resToChange)
             {
@@ -240,30 +253,20 @@ namespace LIBRARY_WA.Controllers.Services
                     res.volume_id = reservation.volume_id;
                 }
             }
-
+            
             _context.Reservation.Remove(reservation);
-            await _context.SaveChangesAsync();
-
-            return Ok(reservation);
+            _context.SaveChanges();
         }
 
 
 
-        public async Task<IActionResult> UpdateUser([FromBody] User user)
+        public void UpdateUser(User_DTO user)
         {
-            _context.Entry(user).State = EntityState.Modified;
-            _context.User.Update(user);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
+            User us = Mapper.Map<User>(user);
+            _context.Entry(us).State = EntityState.Modified;
+            _context.User.Update(us);
+            _context.SaveChanges();
 
-            }
-
-            return NoContent();
         }
-
     }
 }

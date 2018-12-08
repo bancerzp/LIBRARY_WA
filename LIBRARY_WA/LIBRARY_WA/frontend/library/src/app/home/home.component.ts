@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   suggestion: Suggestion[];
   user_type: String;
   user_id: String;
+  cover: number;
 
   constructor(private bookService: BookService,
     private app: AppComponent,
@@ -42,5 +43,18 @@ export class HomeComponent implements OnInit {
     localStorage.setItem("author_fullname", author_fullname)
     this.app.RouteTo("app-search-book");
     this.searchBook.Redirect();
+  }
+
+  ChooseCover() {
+    this.cover = Math.floor(Math.random() * 2 + 1)
+    switch (this.cover) {
+      case 1:
+        return "tile1";
+      case 2:
+        return "tile2";
+      case 3:
+        return "tile3";
+    }
+    return "tile1";
   }
 }

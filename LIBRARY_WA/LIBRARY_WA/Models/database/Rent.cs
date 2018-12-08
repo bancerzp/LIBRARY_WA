@@ -9,7 +9,7 @@ namespace LIBRARY_WA.Models
 {
     public class Rent
     {
-        public Rent(int user_id, int book_id, string title, string isbn, int volume_id, DateTime start_date, DateTime expire_date)
+        public Rent(int user_id, int book_id, int volume_id, DateTime start_date, DateTime expire_date)
         {
            
             this.user_id = user_id;
@@ -25,9 +25,6 @@ namespace LIBRARY_WA.Models
         public int user_id { get; set; }
 
         public int book_id { get; set; }
-
-        [StringLength(13)]
-        public String isbn { get; set; }
 
         public int volume_id { get; set; }
 

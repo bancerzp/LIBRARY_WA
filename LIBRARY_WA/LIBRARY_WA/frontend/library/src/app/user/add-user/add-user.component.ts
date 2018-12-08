@@ -77,12 +77,12 @@ export class AddUserComponent implements OnInit {
 
   CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(
-      map(((res: any[]) => res.filter(user => user.email == control.value).length > 0 ? { 'emailTaken': false } : null)))
+      map(((res: Boolean) => res==true ? { 'emailTaken': false } : null)))
   };
 
   CheckLoginExistsInDB(control: FormControl) {
     return this.userService.IfLoginExists(control.value).pipe(
-      map(((res: any[]) => res.filter(user => user.login == control.value).length > 0 ? { 'loginTaken': false } : null)))
+      map(((res: Boolean) => res==true ? { 'loginTaken': false } : null)))
   };
     }
 

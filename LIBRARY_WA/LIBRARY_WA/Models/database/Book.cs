@@ -9,9 +9,22 @@ namespace LIBRARY_WA.Models
 {
     public class Book
     {
-        public Book(string title, string isbn, int author_id, string year, string language, string type, string description, bool is_available)
+        public Book(int book_id,string title, string isbn, int author_id, string year, string language, string type, string description, bool is_available)
         {
             this.book_id = book_id;
+            this.title = title;
+            this.isbn = isbn;
+            this.author_id = author_id;
+            this.year = year;
+            this.language = language;
+            this.type = type;
+            this.description = description;
+            this.is_available = is_available;
+        }
+
+        public Book(string title, string isbn, int author_id, string year, string language, string type, string description, bool is_available)
+        {
+           
             this.title = title;
             this.isbn = isbn;
             this.author_id = author_id;

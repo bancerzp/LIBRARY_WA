@@ -21,7 +21,18 @@ namespace LIBRARY_WA.Models
             this.expire_date = expire_date;
         }
 
-       
+        public Rent_DTO(int rent_id, int user_id, int book_id, string title, string isbn, int volume_id, DateTime start_date, DateTime expire_date)
+        {
+            this.rent_id = rent_id;
+            this.user_id = user_id;
+            this.book_id = book_id;
+            this.title = title;
+            this.isbn = isbn;
+            this.volume_id = volume_id;
+            this.start_date = start_date;
+            this.expire_date = expire_date;
+        }
+
         public int rent_id { get; set; }
         public int user_id { get; set; }
         public int book_id { get; set; }

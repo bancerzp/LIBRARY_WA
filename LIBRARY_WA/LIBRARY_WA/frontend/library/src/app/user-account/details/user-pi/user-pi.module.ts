@@ -28,6 +28,7 @@ export class UserPIModule {
   pass: String;
   resetClicked: boolean;
   message: String;
+  email: String;
   constructor(
     private formBuilder: FormBuilder,
     private http: Http,
@@ -46,6 +47,7 @@ export class UserPIModule {
     this.GetUserById();
     this.submitted = false;
     this.pass = this.user.password;
+    this.email = this.user.email;
     
     //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.updateUserForm = this.formBuilder.group({
@@ -103,6 +105,6 @@ export class UserPIModule {
   }
   CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(
-      map(((res: any[]) => res.filter(user => user.email == control.value && user.user_id != this.user.user_id).length > 0 ? { 'emailTaken': false } : null)))
+      map(((res: boolean) => (res == true && control.value==this.email) ? { 'emailTaken': false } : null)))
   };
 }

@@ -26,3 +26,15 @@
   .tile:hover {
     background-color: darksalmon;
   }
+
+.tile.tileCover1 {
+  background-image: url("cover/cover_1.png");
+}
+
+  .tile.tileCover2 {
+    background-image: url("cover/cover_2.jpg");
+  }
+
+  .tile.tileCover3 {
+    background-image: url("/cover/cover_3.png");
+  }

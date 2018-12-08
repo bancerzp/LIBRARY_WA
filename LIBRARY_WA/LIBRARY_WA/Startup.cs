@@ -15,6 +15,7 @@ using MySql.Data.EntityFrameworkCore.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using LIBRARY_WA.Controllers.Services;
 
 namespace LIBRARY_WA
 {
@@ -53,7 +54,9 @@ namespace LIBRARY_WA
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]))
                     };
                 });
-
+            
+            services.AddTransient<BookService>();
+            services.AddTransient<UserService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<LibraryContext>(options =>
