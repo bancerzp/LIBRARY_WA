@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component, OnInit
+} from '@angular/core';
 import { BookService } from '../_services/book.service';
 import { AppComponent } from '../app.component';
 import { Suggestion } from '../_models/Suggestion';
@@ -15,6 +17,7 @@ export class HomeComponent implements OnInit {
   user_type: String;
   user_id: String;
   cover: number;
+  classs: string;
 
   constructor(private bookService: BookService,
     private app: AppComponent,
@@ -23,6 +26,7 @@ export class HomeComponent implements OnInit {
   
 
   ngOnInit() {
+    this.classs = "tile1";
     if (this.app.IsExpired("r"))
       return;
     if (localStorage.getItem("user_type")=="r")
@@ -49,10 +53,13 @@ export class HomeComponent implements OnInit {
     this.cover = Math.floor(Math.random() * 2 + 1)
     switch (this.cover) {
       case 1:
+        this.classs="tile1";
         return "tile1";
       case 2:
+        this.classs = "tile2";
         return "tile2";
       case 3:
+        this.classs = "tile3";
         return "tile3";
     }
     return "tile1";

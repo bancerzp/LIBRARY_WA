@@ -28,13 +28,7 @@ namespace LIBRARY_WA.Controllers.Services
         {
             Configuration = configuration;
             this._context = context;
-            Mapper.Reset();
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<User, User_DTO>();
-                cfg.CreateMap<User_DTO, User>();
-
-            });
+           
                 
              
                
@@ -94,7 +88,7 @@ namespace LIBRARY_WA.Controllers.Services
                 return null;
             }
           
-            return Mapper.Map<User_DTO>(user);
+            return new User_DTO(user.user_id, user.login, user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid);
         }
 
 
@@ -121,7 +115,7 @@ namespace LIBRARY_WA.Controllers.Services
             List<User_DTO> user_dto = new List<User_DTO>();
             foreach (User userr in user_db)
             {
-                user_dto.Add(Mapper.Map<User_DTO>(userr));
+                user_dto.Add(new User_DTO(userr.user_id, userr.login, userr.password, userr.user_type, userr.fullname, userr.date_of_birth, userr.phone_number, userr.email, userr.address, userr.is_valid));
             }
 
             return user_dto;
@@ -144,9 +138,9 @@ namespace LIBRARY_WA.Controllers.Services
         public User_DTO AddUser(User_DTO user)
         {
            
-            _context.User.Add(Mapper.Map<User>(user));
+            _context.User.Add(new User(user.user_id, user.login, user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid));
             _context.SaveChanges();
-            return Mapper.Map<User_DTO>(user);
+            return new User_DTO(user.user_id, user.login, user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid);
         }
 
         public String RemoveUserCheckData(int id)
@@ -170,10 +164,11 @@ namespace LIBRARY_WA.Controllers.Services
             Reservation[] reservation = _context.Reservation.Where(a => a.user_id == id).ToArray();
             int[] bookId = reservation.Select(a => a.book_id).ToArray();
 
+            Reservation[] r;
             foreach (int book_id in bookId)
             {
                 int usqueue = _context.Reservation.Where(a => a.user_id == id && a.book_id == book_id).First().queue;
-                Reservation[] r = _context.Reservation.Where(a => a.book_id == book_id && a.queue > usqueue).ToArray();
+                 r = _context.Reservation.Where(a => a.book_id == book_id && a.queue > usqueue).ToArray();
                 foreach (Reservation res in reservation)
                 {
                     res.queue = res.queue - 1;
@@ -193,10 +188,10 @@ namespace LIBRARY_WA.Controllers.Services
 
             List<Rent> rent_db = _context.Rent.Where(a => a.user_id == id).ToList();
             List<Rent_DTO> rent_dto = new List<Rent_DTO>();
-          
+            Book book;
             foreach (Rent rent in rent_db)
             {
-                Book book = _context.Book.Where(a => a.book_id == rent.book_id).FirstOrDefault(); 
+                book = _context.Book.Where(a => a.book_id == rent.book_id).FirstOrDefault(); 
                 rent_dto.Add(new Rent_DTO(rent.rent_id, rent.user_id, rent.book_id,book.title,book.isbn,rent.volume_id,rent.start_date,rent.expire_date));
             }
             return rent_dto;
@@ -206,10 +201,11 @@ namespace LIBRARY_WA.Controllers.Services
         {
             List<Reservation> reservation_db = _context.Reservation.Where(a => a.user_id == id).ToList();
             List<Reservation_DTO> reservation_dto = new List<Reservation_DTO>();
-           
+
+            Book book;
             foreach (Reservation reservation in reservation_db)
             {
-                Book book = _context.Book.Where(a => a.book_id == reservation.book_id).FirstOrDefault();
+                book = _context.Book.Where(a => a.book_id == reservation.book_id).FirstOrDefault();
                 reservation_dto.Add(new Reservation_DTO(reservation.reservation_id,reservation.user_id, book.title, book.isbn, reservation.book_id, reservation.volume_id, reservation.start_date, reservation.expire_date,reservation.queue,reservation.is_active));
             }
             return reservation_dto;
@@ -221,10 +217,11 @@ namespace LIBRARY_WA.Controllers.Services
         {
             List<Renth> renth_db = _context.Renth.Where(a => a.user_id == id).ToList();
             List<Renth_DTO> renth_dto = new List<Renth_DTO>();
-            
+
+            Book book;
             foreach (Renth renth in renth_db)
             {
-                Book book = _context.Book.Where(a => a.book_id == renth.book_id).FirstOrDefault();
+                book = _context.Book.Where(a => a.book_id == renth.book_id).FirstOrDefault();
                 renth_dto.Add(new Renth_DTO(renth.rent_id_h,renth.user_id, book.title, book.isbn, renth.book_id, renth.volume_id, renth.start_date, renth.end_date));
 
             }
@@ -262,9 +259,10 @@ namespace LIBRARY_WA.Controllers.Services
 
         public void UpdateUser(User_DTO user)
         {
-            User us = Mapper.Map<User>(user);
-            _context.Entry(us).State = EntityState.Modified;
-            _context.User.Update(us);
+            _context.User.Remove(_context.User.Where(a => a.user_id == user.user_id).FirstOrDefault());
+            User us = new User(user.user_id, user.login, user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid);
+            //_context.Entry(us).State = EntityState.Modified;
+            _context.User.Add(us);
             _context.SaveChanges();
 
         }

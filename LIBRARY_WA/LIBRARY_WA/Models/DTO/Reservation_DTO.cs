@@ -48,5 +48,6 @@ namespace LIBRARY_WA.Models
         public DateTime expire_date { get; set; }
         public Int32 queue { get; set; }
         public Boolean is_active { get; set; }
+
     }
 }

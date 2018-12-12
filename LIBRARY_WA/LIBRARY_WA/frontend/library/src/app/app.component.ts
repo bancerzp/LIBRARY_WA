@@ -52,7 +52,6 @@ export class AppComponent  {
     localStorage.clear();
     this.isLogged = false;
     this.menu = this.menuGuest;
-  //  window.location.reload();
     this.router.navigateByUrl('/app-login');
   }
 
@@ -71,16 +70,18 @@ export class AppComponent  {
   IsExpired(user_type) {
    //false bo nie wygasł token
   //  var token = localStorage.getItem('token');
+  
     if (localStorage.getItem('token') == null) {
-       this.router.navigateByUrl('/app-login');
       this.Logout();
-      
+      window.location.reload();
+    //  this.router.navigateByUrl('/app-login');
       return true;
     }
     let jwtHelper: JwtHelper = new JwtHelper();
 
     if (jwtHelper.isTokenExpired(localStorage.getItem('token'))) {
       this.Logout();
+      window.location.reload();
       return true;
     } else
       if (user_type == "l,r")

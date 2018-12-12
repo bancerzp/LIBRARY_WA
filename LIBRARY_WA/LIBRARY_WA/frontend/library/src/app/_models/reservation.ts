@@ -1,4 +1,5 @@
 export class Reservation {
+    [x: string]: any;
   reservation_id: Number;
   book_id: Number;
   user_id: Number;

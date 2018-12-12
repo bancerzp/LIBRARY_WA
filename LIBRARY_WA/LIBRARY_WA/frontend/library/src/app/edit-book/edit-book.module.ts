@@ -29,6 +29,7 @@ export class EditBookComponent {
   public volume: Volume[] = [];
   public displayVolume: boolean;
   public message: String;
+  public isbn: String;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -44,15 +45,7 @@ export class EditBookComponent {
     if (this.app.IsExpired("l"))
       return;
     this.displayVolume = true;
-    
-    //this.route.queryParams
-    //  .subscribe(params => {
-       
-    //    alert(params.book_id.value());
-    //    this.book.book_id = params.book_id;
-    //  }
-    //  )
-    
+
     this.GetBookById();
     this.GetVolumeByBookId();
 
@@ -60,7 +53,7 @@ export class EditBookComponent {
     this.GetBookType();
     this.GetAuthor();
     this.GetLanguage();
-
+    this.isbn = this.book.isbn;
     this.editBookForm = this.formBuilder.group({
       book_id: [this.book.book_id],
       isbn: [this.book.isbn, [Validators.pattern("[0-9]{13}"),
@@ -71,14 +64,13 @@ export class EditBookComponent {
       language: [this.book.language, [Validators.required, Validators.maxLength(20)]],
       type: [this.book.type, [Validators.required, Validators.maxLength(30)]],
       description: [this.book.description, [Validators.maxLength(300)]],
-      is_available: true,
+      is_available: [true],
     });
   }
 
-
   CheckISBNExistsInDB(control: FormControl) {
     return this.bookService.IfISBNExists(control.value).pipe(
-      map(((res: any[]) => res.filter(book => book.ISBN == control.value).length > 0 ? { 'ISBNTaken': false } : null)));
+      map(((res: Boolean) => (res == true && this.book.isbn == this.isbn) ? { 'ISBNTaken': false } : null)));
   }
 
   GetAuthor() {
@@ -93,7 +85,7 @@ export class EditBookComponent {
   };
 
   GetVolumeByBookId() {
-    return this.bookService.GetVolumeByBookId(localStorage.getItem("book_id")).subscribe((volumes: any[]) => this.volume = volumes);
+    return this.bookService.GetVolumeByBookId(localStorage.getItem("book_id")).subscribe((volumes: Volume[]) => { this.volume = volumes });
   }
 
   RemoveVolume(id) {
@@ -102,7 +94,7 @@ export class EditBookComponent {
     this.submitted = false;
     this.displayVolume = false;
     this.bookService.RemoveVolume(id).subscribe(data => {
-     this.message="Egzemplarz został poprawnie usunięty";
+    this.message="Egzemplarz został poprawnie usunięty";
       this.volume = this.volume.filter(volume => volume.volume_id != id);
     },
       response => { this.message = (<any>response).error.alert});
@@ -122,7 +114,7 @@ export class EditBookComponent {
     if (this.app.IsExpired("l"))
       return;
     return this.bookService.GetBookById(localStorage.getItem("book_id")).subscribe(
-      (book: Book) => this.book = book, response => { this.message = (<any>response).error.alert });
+      (bookGet: Book) => this.book = bookGet, response => { this.message = (<any>response).error.alert });
   }
 
 }

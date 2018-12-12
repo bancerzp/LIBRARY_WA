@@ -75,14 +75,14 @@ namespace LIBRARY_WA.Data
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBookById([FromRoute] int id)
+        public ActionResult<Book_DTO> GetBookById([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var book = GetBookById(id);
+            Book_DTO book = _bookService.GetBookById(id);
 
             if (book == null)
             {
@@ -93,14 +93,14 @@ namespace LIBRARY_WA.Data
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Volume> GetVolumeByBookId([FromRoute] int id)
+        public ActionResult<List<Volume>> GetVolumeByBookId([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Volume_DTO volume = _bookService.GetVolumeByBookId(id);
+            List<Volume_DTO> volume = _bookService.GetVolumeByBookId(id);
 
             if (volume == null)
             {
@@ -198,7 +198,7 @@ namespace LIBRARY_WA.Data
 
 
         [HttpPut, Authorize(Roles = "l,r")]
-        public ActionResult ReserveBook([FromBody] int[] data)
+        public ActionResult<Reservation_DTO> ReserveBook([FromBody] int[] data)
         {
             if (!ModelState.IsValid)
             {
@@ -214,8 +214,8 @@ namespace LIBRARY_WA.Data
                 return NotFound(new { alert = answear });
             }
 
-            _bookService.ReserveBook(data);
-            return Ok();
+          
+            return Ok(_bookService.ReserveBook(data));
         }
 
 

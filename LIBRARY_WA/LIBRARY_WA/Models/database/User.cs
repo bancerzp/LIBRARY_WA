@@ -9,6 +9,20 @@ namespace LIBRARY_WA.Models
 {
     public class User
     {
+        public User(int user_id, string login, string password, string user_type, string fullname, DateTime date_of_birth, string phone_number, string email, string address, bool is_valid)
+        {
+            this.user_id = user_id;
+            this.login = login;
+            this.password = password;
+            this.user_type = user_type;
+            this.fullname = fullname;
+            this.date_of_birth = date_of_birth;
+            this.phone_number = phone_number;
+            this.email = email;
+            this.address = address;
+            this.is_valid = is_valid;
+        }
+
         [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int user_id { get; set; }
         

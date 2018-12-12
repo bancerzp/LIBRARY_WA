@@ -5,10 +5,13 @@
   </p>
 
   <form class="square">
-    <a class="tile tileCover1" *ngFor="let suggestionInfo of suggestion" (click)="SearchBook(suggestionInfo.title,suggestionInfo.author_fullname)">
-      <div>
-        {{suggestionInfo.title}}<br />{{suggestionInfo.author_fullname}}
-      </div>
-    </a>
+   <div *ngFor="let suggestionInfo of suggestion;let i=index ">
+     <a class=""(click)="SearchBook(suggestionInfo.title,suggestionInfo.author_fullname)">
+       <p class="tile tileCover1" *ngIf="i%3==1">{{suggestionInfo.title}}<br />{{suggestionInfo.author_fullname}}  </p>
+       <p class="tile tileCover2" *ngIf="i%3==2">{{suggestionInfo.title}}<br />{{suggestionInfo.author_fullname}}  </p>
+       <p class="tile tileCover3" *ngIf="i%3==0">{{suggestionInfo.title}}<br />{{suggestionInfo.author_fullname}}  </p>
+     </a>
+</div>
   </form>
 </div>
+

@@ -96,15 +96,15 @@ export class SearchBookComponent implements OnInit {
   }
 
   GetAuthor() {
-    return this.bookService.GetAuthor().subscribe((authors: any[]) => this.author = authors);
+    return this.bookService.GetAuthor().subscribe((authors: Array<any>) => this.author = authors);
   }
 
   GetBookType() {
-    return this.bookService.GetBookType().subscribe((types: any[]) => this.bookType = types);
+    return this.bookService.GetBookType().subscribe((types: Array<any>) => this.bookType = types);
   };
 
   GetLanguage() {
-    return this.bookService.GetLanguage().subscribe((languages: any[]) => this.language = languages);
+    return this.bookService.GetLanguage().subscribe((languages: Array<any>) => this.language = languages);
   };
 
   ReserveBookLibrarian(book_id, user_id) {
@@ -115,7 +115,7 @@ export class SearchBookComponent implements OnInit {
    
     this.bookService.ReserveBook(book_id, Number.parseInt(user_id)).subscribe((res: any) => {
       this.reservation = res;
-      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + this.reservation.queue;
+      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + (<any>res).value.queue;
     },
       response => { this.message = (<any>response).error.alert });
     this.submitted = true;
@@ -128,7 +128,7 @@ export class SearchBookComponent implements OnInit {
       return;
     this.bookService.ReserveBook(book_id, this.app.GetUserId()).subscribe((res: any) => {
       this.reservation = res;
-      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + this.reservation.queue;
+      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + (<any>res).value.queue;
     },
       response => { this.message = (<any>response).error.alert });
     this.submitted = true;

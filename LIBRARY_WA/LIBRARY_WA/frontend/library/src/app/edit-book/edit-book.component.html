@@ -67,7 +67,7 @@
   </div>
 
   <div class="form-group">
-    <button type="submit" [disabled]="loading || !editBookForm.valid" class="btn btn-primary"> Zapisz</button>
+    <button type="submit" [disabled]="loading || (!editBookForm.valid &&(!editBookForm.get('isbn').valid))" class="btn btn-primary"> Zapisz</button>
   </div>
 </form>
 
@@ -91,17 +91,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let volume of volume">
-      <td>{{ volume.volume_id  }}</td>
-      <td *ngIf=(volume.is_free)>Nie</td>
-      <td *ngIf=(!volume.is_free)>Tak</td>
+    <tr *ngFor="let vol of volume">
+      <td>{{ vol.volume_id  }}</td>
+      <td *ngIf=(vol.is_free)>Nie</td>
+      <td *ngIf=(!vol.is_free)>Tak</td>
      
       <td>
         <div class="button-group">
-          <button (click)="RemoveVolume(volume.volume_id)" class='btn btn-danger m-r-5px' disabled="disabled" *ngIf=!(volume.is_free) >
+          <button (click)="RemoveVolume(vol.volume_id)" class='btn btn-danger m-r-5px' disabled="disabled" *ngIf=!(vol.is_free) >
             <span class='glyphicon glyphicon-remove'></span> Usuń
           </button>
-          <button (click)="RemoveVolume(volume.volume_id)" class='btn btn-danger m-r-5px' *ngIf=(volume.is_free)>
+          <button (click)="RemoveVolume(vol.volume_id)" class='btn btn-danger m-r-5px' *ngIf=(vol.is_free)>
             <span class='glyphicon glyphicon-remove'></span> Usuń
           </button>
         </div>
