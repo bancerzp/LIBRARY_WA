@@ -13,7 +13,9 @@
 
   <div class="form-group">
     <label for="login">Login</label>
-    <input type="text" formControlName="login" class="form-control" [(ngModel)]="user.login" disabled="disabled" />
+    <input type="text" *ngIf="user.login!=user.user_id" formControlName="login" class="form-control" [(ngModel)]="user.login" disabled="disabled" />
+    <input type="text" *ngIf="user.login==user.user_id" formControlName="login" class="form-control" [(ngModel)]="user.login"  />
+
   </div>
 
   <div class="form-group">
@@ -45,18 +47,22 @@
 
   <div class="form-group">
     <label for="user_type">Typ użytkownika</label>
-    <input type="text"  class="form-control" disabled="disabled" *ngIf="user.user_type=='r'" value="Czytelnik"/>
-    <input type="text"  class="form-control"  disabled="disabled" *ngIf="user.user_type=='l'" value="Bibliotekarz"/>
+    <input type="text" class="form-control" disabled="disabled" *ngIf="user.user_type=='r'" value="Czytelnik" />
+    <input type="text" class="form-control" disabled="disabled" *ngIf="user.user_type=='l'" value="Bibliotekarz" />
   </div>
 
-  <div class="form-group">
+  <div class="form-group" *ngIf="!lib">
+    <label for="password">Nowe hasło</label>
+    <input type="text" formControlName="password" class="form-control" disabled/>
+    <button (click)="NewPasswordLib()" class="btn btn-primary">Resetuj hasło</button>
+  </div>
+
+  <div class="form-group" *ngIf="lib">
     <label for="password">Nowe hasło</label>
     <input type="password" formControlName="password" class="form-control" [(ngModel)]="user.password" />
-  
-
   </div>
 
-  <div class="form-group">
+  <div class="form-group" *ngIf="lib">
     <label for="password2">Powtórz hasło</label>
     <input type="password" formControlName="password2" class="form-control" />
     <div class="alert alert-danger " *ngIf="(!reset && resetClicked )">Podane hasła są różne lub mają nieprawidłową długośc(5-20znaków)</div>
@@ -65,11 +71,6 @@
     <p>Aby dokończyć resetowanie hasła należy kliknąć 'Zapisz'</p>
   </div>
 
-  <!-- <div class="radio-group">
-     <label for="password">Powtórz hasło</label>
-     <input type="text" formControlName="type" class="form-control" disabled="disabled" [(ngModel)]="user.password" />
-   </div>
-   -->
   <div class="form-group">
     <button type="submit" (click)="UpdateUser()" [disabled]="loading || !updateUserForm.valid" class="btn btn-primary">Zapisz</button>
   </div>

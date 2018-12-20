@@ -29,6 +29,7 @@ export class UserPIModule {
   resetClicked: boolean;
   message: String;
   email: String;
+  lib: boolean;
   constructor(
     private formBuilder: FormBuilder,
     private http: Http,
@@ -42,13 +43,17 @@ export class UserPIModule {
   ngOnInit() {
     if (this.app.IsExpired("l,r"))
       return;
+    this.user_type = this.app.GetUserType();
     this.resetClicked = false;
     this.reset = true;
     this.GetUserById();
     this.submitted = false;
     this.pass = this.user.password;
     this.email = this.user.email;
-    
+
+    if (this.user_type == 'l') {
+      this.user.password = "";
+    }
     //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.updateUserForm = this.formBuilder.group({
       user_id: [this.user.user_id],
@@ -90,8 +95,12 @@ export class UserPIModule {
     if (this.app.GetUserType()=="r") {
       localStorage.setItem("user_id", this.app.GetUserId());
     }
+    //czy bibliotekarz przeglada swoje konto czy czytelnika
+    
     this.userService.GetUserById(localStorage.getItem("user_id")).subscribe((user: User) => { this.user = user; this.pass = this.user.password },
       response => { this.message = (<any>response).error.alert });
+    this.lib = (localStorage.getItem("user_fullname") == this.user.fullname);
+      
   }
 
   NewPassword() {
@@ -103,6 +112,14 @@ export class UserPIModule {
       this.reset = false;
     this.reset = (this.updateUserForm.get('password').value == this.updateUserForm.get('password2').value ); 
   }
+
+  NewPasswordLib() {
+    this.user.password = Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
+    this.updateUserForm.get("password").setValue(this.user.password);
+    this.userService.ResetPassword(this.user).subscribe(resp=>alert("Hasło zostało zresetowane"),er=> alert("Błąd"));
+  }
+
+
   CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(
       map(((res: boolean) => (res == true && control.value==this.email) ? { 'emailTaken': false } : null)))

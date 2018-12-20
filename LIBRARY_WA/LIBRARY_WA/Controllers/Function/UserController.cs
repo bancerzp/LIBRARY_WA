@@ -64,6 +64,11 @@ namespace LIBRARY_WA.Controllers
                 return BadRequest(new { alert = "Nieprawidłowe dane logowania" });
             }
 
+            if(!_userService.IsBlocked(userData))
+            {
+                return BadRequest(new { alert = "Użytkownik jest zablokowany. Prosimy o kontakt z biblioteką." });
+            }
+
             if (_userService.IsLoggedCheckData(userData)){
                 var toReturn = _userService.IsLogged(userData);
                 return Ok(new { Token = toReturn.Token, id = toReturn.id, user_type = toReturn.user_type, fullname = toReturn.fullname, expires= toReturn.expires });
@@ -75,6 +80,17 @@ namespace LIBRARY_WA.Controllers
 
         }
 
+        [HttpPut, Authorize]
+        public ActionResult ChangeUserStatus(String[] values)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _userService.ChangeUserStatus(values);
+            return Ok();
+        }
 
         [HttpGet("{id}"), Authorize]
         public async Task<IActionResult> GetUserById([FromRoute] int id)
@@ -134,6 +150,7 @@ namespace LIBRARY_WA.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             String message = _userService.RemoveUserCheckData(id);
             if (message!="")
             {
@@ -156,7 +173,7 @@ namespace LIBRARY_WA.Controllers
         }
 
         [HttpGet("{id}"), Authorize]
-        public ActionResult<IEnumerable<Reservation>> GetReservation([FromRoute] int id)
+        public ActionResult<IEnumerable<Reservation_DTO>> GetReservation([FromRoute] int id)
         {
 
             if (!ModelState.IsValid)
@@ -167,7 +184,7 @@ namespace LIBRARY_WA.Controllers
         }
 
         [HttpGet("{id}"), Authorize]
-        public ActionResult<IEnumerable<Renth>> GetRenth([FromRoute] int id)
+        public ActionResult<IEnumerable<Renth_DTO>> GetRenth([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -196,13 +213,12 @@ namespace LIBRARY_WA.Controllers
 
        
         [HttpPut]
-        public async Task<IActionResult> UpdateUser( [FromBody] User_DTO user)
+        public ActionResult UpdateUser( [FromBody] User_DTO user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
          
             try
             {
@@ -210,11 +226,30 @@ namespace LIBRARY_WA.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-               
             }
 
             return NoContent();
         }
-        
+
+        [HttpPut]
+        public ActionResult ResetPassword([FromBody] User_DTO user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+            try
+            {
+                _userService.UpdateUser(user);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+            }
+
+            return NoContent();
+        }
     }
 }

@@ -21,18 +21,18 @@ namespace LIBRARY_WA.Controllers.Services
     public class UserService
     {
         public IConfiguration Configuration { get; }
-        
+
         private readonly LibraryContext _context;
-       
+
         public UserService(LibraryContext context, IConfiguration configuration)
         {
             Configuration = configuration;
             this._context = context;
-           
-                
-             
-               
-            }
+
+
+
+
+        }
 
 
         public Boolean IfEmailExists(String email)
@@ -48,7 +48,20 @@ namespace LIBRARY_WA.Controllers.Services
 
         public Boolean IsLoggedCheckData(User_DTO userData)
         {
-            return _context.User.Where(u => u.login == userData.login.Replace("'", "\'") && u.password == userData.password.Replace("'", "\'")).Count() > 0;
+            return _context.User.Where(u => u.login == userData.login.Replace("'", "\'") && u.password == userData.password.Replace("'", "\'") ).Count() > 0;
+        }
+
+        public Boolean IsBlocked(User_DTO userData)
+        {
+            return _context.User.Where(a => a.login == userData.login).SingleOrDefault().is_valid;
+        }
+
+        public void ChangeUserStatus(String[] values)
+        {
+            User us = _context.User.Where(a => a.user_id.ToString() == values[0]).SingleOrDefault();
+            _context.Entry(us).State = EntityState.Modified;
+            us.is_valid = false;// (values[1]=="true");
+            _context.SaveChanges();
         }
 
         public (String Token, int id, String user_type, String fullname, DateTime expires) IsLogged(User_DTO userData)
@@ -87,7 +100,7 @@ namespace LIBRARY_WA.Controllers.Services
             {
                 return null;
             }
-          
+
             return new User_DTO(user.user_id, user.login, user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid);
         }
 
@@ -137,7 +150,7 @@ namespace LIBRARY_WA.Controllers.Services
 
         public User_DTO AddUser(User_DTO user)
         {
-           
+
             _context.User.Add(new User(user.user_id, user.login, user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid));
             _context.SaveChanges();
             return new User_DTO(user.user_id, user.login, user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid);
@@ -168,7 +181,7 @@ namespace LIBRARY_WA.Controllers.Services
             foreach (int book_id in bookId)
             {
                 int usqueue = _context.Reservation.Where(a => a.user_id == id && a.book_id == book_id).First().queue;
-                 r = _context.Reservation.Where(a => a.book_id == book_id && a.queue > usqueue).ToArray();
+                r = _context.Reservation.Where(a => a.book_id == book_id && a.queue > usqueue).ToArray();
                 foreach (Reservation res in reservation)
                 {
                     res.queue = res.queue - 1;
@@ -178,11 +191,10 @@ namespace LIBRARY_WA.Controllers.Services
             }
 
             _context.User.Remove(user);
-            user.is_valid = false;
+           // user.is_valid = false;
             _context.SaveChanges();
-
         }
-        
+
         public IEnumerable<Rent_DTO> GetRent(int id)
         {
 
@@ -191,8 +203,8 @@ namespace LIBRARY_WA.Controllers.Services
             Book book;
             foreach (Rent rent in rent_db)
             {
-                book = _context.Book.Where(a => a.book_id == rent.book_id).FirstOrDefault(); 
-                rent_dto.Add(new Rent_DTO(rent.rent_id, rent.user_id, rent.book_id,book.title,book.isbn,rent.volume_id,rent.start_date,rent.expire_date));
+                book = _context.Book.Where(a => a.book_id == rent.book_id).FirstOrDefault();
+                rent_dto.Add(new Rent_DTO(rent.rent_id, rent.user_id, rent.book_id, book.title, book.isbn, rent.volume_id, rent.start_date, rent.expire_date));
             }
             return rent_dto;
         }
@@ -206,7 +218,7 @@ namespace LIBRARY_WA.Controllers.Services
             foreach (Reservation reservation in reservation_db)
             {
                 book = _context.Book.Where(a => a.book_id == reservation.book_id).FirstOrDefault();
-                reservation_dto.Add(new Reservation_DTO(reservation.reservation_id,reservation.user_id, book.title, book.isbn, reservation.book_id, reservation.volume_id, reservation.start_date, reservation.expire_date,reservation.queue,reservation.is_active));
+                reservation_dto.Add(new Reservation_DTO(reservation.reservation_id, reservation.user_id, book.title, book.isbn, reservation.book_id, reservation.volume_id, reservation.start_date, reservation.expire_date, reservation.queue, reservation.is_active));
             }
             return reservation_dto;
 
@@ -222,7 +234,7 @@ namespace LIBRARY_WA.Controllers.Services
             foreach (Renth renth in renth_db)
             {
                 book = _context.Book.Where(a => a.book_id == renth.book_id).FirstOrDefault();
-                renth_dto.Add(new Renth_DTO(renth.rent_id_h,renth.user_id, book.title, book.isbn, renth.book_id, renth.volume_id, renth.start_date, renth.end_date));
+                renth_dto.Add(new Renth_DTO(renth.rent_id_h, renth.user_id, book.title, book.isbn, renth.book_id, renth.volume_id, renth.start_date, renth.end_date));
 
             }
             return renth_dto;
@@ -231,8 +243,8 @@ namespace LIBRARY_WA.Controllers.Services
 
         public Boolean CancelReservationCheckData(int id)
         {
-           
-            return _context.Reservation.Where(a=>a.reservation_id==id).Count()>0;
+
+            return _context.Reservation.Where(a => a.reservation_id == id).Count() > 0;
         }
 
         public void CancelReservation(int id)
@@ -250,11 +262,19 @@ namespace LIBRARY_WA.Controllers.Services
                     res.volume_id = reservation.volume_id;
                 }
             }
-            
+
             _context.Reservation.Remove(reservation);
             _context.SaveChanges();
         }
 
+
+        public void ResetPassword(User_DTO user) {
+           // _context.User.Remove(_context.User.Where(a => a.user_id == user.user_id).FirstOrDefault());
+            User us = _context.User.Where(a => a.user_id == user.user_id).SingleOrDefault();
+            _context.Entry(us).State = EntityState.Modified;
+            us.password=user.password;
+            _context.SaveChanges();
+        }
 
 
         public void UpdateUser(User_DTO user)
@@ -264,7 +284,6 @@ namespace LIBRARY_WA.Controllers.Services
             //_context.Entry(us).State = EntityState.Modified;
             _context.User.Add(us);
             _context.SaveChanges();
-
         }
     }
 }

@@ -18,7 +18,7 @@ import { AppComponent } from '../../app.component';
 export class SearchUserComponent implements OnInit {
   @Output() user = new EventEmitter<User>();
 
-  column=["Id. użytkownika","Imię i nazwisko","Data urodzenia","email","Numer telefonu","Login","Typ"]
+  column = ["Id. użytkownika", "Imię i nazwisko", "Data urodzenia", "email", "Numer telefonu", "Login", "Typ"]
   public values = [];
   userData: User[];
   searchUserForm: FormGroup;
@@ -32,7 +32,7 @@ export class SearchUserComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private userService: UserService,
-    private app: AppComponent,) { }
+    private app: AppComponent, ) { }
   //  private router: Router,
   // private authenticationService: AuthenticationService,
   // private alertService: AlertService) { }*/
@@ -43,7 +43,7 @@ export class SearchUserComponent implements OnInit {
     this.submitted = false;
     this.userType = localStorage.getItem("user_type");
     this.submitted = false;
-    
+
     this.searchUserForm = this.formBuilder.group({
       userId: '',
       user_fullname: '',
@@ -51,7 +51,7 @@ export class SearchUserComponent implements OnInit {
       login: '',
       phone_number: ''
     });
-   // this.SearchUser();
+    // this.SearchUser();
   }
   /*
   // reset login status
@@ -89,59 +89,29 @@ export class SearchUserComponent implements OnInit {
     if (this.app.IsExpired("l"))
       return;
     this.submitted = false;
-    this.userService.RemoveUser(id).subscribe(data =>
-    {
+    this.userService.RemoveUser(id).subscribe(data => {
       this.userData = this.userData.filter(user => user.user_id != id);
-      this.message="Użytkownik o id: "+id+" został usunięty";
+      this.message = "Użytkownik o id: " + id + " został usunięty";
     },
       response => { this.message = (<any>response).error.alert });
     this.submitted = true;
   }
 
-  UserAccount(id){
+  UserAccount(id) {
     if (this.app.IsExpired("l"))
-        return;
+      return;
     this.app.RouteTo("app-user-account");
-      localStorage.setItem("user_id",id)
-    }
+    localStorage.setItem("user_id", id)
+  }
 
+  ChangeUserStatus(id,status) {
+    this.values = [id, status];
+    this.userService.ChangeUserStatus(this.values).subscribe(data => {
+      this.message = "Status został poprawnie zmieniony";
+    },
+      response => { this.message = (<any>response).error.alert });
 
-
-    
-    // http.post('my/php/login.php?action=login', this.loginForm.login, this.loginForm.password).then(function (user) {
-    //get data here
-    // })
-   
-
-    /*  // stop here if form is invalid
-      if (this.loginForm.invalid) {
-        return;
-      }
+  }
   
-     this.loading = true;
-      this.authenticationService.login(this.f.username.value, this.f.password.value)
-        .pipe(first())
-        .subscribe(
-          data => {
-            this.router.navigate([this.returnUrl]);
-          },
-          error => {
-            this.alertService.error(error);
-            this.loading = false;
-      }
-      );*/
 
 }
-
-
-
-/*interface User {
-  userId: String;
-  personId: String;
-  login: String;
-  password: String;
-  pesel: String;
-  userType: String;
-  person: String;
-}
-*/

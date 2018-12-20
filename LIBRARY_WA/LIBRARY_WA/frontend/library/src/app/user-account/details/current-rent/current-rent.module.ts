@@ -75,7 +75,4 @@ export class CurrentRentModule {
       response => { this.message = (<any>response).error });
     this.submitted = true;
   }
-
-
-
 }

@@ -93,7 +93,7 @@ namespace LIBRARY_WA.Data
         }
 
         [HttpGet("{id}")]
-        public ActionResult<List<Volume>> GetVolumeByBookId([FromRoute] int id)
+        public ActionResult<List<Volume_DTO>> GetVolumeByBookId([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
