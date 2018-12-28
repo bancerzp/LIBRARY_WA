@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.IO;
 using AutoMapper;
+using LIBRARY_WA.Models.DTO;
 
 namespace LIBRARY_WA.Controllers.Services
 {
@@ -28,10 +29,6 @@ namespace LIBRARY_WA.Controllers.Services
         {
             Configuration = configuration;
             this._context = context;
-
-
-
-
         }
 
 
@@ -56,11 +53,11 @@ namespace LIBRARY_WA.Controllers.Services
             return _context.User.Where(a => a.login == userData.login).SingleOrDefault().is_valid;
         }
 
-        public void ChangeUserStatus(String[] values)
+        public void ChangeUserStatus(Status_DTO status)
         {
-            User us = _context.User.Where(a => a.user_id.ToString() == values[0]).SingleOrDefault();
+            User us = _context.User.Where(a => a.user_id == status.user_id).SingleOrDefault();
             _context.Entry(us).State = EntityState.Modified;
-            us.is_valid = false;// (values[1]=="true");
+            us.is_valid = status.status;// (values[1]=="true");
             _context.SaveChanges();
         }
 
@@ -136,11 +133,6 @@ namespace LIBRARY_WA.Controllers.Services
 
         public String AddUserCheckData(User_DTO user)
         {
-            if (_context.User.Where(a => a.login == user.login).Count() > 0)
-            {
-                return "Dany login jest już zajęty";
-            }
-
             if (_context.User.Where(a => a.email == user.email).Count() > 0)
             {
                 return "Dany email już istnieje w bazie danych.";
@@ -150,10 +142,15 @@ namespace LIBRARY_WA.Controllers.Services
 
         public User_DTO AddUser(User_DTO user)
         {
-
-            _context.User.Add(new User(user.user_id, user.login, user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid));
+            User new_user= new User(user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid);
+           
+          //  _context.Entry(new_user).State = EntityState.Modified;
+            _context.User.Add(new_user);
             _context.SaveChanges();
-            return new User_DTO(user.user_id, user.login, user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid);
+            new_user.login = new_user.user_id.ToString().PadLeft(12, '0');
+             _context.User.Update(new_user);
+            _context.SaveChanges();
+            return new User_DTO(new_user.user_id, new_user.login, new_user.password, new_user.user_type, new_user.fullname, new_user.date_of_birth, new_user.phone_number, new_user.email, new_user.address, new_user.is_valid);
         }
 
         public String RemoveUserCheckData(int id)

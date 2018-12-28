@@ -7,6 +7,7 @@ import { Http, Response } from '@angular/http';
 import { User } from '../../_models/User';
 import { UserService } from '../../_services/user.service';
 import { AppComponent } from '../../app.component';
+import { Status } from '../../_models/Status';
 //import { AlertService, AuthenticationService } from '../_services';
 
 @Component({
@@ -105,9 +106,15 @@ export class SearchUserComponent implements OnInit {
   }
 
   ChangeUserStatus(id,status) {
-    this.values = [id, status];
-    this.userService.ChangeUserStatus(this.values).subscribe(data => {
-      this.message = "Status został poprawnie zmieniony";
+   // this.values = [id.toString(), status];
+    this.userService.ChangeUserStatus(new Status(id, status)).subscribe(data => {
+      if (status) {
+        this.message = "Użytkownik został odblokowany";
+      }
+      else {
+        this.message = "Użytkownik został zablokowany";
+      }
+      this.SearchUser();
     },
       response => { this.message = (<any>response).error.alert });
 

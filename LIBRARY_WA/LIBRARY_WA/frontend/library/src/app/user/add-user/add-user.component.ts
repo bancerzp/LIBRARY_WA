@@ -41,12 +41,12 @@ export class AddUserComponent implements OnInit {
     this.user.password = Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
    
     this.addUserForm = this.formBuilder.group({
-      login: ['', [Validators.required, Validators.minLength(5)], this.CheckLoginExistsInDB.bind(this)],//Validators.pattern("[/S]*"),
+      login: [''],//Validators.pattern("[/S]*"),
       email: ['', [Validators.email, Validators.required], this.CheckEmailExistsInDB.bind(this)],
       fullname: ['', [Validators.required]],
       date_of_birth: ['', Validators.required],
       phone_number: ['',[Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
-      type: ['', Validators.required],
+      user_type: ['', Validators.required],
       password: [this.user.password, [Validators.minLength(5), Validators.required]],
       address: ['', Validators.required], //, Validators.pattern("/^\S*$/")
       is_valid: [true]
@@ -67,9 +67,11 @@ export class AddUserComponent implements OnInit {
   AddUser() {
     if (this.app.IsExpired("l"))
       return;
+    this.submitted = false;
     this.user.is_valid = true;
     this.userService.AddUser(this.user).subscribe(
-      data => { this.message="Użytkownik dodany poprawnie"; this.ngOnInit() },
+      (data: User) => { this.message = data.date_of_birth.toString().slice(0, 10); data.date_of_birth = new Date(data.date_of_birth.getDay() + "-" + data.date_of_birth.getMonth() + "-" + data.date_of_birth.getFullYear()); this.user = data; },
+      //
       response => { this.message = (<any>response).error.alert });
     this.submitted = true;
   }

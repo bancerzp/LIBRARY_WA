@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.IO;
 using LIBRARY_WA.Controllers.Services;
+using LIBRARY_WA.Models.DTO;
 
 namespace LIBRARY_WA.Controllers
 {
@@ -80,15 +81,15 @@ namespace LIBRARY_WA.Controllers
 
         }
 
-        [HttpPut, Authorize]
-        public ActionResult ChangeUserStatus(String[] values)
+        [HttpPut, Authorize(Roles = "l")]
+        public ActionResult ChangeUserStatus(Status_DTO status)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _userService.ChangeUserStatus(values);
+            _userService.ChangeUserStatus(status);
             return Ok();
         }
 
@@ -128,7 +129,7 @@ namespace LIBRARY_WA.Controllers
         [HttpPost,Authorize(Roles ="l")]
         public async Task<IActionResult> AddUser([FromBody] User_DTO user)
         {
-            if (!ModelState.IsValid || user.login.Contains("'"))
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }

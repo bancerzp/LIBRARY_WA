@@ -18,7 +18,7 @@
   <div class="form-group">
     <button ng-disabled="loading || loginForm.invalid" class="btn btn-primary">Zaloguj się</button>
   </div>
-  <div class="alert alert-danger " *ngIf="!valid">Nieprawidłowe dane logowania</div>
+  <div class="alert alert-danger " *ngIf="!valid">{{message}}</div>
 </form>
 
 

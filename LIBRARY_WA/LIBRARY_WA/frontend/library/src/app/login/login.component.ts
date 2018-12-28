@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
   user: User;
   valid: boolean;
   loginData: User;
+  message: String;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -70,10 +71,9 @@ export class LoginComponent implements OnInit {
       this.app.Login(localStorage.getItem("user_type"));
       //this.router.navigateByUrl('/')
         
-      }, err => {
-      this.valid= false;
-    });
+      }, response => { this.message = (<any>response).error.alert;this.valid=false});
     this.submitted = true;
+    
   /*  if (this.user === null) {
       this.valid = false;
      

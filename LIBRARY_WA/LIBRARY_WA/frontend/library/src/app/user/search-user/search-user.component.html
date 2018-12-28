@@ -63,10 +63,10 @@
           <span class='glyphicon glyphicon-remove'></span>Usuń
         </a>
         <a *ngIf="(userInfo.is_valid)" (click)="ChangeUserStatus(userInfo.user_id,false)" class='btn btn-danger m-r-5px'>
-          <span class='glyphicon glyphicon-retweet'></span>Zablokuj
+          <span class='glyphicon glyphicon-ban-circle'></span>Zablokuj
         </a>
-        <a *ngIf="!(userInfo.is_valid)" (click)="EnableUser(userInfo.user_id,true)" class='btn btn-info m-r-5px'>
-          <span class='glyphicon glyphicon-ban-circle'></span>Odblokuj
+        <a *ngIf="!(userInfo.is_valid)" (click)="ChangeUserStatus(userInfo.user_id,true)" class='btn btn-info m-r-5px'>
+          <span class='glyphicon glyphicon-retweet'></span>Odblokuj
         </a>
       </td>
     </tr>

@@ -8,6 +8,7 @@
     <None Remove="frontend\library\src\app\_models\rent.ts" />
     <None Remove="frontend\library\src\app\_models\Renth.ts" />
     <None Remove="frontend\library\src\app\_models\reservation.ts" />
+    <None Remove="frontend\library\src\app\_models\Status.ts" />
     <None Remove="frontend\library\src\app\_models\Suggestion.ts" />
     <None Remove="frontend\library\src\app\_models\Volume.ts" />
   </ItemGroup>
@@ -36,6 +37,7 @@
     <TypeScriptCompile Include="frontend\library\src\app\_models\Rent.ts" />
     <TypeScriptCompile Include="frontend\library\src\app\_models\Renth.ts" />
     <TypeScriptCompile Include="frontend\library\src\app\_models\Reservation.ts" />
+    <TypeScriptCompile Include="frontend\library\src\app\_models\Status.ts" />
     <TypeScriptCompile Include="frontend\library\src\app\_models\Suggestion.ts" />
     <TypeScriptCompile Include="frontend\library\src\app\_models\Volume.ts" />
   </ItemGroup>

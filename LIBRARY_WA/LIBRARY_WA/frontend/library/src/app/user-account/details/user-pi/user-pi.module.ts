@@ -57,7 +57,7 @@ export class UserPIModule {
     //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.updateUserForm = this.formBuilder.group({
       user_id: [this.user.user_id],
-      login: [this.user.login],
+      login: ['', [Validators.required, Validators.minLength(5)], this.CheckLoginExistsInDB.bind(this)],//Validators.pattern("[/S]*"),
       email: ['', [Validators.email, Validators.required], this.CheckEmailExistsInDB.bind(this)],
       fullname: [this.user.fullname, [Validators.required]],// //, Validators.pattern("\S")
       date_of_birth: [this.user.date_of_birth],//, Validators.required
@@ -68,6 +68,11 @@ export class UserPIModule {
       address: [this.user.address, [Validators.required]], //, Validators.pattern("/^\S*$/")
     });
   }
+
+  CheckLoginExistsInDB(control: FormControl) {
+    return this.userService.IfLoginExists(control.value).pipe(
+      map(((res: Boolean) => res == true ? { 'loginTaken': false } : null)))
+  };
 
   UpdateUser() {
     this.submitted = false;

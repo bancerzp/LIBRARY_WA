@@ -228,6 +228,11 @@ namespace LIBRARY_WA.Data
                 return BadRequest(ModelState);
             }
 
+            if (!_bookService.IsBlocked(reservation_id[0]))
+            {
+                return BadRequest(new { alert = "Nie można wypożyczyć książki. Użytkownik jest zablokowany!" });
+            }
+
             String answear = _bookService.RentBookCheckCondition(reservation_id);
             if (answear != "")
             {

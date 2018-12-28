@@ -48,7 +48,11 @@ namespace LIBRARY_WA.Controllers.Services
             return _context.Book.Where(a => (a.isbn == isbn.Replace("'", "\'"))).Count() > 0;
         }
 
-
+        public Boolean IsBlocked(int reservation_id)
+        {
+            Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservation_id).SingleOrDefault();
+            return _context.User.Where(a => a.user_id == reservation.user_id).SingleOrDefault().is_valid;
+        }
 
         //BOOK function
 
@@ -272,7 +276,7 @@ namespace LIBRARY_WA.Controllers.Services
             if (_context.Volume.Where(a => a.book_id == data[0] && a.is_free == true).Count() == 0)
             {
                 if (_context.Reservation.Where(a => a.book_id == data[0]).OrderByDescending(a => a.queue).FirstOrDefault() == null)
-                    queue = 1;
+                    queue = 0;
                 else
                     queue = _context.Reservation.Where(a => a.book_id == data[0]).OrderByDescending(a => a.queue).FirstOrDefault().queue + 1;
                 is_active = false;

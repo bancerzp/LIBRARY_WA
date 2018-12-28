@@ -2,80 +2,79 @@
   Dodawanie użytkownika
 </h1>
 
-<a *ngIf="submitted" style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
-  <b>            {{message}}</b>
-</a>
+
 
 <form [formGroup]="addUserForm" (ngSubmit)="AddUser()">
 
+  <div>
+    <a *ngIf="submitted" style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
+      <b>            {{message}}</b>
+    </a>
+  </div>
+
   <div class="form-group">
     <label for="login">Login</label>
-    <input type="text" formControlName="login" class="form-control" [(ngModel)]="user.login" ng-change="CheckLoginExistsInDB()" maxlength="10" minlength="5"/>
-    <div class="alert alert-danger " *ngIf="(submitted && (addUserForm.get('login').hasError('required') || addUserForm.get('login').hasError('pattern')))
-              ||(addUserForm.get('login').hasError('required') && addUserForm.get('login').dirty && addUserForm.get('login').touched) || (addUserForm.get('login').hasError('required') && addUserForm.get('login').touched)">Pole login nie może byc puste</div>
-    <div class="alert alert-danger " *ngIf="addUserForm.get('login').hasError('minlength')  &&  addUserForm.get('login').touched">Za krótki login(min.5 znaków)</div>
-    <div class="alert alert-danger " *ngIf="addUserForm.get('login').invalid && !addUserForm.get('login').hasError('required') &&  addUserForm.get('login').touched && !addUserForm.get('login').hasError('minlength')">Login jest już zajęty</div>
+    <input type="text" formControlName="login" class="form-control" [(ngModel)]="user.login" disabled="disabled" />
 
 
     <!--   <div class="alert alert-danger " *ngIf="addUserForm.get('login').hasError('minLength') && addUserForm.get('login').touched && addUserForm.get('login').dirty">Login musi posiadać minimum 5 znaków</div>
-  <div class="alert alert-danger " *ngIf="addUserForm.get('login').hasError('maxLength') && addUserForm.get('login').touched && addUserForm.get('login').dirty">Za długi login</div>
-    <div class="alert alert-danger " *ngIf="addUserForm.get('login').hasError('pattern') && addUserForm.get('login').touched && addUserForm.get('login').dirty">Pole login nie może zawierać spacji</div>-->
+    <div class="alert alert-danger " *ngIf="addUserForm.get('login').hasError('maxLength') && addUserForm.get('login').touched && addUserForm.get('login').dirty">Za długi login</div>
+      <div class="alert alert-danger " *ngIf="addUserForm.get('login').hasError('pattern') && addUserForm.get('login').touched && addUserForm.get('login').dirty">Pole login nie może zawierać spacji</div>-->
 
   </div>
 
   <div class="form-group">
     <label for="email">E-mail</label>
-    <input type="email" formControlName="email" class="form-control" [(ngModel)]="user.email" ng-change="CheckEmailExistsInDB()" maxlength="60"/>
+    <input type="email" formControlName="email" class="form-control" [(ngModel)]="user.email" ng-change="CheckEmailExistsInDB()" maxlength="60" />
     <div class="alert alert-danger " *ngIf="(submitted && addUserForm.get('email').hasError('required'))||(addUserForm.get('email').hasError('required')  && addUserForm.get('email').touched)">Pole email nie może być puste</div>
     <div class="alert alert-danger " *ngIf="!submitted && addUserForm.get('email').hasError('email') && addUserForm.get('email').dirty && addUserForm.get('email').touched">Nieprawidłowy format email</div>
     <div class="alert alert-danger " *ngIf="addUserForm.get('email').invalid && !addUserForm.get('email').hasError('email') && !addUserForm.get('email').hasError('required') && addUserForm.get('email').touched">Podany email już jest przypisany do użytkownika</div>
   </div>
 
-    <div class="form-group">
-      <label for="fullname">Imię i nazwisko</label>
-      <input type="text" formControlName="fullname" class="form-control" [(ngModel)]="user.fullname" maxlength="50"/>
-      <div class="alert alert-danger " *ngIf="(submitted && (addUserForm.get('fullname').hasError('required') || addUserForm.get('fullname').hasError('pattern'))) || (addUserForm.get('fullname').hasError('required') && addUserForm.get('fullname').dirty)">Pole imię i nazwisko nie może byc puste</div>
-    </div>
+  <div class="form-group">
+    <label for="fullname">Imię i nazwisko</label>
+    <input type="text" formControlName="fullname" class="form-control" [(ngModel)]="user.fullname" maxlength="50" />
+    <div class="alert alert-danger " *ngIf="(submitted && (addUserForm.get('fullname').hasError('required') || addUserForm.get('fullname').hasError('pattern'))) || (addUserForm.get('fullname').hasError('required') && addUserForm.get('fullname').dirty)">Pole imię i nazwisko nie może byc puste</div>
+  </div>
 
-    <div class="form-group">
-      <label for="date_of_birth">Data urodzenia</label>
-      <input type="date" formControlName="date_of_birth" class="form-control" [(ngModel)]="user.date_of_birth" max="{{maxDate | date:'yyyy-MM-dd'}}" />
-      <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('date_of_birth').hasError('required') ">Pole data urodzenia nie może byc puste</div>
-    </div>
+  <div class="form-group">
+    <label for="date_of_birth">Data urodzenia</label>
+    <input type="date" data-date-format="yyyy-MM-dd" formControlName="date_of_birth" class="form-control" [(ngModel)]="user.date_of_birth" max="{{maxDate | date:'yyyy-MM-dd'}}" />
+    <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('date_of_birth').hasError('required') ">Pole data urodzenia nie może byc puste</div>
+  </div>
 
-    <div class="form-group">
-      <label for="phone_number">Numer telefonu</label>
-      <input type="tel" formControlName="phone_number" class="form-control" [(ngModel)]="user.phone_number" placeholder="format. 000-000-000" />
-      <div class="alert alert-danger " *ngIf="(submitted && addUserForm.get('phone_number').hasError('required')) || (addUserForm.get('phone_number').hasError('required') && addUserForm.get('phone_number').dirty)">Pole telefon musi być wypełnione</div>
-      <div class="alert alert-danger " *ngIf="!submitted && addUserForm.get('phone_number').hasError('pattern') && addUserForm.get('phone_number').dirty && addUserForm.get('phone_number').touched">Nieprawidłowy format numeru telefonu</div>
-    </div>
+  <div class="form-group">
+    <label for="phone_number">Numer telefonu</label>
+    <input type="tel" formControlName="phone_number" class="form-control" [(ngModel)]="user.phone_number" placeholder="format. 000-000-000" />
+    <div class="alert alert-danger " *ngIf="(submitted && addUserForm.get('phone_number').hasError('required')) || (addUserForm.get('phone_number').hasError('required') && addUserForm.get('phone_number').dirty)">Pole telefon musi być wypełnione</div>
+    <div class="alert alert-danger " *ngIf="!submitted && addUserForm.get('phone_number').hasError('pattern') && addUserForm.get('phone_number').dirty && addUserForm.get('phone_number').touched">Nieprawidłowy format numeru telefonu</div>
+  </div>
 
-    <div class="form-group">
-      <label for="address">Adres</label>
-      <input type="text" formControlName="address" class="form-control" [(ngModel)]="user.address" maxlength="100"/>
-      <div class="alert alert-danger " *ngIf="(submitted && (addUserForm.get('address').hasError('required') || addUserForm.get('address').hasError('required'))) || (addUserForm.get('address').hasError('required') && addUserForm.get('address').dirty)">Pole email lub telefon muszą być wypełnione</div>
-    </div>
+  <div class="form-group">
+    <label for="address">Adres</label>
+    <input type="text" formControlName="address" class="form-control" [(ngModel)]="user.address" maxlength="100" />
+    <div class="alert alert-danger " *ngIf="(submitted && (addUserForm.get('address').hasError('required') || addUserForm.get('address').hasError('required'))) || (addUserForm.get('address').hasError('required') && addUserForm.get('address').dirty)">Pole email lub telefon muszą być wypełnione</div>
+  </div>
 
-    <div class="form-group">
-      <label for="type">Typ użytkownika:</label><br />
-      <input type="radio" formControlName="type" [(ngModel)]="user.user_type" value="r">Czytelnik
-      <input type="radio" formControlName="type" [(ngModel)]="user.user_type" value="l">Bibliotekarz
-      <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('user_type').hasError('required')">Typ użytkownika nie może byc pusty</div>
-    </div>
+  <div class="form-group">
+    <label for="user_type">Typ użytkownika:</label><br />
+    <input type="radio" formControlName="user_type" [(ngModel)]="user.user_type" value="r">Czytelnik
+    <input type="radio" formControlName="user_type" [(ngModel)]="user.user_type" value="l">Bibliotekarz
+    <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('user_type').hasError('required')">Typ użytkownika nie może byc pusty</div>
+  </div>
 
-    <div class="radio-group">
-      <label for="password">Hasło</label>
-      <input type="text" formControlName="password" class="form-control" disabled="disabled" [(ngModel)]="user.password" maxlength="20" />
-      <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('password').hasError('minlength')">Hasło musi mieć długość 5-20znaków</div>
-      <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('password').hasError('required')">Hasło nie może być puste</div>
+  <div class="form-group">
+    <label for="password">Hasło</label>
+    <input type="text" formControlName="password" class="form-control" disabled="disabled" [(ngModel)]="user.password" maxlength="20" />
+    <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('password').hasError('minlength')">Hasło musi mieć długość 5-20znaków</div>
+    <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('password').hasError('required')">Hasło nie może być puste</div>
+  </div>
 
-    </div>
-
-    <div class="form-group">
-      <button type="submit" [disabled]="loading || !addUserForm.valid" class="btn btn-primary">Dodaj użytkownika</button>
-      <!--|| !addUserForm.valid   <button [disabled]="loading " class="btn btn-primary" ngclick="clearForm()">Wyczyść</button>
-      <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-  -->
-    </div>
+  <div class="form-group">
+    <button type="submit" [disabled]="loading || !addUserForm.valid" class="btn btn-primary">Dodaj użytkownika</button>
+    <!--|| !addUserForm.valid   <button [disabled]="loading " class="btn btn-primary" ngclick="clearForm()">Wyczyść</button>
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    -->
+  </div>
 </form>
 
