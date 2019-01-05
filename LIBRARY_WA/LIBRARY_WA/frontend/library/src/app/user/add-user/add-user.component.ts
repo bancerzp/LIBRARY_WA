@@ -70,7 +70,7 @@ export class AddUserComponent implements OnInit {
     this.submitted = false;
     this.user.is_valid = true;
     this.userService.AddUser(this.user).subscribe(
-      (data: User) => { this.message = data.date_of_birth.toString().slice(0, 10); data.date_of_birth = new Date(data.date_of_birth.getDay() + "-" + data.date_of_birth.getMonth() + "-" + data.date_of_birth.getFullYear()); this.user = data; },
+      (data: User) => {this.user = data; },
       //
       response => { this.message = (<any>response).error.alert });
     this.submitted = true;

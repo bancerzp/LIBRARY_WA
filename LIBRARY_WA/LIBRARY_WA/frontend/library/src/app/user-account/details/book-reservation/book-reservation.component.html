@@ -1,4 +1,6 @@
-
+<h1 style="text-align:center">
+  Rezerwacje
+</h1>
 
 <a style="text-align:center;font-size:15px;align-content:center;color:darkseagreen">
   <b>            {{message}}</b>
@@ -6,7 +8,7 @@
 
 <table class="reservationTable w3-hoverable">
   <tr>
-    <th *ngFor="let name of column">
+    <th *ngFor="let name of column" width="auto">
       {{name}}
     </th>
     <th style="width:auto; min-width:150px">
@@ -28,12 +30,12 @@
       <td *ngIf=(!reservationInfo.is_active)>Nie</td>
       <td style="width:auto; min-width:150px">
         <div class="button-group">
-          <a (click)="CancelReservation(reservationInfo.reservation_id)" class='btn btn-danger m-r-5px'>
+          <a (click)="CancelReservation(reservationInfo.reservation_id)" class='btn btn-danger m-r-5px'style="font-size:12px">
             <span class='glyphicon glyphicon-remove'></span> Anuluj rezerwację.
           </a>
         </div>
         <div class="button-group">
-          <a *ngIf="user_type=='l' && reservationInfo.is_active" (click)="RentBook(reservationInfo.reservation_id)" class='btn btn-info m-r-5px'>
+          <a *ngIf="user_type=='l' && reservationInfo.is_active" (click)="RentBook(reservationInfo.reservation_id)" class='btn btn-info m-r-5px'style="font-size:12px">
             <span class='glyphicon glyphicon-edit'></span> Wypożycz.
           </a>
         </div>

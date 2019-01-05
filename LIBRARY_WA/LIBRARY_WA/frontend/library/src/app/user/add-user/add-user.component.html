@@ -56,10 +56,11 @@
     <div class="alert alert-danger " *ngIf="(submitted && (addUserForm.get('address').hasError('required') || addUserForm.get('address').hasError('required'))) || (addUserForm.get('address').hasError('required') && addUserForm.get('address').dirty)">Pole email lub telefon muszą być wypełnione</div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" style="font-size:14px;">
     <label for="user_type">Typ użytkownika:</label><br />
-    <input type="radio" formControlName="user_type" [(ngModel)]="user.user_type" value="r">Czytelnik
-    <input type="radio" formControlName="user_type" [(ngModel)]="user.user_type" value="l">Bibliotekarz
+    <input type="radio" style="width:14px" formControlName="user_type" [(ngModel)]="user.user_type" value="r">Czytelnik
+
+    <input type="radio" style="width:14px" formControlName="user_type" [(ngModel)]="user.user_type" value="l">Bibliotekarz
     <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('user_type').hasError('required')">Typ użytkownika nie może byc pusty</div>
   </div>
 

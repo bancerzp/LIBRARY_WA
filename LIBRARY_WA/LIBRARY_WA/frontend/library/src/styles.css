@@ -64,13 +64,12 @@
 
 body {
   font-family: 'Lato', sans-serif;
-  height:auto;
+  align-content:center;
+  height: 150%;
   font-size: 20px;
   color: black;
   background-color: beige;
-  margin-left: 50px;
-  padding-left: 50px;
-  padding-right: 50px;
+  min-height: 600px;
 }
 /*komentarz
     hover-po najechaniu
@@ -112,18 +111,26 @@ h1 {
 }
 
 #container {
- height:100%;
-  padding-left:10px;
-  margin-left:100px;
-  margin:auto;
+  height: 100%;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-bottom: 100px;
+  padding: 0px;
+  min-height: 500px;
   background-color: lavender;
+  border-radius: 20px 20px 20px 20px;
+  border-right-style: outset;
+  border-left-style: inset;
+  border-top-style: inset;
+  border-top-width: thin;
+  border-left-width: thick;
 }
 
 .container {
   height:100%;
   padding-right: 1px;
-  margin-right: 0px;
-  margin-left: 100px;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .icon{
@@ -140,18 +147,7 @@ h1 {
 .rectangle {
   width: 96%;
   height: 20%;
-  color: aliceblue;
-}
-
-
-#clock {
-  background-color: coral;
-  float: left;
-  padding: 2%;
-  font-family: 'K2D', sans-serif;
-  font-size: 150%;
-  text-align: center;
-  color: black;
+  color: lavender;
 }
 
 .square {
@@ -187,34 +183,34 @@ h1 {
 
 .form-group {
   width: 70%;
-  padding-left: 30%
+  padding-left: 30%;
+  align-items:center;
 }
 
-.searchResult {
-  border: 1px solid;
-  border-radius: 10px;
-  border-color: brown;
-  border-bottom-style: groove;
-  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
-  margin: auto;
-  text-align: center;
-  overflow: hidden;
-  width: 100%;
-  white-space: normal;
-}
+  .form-group label{
+    font-size:13px;
+  }
+  .form-group input {
+    height: 30px;
+    font-size:12px;
+  }
 
-.searchUserResult {
-  border: 1px solid;
-  border-radius: 10px;
-  border-color: brown;
-  border-bottom-style: groove;
-  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
-  margin: auto;
-  text-align: center;
-  overflow: hidden;
-  width: 110%;
-  white-space: normal;
-}
+  .form-group button {
+    font-size: 14px;
+  }
+
+
+  .searchUserResult, .searchResult {
+    border: 1px solid;
+    border-radius: 10px;
+    border-color: brown;
+    border-bottom-style: groove;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+    margin: auto;
+    text-align: center;
+    overflow: hidden;
+    white-space: normal;
+  }
 
 .renthTable, .rentTable, .reservationTable {
   border: 1px solid;
@@ -223,9 +219,10 @@ h1 {
   border-bottom-style: groove;
   box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
   margin: auto;
+  font-size:12px;
   text-align: center;
   overflow: hidden;
-  width: 100%;
+  width: 115%;
   white-space: normal;
 }
 
@@ -235,8 +232,9 @@ tr :hover {
 }
 
 table {
-  width: 100%;
+  width: 115%;
   background-color: white;
+  font-size:12px;
 }
 
 
@@ -258,4 +256,3 @@ th {
   background-color: antiquewhite;
   font-weight: 300;
 }
-

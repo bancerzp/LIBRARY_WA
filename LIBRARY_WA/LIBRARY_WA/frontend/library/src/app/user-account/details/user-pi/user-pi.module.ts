@@ -29,7 +29,9 @@ export class UserPIModule {
   resetClicked: boolean;
   message: String;
   email: String;
+  changePass: boolean;
   lib: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private http: Http,
@@ -43,13 +45,15 @@ export class UserPIModule {
   ngOnInit() {
     if (this.app.IsExpired("l,r"))
       return;
+
+    this.GetUserById();
     this.user_type = this.app.GetUserType();
     this.resetClicked = false;
     this.reset = true;
-    this.GetUserById();
     this.submitted = false;
     this.pass = this.user.password;
     this.email = this.user.email;
+   // this.changePass = this.IfLoginChanged();
 
     if (this.user_type == 'l') {
       this.user.password = "";
@@ -57,8 +61,8 @@ export class UserPIModule {
     //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.updateUserForm = this.formBuilder.group({
       user_id: [this.user.user_id],
-      login: ['', [Validators.required, Validators.minLength(5)], this.CheckLoginExistsInDB.bind(this)],//Validators.pattern("[/S]*"),
-      email: ['', [Validators.email, Validators.required], this.CheckEmailExistsInDB.bind(this)],
+      login: [this.user.login, [Validators.required, Validators.minLength(5)], this.CheckLoginExistsInDB.bind(this)],//Validators.pattern("[/S]*"),
+      email: [this.user.email, [Validators.email, Validators.required], this.CheckEmailExistsInDB.bind(this)],
       fullname: [this.user.fullname, [Validators.required]],// //, Validators.pattern("\S")
       date_of_birth: [this.user.date_of_birth],//, Validators.required
       phone_number: [this.user.phone_number, [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],//
@@ -102,7 +106,7 @@ export class UserPIModule {
     }
     //czy bibliotekarz przeglada swoje konto czy czytelnika
     
-    this.userService.GetUserById(localStorage.getItem("user_id")).subscribe((user: User) => { this.user = user; this.pass = this.user.password },
+    this.userService.GetUserById(localStorage.getItem("user_id")).subscribe((user: User) => { this.user = user; this.IfLoginChanged(); this.pass = this.user.password },
       response => { this.message = (<any>response).error.alert });
     this.lib = (localStorage.getItem("user_fullname") == this.user.fullname);
       
@@ -129,4 +133,8 @@ export class UserPIModule {
     return this.userService.IfEmailExists(control.value).pipe(
       map(((res: boolean) => (res == true && control.value==this.email) ? { 'emailTaken': false } : null)))
   };
+
+  IfLoginChanged() {
+    this.changePass=("000000000000" + this.user.user_id).endsWith(this.user.login.toString());
+  }
 }

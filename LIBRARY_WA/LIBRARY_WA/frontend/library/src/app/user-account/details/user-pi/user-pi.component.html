@@ -11,16 +11,20 @@
     <input type="text" formControlName="user_id" class="form-control" [(ngModel)]="user.user_id" disabled="disabled" />
   </div>
 
-  <div class="form-group">
+  <div class="form-group" *ngIf="!changePass">
     <label for="login">Login</label>
+    <input type="text"  formControlName="login" class="form-control" [(ngModel)]="user.login" disabled="disabled" />  </div>
+
+  <div class="form-group" *ngIf="changePass">
     <label for="login">Login</label>
-    <input type="text" *ngIf="user.login!=padLeft(user.user_id, '0', 12)" formControlName="login" class="form-control" [(ngModel)]="user.login" disabled="disabled" />
-    <input type="text" *ngIf="user.login==padLeft(user.user_id, '0', 12)" formControlName="login" class="form-control" [(ngModel)]="user.login" ng-change="CheckLoginExistsInDB()" maxlength="12" minlength="5"/>
-    <div class="alert alert-danger " *ngIf="(submitted && (addUserForm.get('login').hasError('required') || addUserForm.get('login').hasError('pattern')))
+    <input type="text"  formControlName="login" class="form-control" [(ngModel)]="user.login" ng-change="CheckLoginExistsInDB()" maxlength="12" minlength="5" />
+    <div class="alert alert-danger " *ngIf="(submitted && addUserForm.get('login').hasError('required'))
               ||(addUserForm.get('login').hasError('required') && addUserForm.get('login').dirty && addUserForm.get('login').touched) || (addUserForm.get('login').hasError('required') && addUserForm.get('login').touched)">Pole login nie może byc puste</div>
     <div class="alert alert-danger " *ngIf="addUserForm.get('login').hasError('minlength')  &&  addUserForm.get('login').touched">Za krótki login(min.5 znaków)</div>
     <div class="alert alert-danger " *ngIf="addUserForm.get('login').invalid && !addUserForm.get('login').hasError('required') &&  addUserForm.get('login').touched && !addUserForm.get('login').hasError('minlength')">Login jest już zajęty</div>
   </div>
+
+
 
   <div class="form-group">
     <label for="email">E-mail</label>
@@ -57,7 +61,7 @@
 
   <div class="form-group" *ngIf="!lib">
     <label for="password">Nowe hasło</label>
-    <input type="text" formControlName="password" class="form-control" disabled/>
+    <input type="text" formControlName="password" class="form-control" disabled />
     <button (click)="NewPasswordLib()" class="btn btn-primary">Resetuj hasło</button>
   </div>
 

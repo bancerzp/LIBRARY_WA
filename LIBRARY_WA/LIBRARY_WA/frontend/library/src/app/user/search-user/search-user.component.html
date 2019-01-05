@@ -55,17 +55,17 @@
       <td>{{ userInfo.phone_number }}</td>
       <td>{{ userInfo.login  }}</td>
       <td>{{ userInfo.type  }}</td>
-      <td *ngIf="userType=='l'" style="width:auto; min-width:150px">
-        <a (click)="UserAccount(userInfo.user_id)" class='btn btn-info m-r-5px'>
+      <td *ngIf="userType=='l'" style="width:auto; min-width:150px;">
+        <a (click)="UserAccount(userInfo.user_id)" class='btn btn-info m-r-5px' style="font-size:12px;">
           <span class="glyphicon glyphicon-edit"></span>Szczegóły
         </a>
-        <a (click)="RemoveUser(userInfo.user_id)" class='btn btn-danger m-r-5px'>
+        <a (click)="RemoveUser(userInfo.user_id)" class='btn btn-danger m-r-5px'style="font-size:12px;">
           <span class='glyphicon glyphicon-remove'></span>Usuń
         </a>
-        <a *ngIf="(userInfo.is_valid)" (click)="ChangeUserStatus(userInfo.user_id,false)" class='btn btn-danger m-r-5px'>
+        <a *ngIf="(userInfo.is_valid)" (click)="ChangeUserStatus(userInfo.user_id,false)" class='btn btn-danger m-r-5px'style="font-size:12px;">
           <span class='glyphicon glyphicon-ban-circle'></span>Zablokuj
         </a>
-        <a *ngIf="!(userInfo.is_valid)" (click)="ChangeUserStatus(userInfo.user_id,true)" class='btn btn-info m-r-5px'>
+        <a *ngIf="!(userInfo.is_valid)" (click)="ChangeUserStatus(userInfo.user_id,true)" class='btn btn-info m-r-5px'style="font-size:12px;">
           <span class='glyphicon glyphicon-retweet'></span>Odblokuj
         </a>
       </td>

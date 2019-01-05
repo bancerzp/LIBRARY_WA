@@ -1,4 +1,32 @@
-.nav-item{
-  width:25%;
-  font-size:medium;
+.nav-item {
+  width: auto;
+  min-width:23.5%;
+  font-size: large;
+  border-radius: 20px;
+  border-bottom-style:ridge;
+  border-color: cadetblue;
+  text-align: center;
+}
+
+.nav{
+  width:120%;
+}
+
+.nav-link {
+  vertical-align: middle;
+}
+.nav a {
+  border-color: cadetblue;
+  border-radius: 20px;
+}
+
+.nav-link:hover {
+  background-color: cadetblue;
+  border-radius: 15px;
+}
+
+.nav a:focus {
+  background-color: white;
+  border-radius: 20px;
+  font-weight:700;
 }

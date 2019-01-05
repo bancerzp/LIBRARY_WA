@@ -85,21 +85,21 @@
       </td>
       <td *ngIf="userType=='l'" style="width:auto; min-width:150px">
         <div class="button-group">
-          <button class='btn btn-info m-r-5px' (click)="ReserveBookLibrarian(bookInfo.book_id,user_id)" [disabled]="!user_id">
+          <button class='btn btn-info m-r-5px' (click)="ReserveBookLibrarian(bookInfo.book_id,user_id)" [disabled]="!user_id" style="font-size:12px">
             <span class='glyphicon glyphicon-check'></span> Zarezerwuj
           </button>
           <input #user style="width:80px" [(ngModel)]="user_id" />
 
         </div>
         <div class="button-group">
-          <button (click)="EditBook(bookInfo.book_id)" class='btn btn-info m-r-5px'>
+          <button (click)="EditBook(bookInfo.book_id)" class='btn btn-info m-r-5px'style="font-size:12px">
             <span class='glyphicon glyphicon-edit'></span> Edytuj
           </button>
-          <button (click)="RemoveBook(bookInfo.book_id)" class='btn btn-danger m-r-5px'>
+          <button (click)="RemoveBook(bookInfo.book_id)" class='btn btn-danger m-r-5px'style="font-size:12px">
             <span class='glyphicon glyphicon-remove'></span> Usuń
           </button>
         </div>
-        <button (click)="AddVolume(bookInfo.book_id)" class='btn btn-info m-r-5px'>
+        <button (click)="AddVolume(bookInfo.book_id)" class='btn btn-info m-r-5px'style="font-size:12px">
           <span class='glyphicon glyphicon-plus'></span> Dodaj egzemplarz
         </button>
       </td>

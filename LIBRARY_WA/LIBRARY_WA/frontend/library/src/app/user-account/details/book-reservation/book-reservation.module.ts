@@ -18,7 +18,7 @@ import { BookService } from '../../../_services/book.service';
 })
 export class BookReservationModule {
   reservation: Reservation[];
-  column = ["Id. rezerwacji", "ISBN", "Tytuł", "Numer egzemplarza", "Data rezerwacji", "Rezerwacja do:","Kolejka", "Czy gotowe do wypożyczenia?"];
+  column = ["Id. rez.", "ISBN", "Tytuł", "Numer egzemplarza", "Data rezerwacji", "Rezerwacja do","Kolejka", "Czy gotowe do odbioru?"];
   user_type: string;
   submitted: boolean;
   message: String;
