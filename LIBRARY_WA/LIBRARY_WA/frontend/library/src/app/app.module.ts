@@ -9,8 +9,6 @@ import { UserService } from './_services/user.service';
 import { BookService } from './_services/book.service';
 
 import { HttpClientModule } from '@angular/common/http';
-import { DecimalPipe } from '@angular/common';
-import { DatePipe } from '@angular/common';
 
 //components
 import { AppComponent } from './app.component';

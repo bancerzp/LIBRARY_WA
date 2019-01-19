@@ -8,7 +8,6 @@ import { UserService } from '../_services/user.service';
 import { User } from '../_models/User';
 import { appRoutes } from '../app.module';
 import { AppComponent } from "../app.component";
-//import { AlertService, AuthenticationService } from '../_services';
 
 @Component({
   selector: 'app-login',
@@ -51,8 +50,6 @@ export class LoginComponent implements OnInit {
     this.loginForm.get('password').markAsPristine();
   }
 
-
-  //f czyli fałszywy login/hasło
   login() {
       this.userService.IsLogged(this.logedUser).subscribe(response => {
       let token = (<any>response).token;
@@ -67,23 +64,10 @@ export class LoginComponent implements OnInit {
       localStorage.setItem("user_type", user_type);
       this.app.SetVariable(user_type,user_id);
       this.valid = true;
-        // window.location.reload();
       this.app.Login(localStorage.getItem("user_type"));
-      //this.router.navigateByUrl('/')
         
       }, response => { this.message = (<any>response).error.alert;this.valid=false});
     this.submitted = true;
-    
-  /*  if (this.user === null) {
-      this.valid = false;
-     
-      return;
-    }
-    else {
-      this.logedUser.emit(this.user);
-      this.router.navigate(['app-home']);*/
-     // this.logedUser.emit(this.user);
-    //  this.router.navigate(['home']);
   }
 
  

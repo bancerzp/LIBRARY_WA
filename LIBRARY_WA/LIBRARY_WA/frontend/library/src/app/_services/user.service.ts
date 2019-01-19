@@ -93,11 +93,6 @@ export class UserService {
     return this.http.put(this.accessPointUrl + '/' + payload.id, payload, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
- // public login(user) {
-   // return this.http.get(this.accessPointUrl + '/login', user, { headers: this.headers });
-  //}
-
-  
   public CancelReservation(id) {
     return this.http.delete(this.accessPointUrl + "/CancelReservation/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }

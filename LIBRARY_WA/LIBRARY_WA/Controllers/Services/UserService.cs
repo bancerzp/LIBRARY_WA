@@ -144,7 +144,6 @@ namespace LIBRARY_WA.Controllers.Services
         {
             User new_user= new User(user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid);
            
-          //  _context.Entry(new_user).State = EntityState.Modified;
             _context.User.Add(new_user);
             _context.SaveChanges();
             new_user.login = new_user.user_id.ToString().PadLeft(12, '0');

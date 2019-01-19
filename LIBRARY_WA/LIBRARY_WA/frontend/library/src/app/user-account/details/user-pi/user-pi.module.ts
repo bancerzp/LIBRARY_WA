@@ -53,23 +53,21 @@ export class UserPIModule {
     this.submitted = false;
     this.pass = this.user.password;
     this.email = this.user.email;
-   // this.changePass = this.IfLoginChanged();
 
     if (this.user_type == 'l') {
       this.user.password = "";
     }
-    //var names = ["Login", "E-mail", "Imię/nazwisko", "Data urodzenia", "Numer telefonu"]
     this.updateUserForm = this.formBuilder.group({
       user_id: [this.user.user_id],
-      login: [this.user.login, [Validators.required, Validators.minLength(5)], this.CheckLoginExistsInDB.bind(this)],//Validators.pattern("[/S]*"),
+      login: [this.user.login, [Validators.required, Validators.minLength(5)], this.CheckLoginExistsInDB.bind(this)],
       email: [this.user.email, [Validators.email, Validators.required], this.CheckEmailExistsInDB.bind(this)],
-      fullname: [this.user.fullname, [Validators.required]],// //, Validators.pattern("\S")
-      date_of_birth: [this.user.date_of_birth],//, Validators.required
-      phone_number: [this.user.phone_number, [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],//
+      fullname: [this.user.fullname, [Validators.required]],
+      date_of_birth: [this.user.date_of_birth],
+      phone_number: [this.user.phone_number, [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
       user_type: this.user_type,
       password: [this.user.password],
       password2: '',
-      address: [this.user.address, [Validators.required]], //, Validators.pattern("/^\S*$/")
+      address: [this.user.address, [Validators.required]], 
     });
   }
 
@@ -82,8 +80,6 @@ export class UserPIModule {
     this.submitted = false;
     if (this.app.IsExpired("l,r"))
       return;
-    //,
-    // response => { this.message = (<any>response).error.alert });
     if (this.reset == false) {
       this.submitted = false;
       this.message="Wpisane hasła się różnią! Nie można zapisać zmian!"
@@ -109,7 +105,6 @@ export class UserPIModule {
     this.userService.GetUserById(localStorage.getItem("user_id")).subscribe((user: User) => { this.user = user; this.IfLoginChanged(); this.pass = this.user.password },
       response => { this.message = (<any>response).error.alert });
     this.lib = (localStorage.getItem("user_fullname") == this.user.fullname);
-      
   }
 
   NewPassword() {
@@ -131,7 +126,7 @@ export class UserPIModule {
 
   CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(
-      map(((res: boolean) => (res == true && control.value==this.email) ? { 'emailTaken': false } : null)))
+      map(((res: boolean) => (res == false && control.value==this.email) ? { 'emailTaken': false } : null)))
   };
 
   IfLoginChanged() {

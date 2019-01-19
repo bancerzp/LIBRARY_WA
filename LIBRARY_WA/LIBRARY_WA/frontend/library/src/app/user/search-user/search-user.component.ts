@@ -34,9 +34,6 @@ export class SearchUserComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private app: AppComponent, ) { }
-  //  private router: Router,
-  // private authenticationService: AuthenticationService,
-  // private alertService: AlertService) { }*/
 
   ngOnInit() {
     if (this.app.IsExpired("l"))
@@ -52,18 +49,7 @@ export class SearchUserComponent implements OnInit {
       login: '',
       phone_number: ''
     });
-    // this.SearchUser();
   }
-  /*
-  // reset login status
-  this.authenticationService.logout();
-
-  // get return url from route parameters or default to '/'
-  this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';*/
-
-
-  // convenience getter for easy access to form fields
-  // get f() { return this.loginForm.controls; }
 
   SearchUser() {
     if (this.app.IsExpired("l"))
@@ -106,7 +92,6 @@ export class SearchUserComponent implements OnInit {
   }
 
   ChangeUserStatus(id,status) {
-   // this.values = [id.toString(), status];
     this.userService.ChangeUserStatus(new Status(id, status)).subscribe(data => {
       if (status) {
         this.message = "Użytkownik został odblokowany";

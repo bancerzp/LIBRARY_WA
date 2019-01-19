@@ -18,11 +18,12 @@
         </ul>
 
         <div *ngIf="isLogged" style="text-align-last:center;align-content:center;align-items:center;text-align:center">
-          <br />   
-          <a class="glyphicon glyphicon-user" style="font-size:60px;text-align:center">
-            <br />
-            <p style="word-spacing:normal;font-size:12px">Jesteś zalogowany jako:<br />{{userFullname}}</p>
-          </a><br />
+          <br />
+          <a class="glyphicon glyphicon-user" style="font-size:60px;align-self:center"></a><br />
+          <br />
+          <div style="width:150px">
+            <p style="word-spacing:normal;font-size:12px;">Jesteś zalogowany jako:<br />{{userFullname}}</p>
+          </div>
           <button (click)="Logout()" class="btn btn-primary " style="width:auto">Wyloguj</button>
         </div>
     </nav>

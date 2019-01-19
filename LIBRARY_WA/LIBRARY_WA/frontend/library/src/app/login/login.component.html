@@ -13,29 +13,9 @@
     <label for="password">Hasło</label>
     <input type="password" formControlName="password" class="form-control" [(ngModel)]="logedUser.password" />
     <div class="alert alert-danger " *ngIf="loginForm.get('password').hasError('required') && loginForm.get('password').dirty">Pole hasło nie może byc puste</div>
-
   </div>
   <div class="form-group">
     <button ng-disabled="loading || loginForm.invalid" class="btn btn-primary">Zaloguj się</button>
   </div>
   <div class="alert alert-danger " *ngIf="!valid">{{message}}</div>
 </form>
-
-
-<!--{{diagnostic}}
-<form #loginForm="ngForm">
-  <div class="form-group" align="left">
-    <h2>Zaloguj się</h2>
-    <label for="login">Login</label>
-    <input type="text" class="form-control" id="login" required
-           [(ngModel)]="model.login" name="login" />
-
-    <label for="password">Hasło</label>
-    <input type="password" class="form-control" id="password" required
-           [(ngModel)]="model.password" name="password" />
-    <button type="submit" class="btn btn-login" `>
-      Zaloguj
-    </button>
-  </div>
-</form>-->
-

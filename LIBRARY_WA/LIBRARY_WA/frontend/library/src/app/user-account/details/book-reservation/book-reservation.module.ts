@@ -49,20 +49,6 @@ export class BookReservationModule {
       response => { this.message = (<any>response).error });
     this.submitted = true;}
   
-       
- //    this.bookService.RentBook(reservation_d).map((response: Response) => {
-//  alert("Książka została poprawnie wypożyczona")
-//}, (Error: Response) => { alert(Error.json); alert("Błąd wypożyczania książki" + alert(JSON.stringify(Error.json))); alert("Błąd wypożyczania książki" + Error.json) });
-
-
-
- //   this.bookService.RentBook(reservation_d).subscribe(data => {
- //     alert("Książka została poprawnie wypożyczona")
- //   },
- //     (Error: Response) => { alert("Błąd wypożyczania książki" + Error); alert("Błąd wypożyczania książki" + alert(JSON.stringify(Error.json())); alert("Błąd wypożyczania książki" + Error.json) });
- 
-
-
   GetReservation() {
     if (this.app.IsExpired("l,r"))
       return;

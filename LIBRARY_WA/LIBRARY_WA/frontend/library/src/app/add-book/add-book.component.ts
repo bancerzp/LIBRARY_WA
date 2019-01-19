@@ -20,7 +20,7 @@ export class AddBookComponent implements OnInit {
   public author=[];
   public bookType = [];
   public language = [];
-  //@Output() book = new EventEmitter<Book>();
+
   book: Book;
   submitted: boolean;
   message: String;

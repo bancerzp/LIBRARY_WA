@@ -22,7 +22,6 @@ namespace LIBRARY_WA.Controllers.Services
 
         }
 
-        // get data to combobox
 
         //TODO
         public List<String> GetAuthor()
@@ -167,8 +166,7 @@ namespace LIBRARY_WA.Controllers.Services
             //usuń wszystkie rezerwacje
             _context.SaveChangesAsync();
         }
-
-        //Volume function
+        
 
         public Volume_DTO AddVolume(int id)
         {
@@ -414,12 +412,7 @@ namespace LIBRARY_WA.Controllers.Services
             _context.SaveChanges();
         }
 
-
-
-
-
-
-
+                                
         public async Task<IActionResult> EditBook(Book_DTO book)
         {
             if (!ModelState.IsValid)

@@ -54,7 +54,6 @@ export class CurrentRentModule {
     this.submitted = false;
     if (this.app.IsExpired("l"))
       return;
-    //błędy wyłapać
     this.bookService.ReturnBook(rent_id).subscribe(data => {
       this.rent = this.rent.filter(rent => rent.rent_id != rent_id);
       this.message = "Książka została poprawnie zwrócona";
@@ -67,7 +66,6 @@ export class CurrentRentModule {
     this.submitted = false;
     if (this.app.IsExpired("l"))
       return;
-    //błędy wyłapać
     this.bookService.ReturnBook(rent_id).subscribe(data => {
       this.rent = this.rent.filter(rent => rent.rent_id != rent_id);
       this.message = (<any>data).message; //"Książka została poprawnie zwrócona";

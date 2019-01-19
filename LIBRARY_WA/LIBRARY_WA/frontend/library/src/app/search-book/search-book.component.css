@@ -1,7 +1,6 @@
 .form-group {
   width: 80%;
   padding-left: 25%;
-  
 }
 .searchResult {
   border: 1px solid ;
@@ -22,7 +21,6 @@ table {
   width: 120%;
   background-color: white;
 }
-
 
 td, th {
   color: blue;
