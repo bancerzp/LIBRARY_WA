@@ -30,7 +30,7 @@ namespace LIBRARY_WA.Models
         public string author_fullname { get; set; }
 
         [RegularExpression(@"\d{4}", ErrorMessage = "Niepoprawny format roku wydania książki")]
-        public String year { get; set; }
+        public string year { get; set; }
 
         [MaxLength(20, ErrorMessage = "Za długi język")]
         public string language { get; set; }
@@ -45,6 +45,6 @@ namespace LIBRARY_WA.Models
 
         //czy istnieje w bibliotece
         [System.ComponentModel.DefaultValue(true)]
-        public Boolean is_available { get; set; }
+        public bool is_available { get; set; }
     }
 }

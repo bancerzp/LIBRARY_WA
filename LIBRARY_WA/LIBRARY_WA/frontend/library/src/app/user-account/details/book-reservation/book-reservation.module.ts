@@ -20,7 +20,7 @@ export class BookReservationModule {
   reservation: Reservation[];
   column = ["Id. rez.", "ISBN", "Tytuł", "Numer egzemplarza", "Data rezerwacji", "Rezerwacja do","Kolejka", "Czy gotowe do odbioru?"];
   user_type: string;
-  submitted: boolean;
+  submitted: bool;
   message: String;
 
   constructor(

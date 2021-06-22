@@ -15,7 +15,7 @@ import { Reservation } from '../_models/reservation';
 export class SearchBookComponent implements OnInit {
   @Output() book = new EventEmitter<Book>();
 
-  submitted: boolean;
+  submitted: bool;
   userType: string;
   title: String;
   author_fullname: String;

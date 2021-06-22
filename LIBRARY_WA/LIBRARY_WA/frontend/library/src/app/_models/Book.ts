@@ -8,7 +8,7 @@ export class Book {
   language: String;
   type: String;
   description: String;
-  is_available: boolean;
+  is_available: bool;
     
   constructor(
     book_id: Number,
@@ -19,6 +19,6 @@ export class Book {
     language: String,
     type: String,
     description: String,
-    is_available:boolean) { }
+    is_available:bool) { }
   }
 

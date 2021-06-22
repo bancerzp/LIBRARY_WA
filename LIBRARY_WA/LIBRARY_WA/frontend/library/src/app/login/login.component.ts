@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
   user: User;
-  valid: boolean;
+  valid: bool;
   loginData: User;
   message: String;
 

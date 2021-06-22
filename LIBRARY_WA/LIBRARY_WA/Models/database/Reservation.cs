@@ -6,7 +6,7 @@ namespace LIBRARY_WA.Models
 {
     public class Reservation
     {
-        public Reservation(int user_id, int book_id, int volume_id, DateTime start_date, DateTime expire_date, int queue, Boolean is_active)
+        public Reservation(int user_id, int book_id, int volume_id, DateTime start_date, DateTime expire_date, int queue, bool is_active)
         {
             this.user_id = user_id;
             this.book_id = book_id;
@@ -37,6 +37,6 @@ namespace LIBRARY_WA.Models
         public DateTime start_date { get; set; }
         public DateTime expire_date { get; set; }
         public Int32 queue { get; set; }
-        public Boolean is_active { get; set; }
+        public bool is_active { get; set; }
     }
 }

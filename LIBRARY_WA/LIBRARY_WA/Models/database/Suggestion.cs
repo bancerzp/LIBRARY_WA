@@ -14,7 +14,7 @@ namespace LIBRARY_WA.Models
 
         [Key]
         public int id { get; set; }
-        public String title { get; set; }
-        public String author_fullname { get; set; }
+        public string title { get; set; }
+        public string author_fullname { get; set; }
     }
 }

@@ -22,7 +22,7 @@ export class AddBookComponent implements OnInit {
   public language = [];
 
   book: Book;
-  submitted: boolean;
+  submitted: bool;
   message: String;
 
   constructor(private formBuilder: FormBuilder,
