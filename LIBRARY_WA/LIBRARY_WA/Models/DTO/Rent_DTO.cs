@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LIBRARY_WA.Models
 {
@@ -41,6 +36,5 @@ namespace LIBRARY_WA.Models
         public int volume_id { get; set; }
         public DateTime start_date { get; set; }
         public DateTime expire_date { get; set; }
-
     }
 }

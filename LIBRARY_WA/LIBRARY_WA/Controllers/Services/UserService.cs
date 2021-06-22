@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LIBRARY_WA.Models;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
-using System.IO;
-using AutoMapper;
 using LIBRARY_WA.Models.DTO;
 
 namespace LIBRARY_WA.Controllers.Services
