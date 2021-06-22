@@ -23,14 +23,14 @@ export class UserPIModule {
   user = new User(null, "", "", "", "", null, "", "", "", true);
   user_type: String;
   updateUserForm: FormGroup;
-  submitted: boolean;
-  reset: boolean;
+  submitted: bool;
+  reset: bool;
   pass: String;
-  resetClicked: boolean;
+  resetClicked: bool;
   message: String;
   email: String;
-  changePass: boolean;
-  lib: boolean;
+  changePass: bool;
+  lib: bool;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -73,7 +73,7 @@ export class UserPIModule {
 
   CheckLoginExistsInDB(control: FormControl) {
     return this.userService.IfLoginExists(control.value).pipe(
-      map(((res: Boolean) => res == true ? { 'loginTaken': false } : null)))
+      map(((res: bool) => res == true ? { 'loginTaken': false } : null)))
   };
 
   UpdateUser() {
@@ -126,7 +126,7 @@ export class UserPIModule {
 
   CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(
-      map(((res: boolean) => (res == false && control.value==this.email) ? { 'emailTaken': false } : null)))
+      map(((res: bool) => (res == false && control.value==this.email) ? { 'emailTaken': false } : null)))
   };
 
   IfLoginChanged() {

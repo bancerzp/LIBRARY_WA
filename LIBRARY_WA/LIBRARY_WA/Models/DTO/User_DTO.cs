@@ -21,15 +21,15 @@ namespace LIBRARY_WA.Models
 
         public int user_id { get; set; }
         [MinLength(5)]
-        public String login { get; set; }
+        public string login { get; set; }
         [MinLength(1)]
-        public String password { get; set; }
-        public String user_type { get; set; }
-        public String fullname { get; set; }
+        public string password { get; set; }
+        public string user_type { get; set; }
+        public string fullname { get; set; }
         public DateTime date_of_birth { get; set; }
-        public String phone_number { get; set; }
-        public String email { get; set; }
-        public String address { get; set; }
-        public Boolean is_valid { get; set; }
+        public string phone_number { get; set; }
+        public string email { get; set; }
+        public string address { get; set; }
+        public bool is_valid { get; set; }
     }
 }

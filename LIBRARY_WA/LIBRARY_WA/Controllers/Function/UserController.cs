@@ -31,7 +31,7 @@ namespace LIBRARY_WA.Controllers
 
         //----Data verifying
         [HttpGet("{email}")]
-        public IActionResult IfEmailExists([FromRoute] String email)
+        public IActionResult IfEmailExists([FromRoute] string email)
         {
             if (!ModelState.IsValid)
             {
@@ -43,9 +43,9 @@ namespace LIBRARY_WA.Controllers
         }
 
         [HttpGet("{login}")]
-        public IActionResult IfLoginExists([FromRoute] String login)
+        public IActionResult IfLoginExists([FromRoute] string login)
         {
-            String login2 = login.Replace("'", "");
+            string login2 = login.Replace("'", "");
             return Ok(_userService.IfLoginExists(login));
         }
 
@@ -128,7 +128,7 @@ namespace LIBRARY_WA.Controllers
                 return BadRequest(ModelState);
             }
 
-            String message = _userService.AddUserCheckData(user);
+            string message = _userService.AddUserCheckData(user);
             if (message != "")
             {
                 return BadRequest(new { alert= message });
@@ -146,7 +146,7 @@ namespace LIBRARY_WA.Controllers
                 return BadRequest(ModelState);
             }
 
-            String message = _userService.RemoveUserCheckData(id);
+            string message = _userService.RemoveUserCheckData(id);
             if (message!="")
             {
                 return NotFound(new { alert = message });

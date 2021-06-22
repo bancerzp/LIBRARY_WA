@@ -30,8 +30,8 @@ namespace LIBRARY_WA.Models
 
         public int rent_id_h { get; set; }
         public int user_id { get; set; }
-        public String title { get; set; }        
-        public String isbn { get; set; }
+        public string title { get; set; }        
+        public string isbn { get; set; }
         public int book_id { get; set; }
         public int volume_id { get; set; }
         public DateTime start_date { get; set; }

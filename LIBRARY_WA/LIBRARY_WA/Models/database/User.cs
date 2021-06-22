@@ -35,19 +35,19 @@ namespace LIBRARY_WA.Models
         }
 
 
-        [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int user_id { get; set; }
-        
-        public String login { get; set; }
-        public String password { get; set; }
-        public String user_type { get; set; }
+
+        public string login { get; set; }
+        public string password { get; set; }
+        public string user_type { get; set; }
         [MaxLength]
-        public String fullname { get; set; }
+        public string fullname { get; set; }
         public DateTime date_of_birth { get; set; }
-        public String phone_number { get; set; }
+        public string phone_number { get; set; }
         [EmailAddress]
-        public String email { get; set; }
-        public String address { get; set; }
-        public Boolean is_valid { get; set; }
+        public string email { get; set; }
+        public string address { get; set; }
+        public bool is_valid { get; set; }
     }
 }

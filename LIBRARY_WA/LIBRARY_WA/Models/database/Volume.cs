@@ -10,7 +10,7 @@ namespace LIBRARY_WA.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int volume_id { get; set; }
         public int book_id { get; set; }
-        public Boolean is_free { get; set; }
+        public bool is_free { get; set; }
 
         public Volume(int book_id, bool is_free)
         {

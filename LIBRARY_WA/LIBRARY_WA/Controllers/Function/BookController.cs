@@ -42,7 +42,7 @@ namespace LIBRARY_WA.Data
         }
 
         [HttpGet("{isbn}")]
-        public ActionResult<Boolean> IfISBNExists([FromRoute] String isbn)
+        public ActionResult<bool> IfISBNExists([FromRoute] string isbn)
         {
             if (!ModelState.IsValid)
             {
@@ -182,7 +182,7 @@ namespace LIBRARY_WA.Data
                 return BadRequest(ModelState);
             }
 
-            String answear = _bookService.RemoveVolumeCheckCondition(id);
+            string answear = _bookService.RemoveVolumeCheckCondition(id);
             if (answear != "")
             {
                 return NotFound(new { alert = answear });
@@ -200,7 +200,7 @@ namespace LIBRARY_WA.Data
             {
                 return BadRequest(ModelState);
             }
-            String answear = _bookService.ReserveBookCheckCondition(data);
+            string answear = _bookService.ReserveBookCheckCondition(data);
             if (answear != "")
             {
                 if (answear == "Użytkownik ma już zarezerwowaną tę książkę!")
@@ -210,7 +210,7 @@ namespace LIBRARY_WA.Data
                 return NotFound(new { alert = answear });
             }
 
-          
+
             return Ok(_bookService.ReserveBook(data));
         }
 
@@ -229,7 +229,7 @@ namespace LIBRARY_WA.Data
                 return BadRequest(new { alert = "Nie można wypożyczyć książki. Użytkownik jest zablokowany!" });
             }
 
-            String answear = _bookService.RentBookCheckCondition(reservation_id);
+            string answear = _bookService.RentBookCheckCondition(reservation_id);
             if (answear != "")
             {
                 return NotFound(new { alert = answear });
@@ -299,4 +299,4 @@ namespace LIBRARY_WA.Data
             return Ok();
         }
     }
-    }
+}

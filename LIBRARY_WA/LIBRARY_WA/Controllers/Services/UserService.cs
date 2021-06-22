@@ -22,27 +22,26 @@ namespace LIBRARY_WA.Controllers.Services
         public UserService(LibraryContext context, IConfiguration configuration)
         {
             Configuration = configuration;
-            this._context = context;
+            _context = context;
         }
 
-
-        public Boolean IfEmailExists(String email)
+        public bool IfEmailExists(string email)
         {
             return _context.User.Where(u => u.email == email).Count() > 0;
         }
 
-        public Boolean IfLoginExists(String login)
+        public bool IfLoginExists(string login)
         {
-            String login2 = login.Replace("'", "");
+            string login2 = login.Replace("'", "");
             return _context.User.Where(u => u.login == login2).Count() > 0;
         }
 
-        public Boolean IsLoggedCheckData(User_DTO userData)
+        public bool IsLoggedCheckData(User_DTO userData)
         {
             return _context.User.Where(u => u.login == userData.login.Replace("'", "\'") && u.password == userData.password.Replace("'", "\'") ).Count() > 0;
         }
 
-        public Boolean IsBlocked(User_DTO userData)
+        public bool IsBlocked(User_DTO userData)
         {
             return _context.User.Where(a => a.login == userData.login).SingleOrDefault().is_valid;
         }
@@ -55,7 +54,7 @@ namespace LIBRARY_WA.Controllers.Services
             _context.SaveChanges();
         }
 
-        public (String Token, int id, String user_type, String fullname, DateTime expires) IsLogged(User_DTO userData)
+        public (string Token, int id, string user_type, string fullname, DateTime expires) IsLogged(User_DTO userData)
         {
             User user = _context.User.Where(u => u.login == userData.login.Replace("'", "\'") && u.password == userData.password.Replace("'", "\'")).FirstOrDefault();
 
@@ -99,7 +98,7 @@ namespace LIBRARY_WA.Controllers.Services
         public List<User_DTO> SearchUser(String[] search)
         {
             String[] name = { "user_id", "fullname", "email", "login", "phone_number" };
-            String sql = "Select * from User where 1=1 ";
+            string sql = "Select * from User where 1=1 ";
             for (int i = 0; i < search.Length; i++)
             {
                 if (search[i] != "%")
@@ -125,7 +124,7 @@ namespace LIBRARY_WA.Controllers.Services
             return user_dto;
         }
 
-        public String AddUserCheckData(User_DTO user)
+        public string AddUserCheckData(User_DTO user)
         {
             if (_context.User.Where(a => a.email == user.email).Count() > 0)
             {
@@ -146,7 +145,7 @@ namespace LIBRARY_WA.Controllers.Services
             return new User_DTO(new_user.user_id, new_user.login, new_user.password, new_user.user_type, new_user.fullname, new_user.date_of_birth, new_user.phone_number, new_user.email, new_user.address, new_user.is_valid);
         }
 
-        public String RemoveUserCheckData(int id)
+        public string RemoveUserCheckData(int id)
         {
             var user = _context.User.Find(id);
             if (user == null)
@@ -231,7 +230,7 @@ namespace LIBRARY_WA.Controllers.Services
 
         }
 
-        public Boolean CancelReservationCheckData(int id)
+        public bool CancelReservationCheckData(int id)
         {
 
             return _context.Reservation.Where(a => a.reservation_id == id).Count() > 0;
