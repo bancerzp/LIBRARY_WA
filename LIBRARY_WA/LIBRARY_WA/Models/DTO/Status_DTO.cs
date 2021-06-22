@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace LIBRARY_WA.Models.DTO
+﻿namespace LIBRARY_WA.Models.DTO
 {
     public class Status_DTO
     {

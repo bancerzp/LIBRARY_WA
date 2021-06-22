@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LIBRARY_WA.Models
 {
@@ -40,7 +35,6 @@ namespace LIBRARY_WA.Models
         public int user_id { get; set; }
         public String title { get; set; }
 
-       
         public String isbn { get; set; }
         public int book_id { get; set; }
         public int volume_id { get; set; }
