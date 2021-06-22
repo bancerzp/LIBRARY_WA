@@ -19,7 +19,7 @@ import { BookService } from '../../../_services/book.service';
 export class BookReservationModule {
   reservation: Reservation[];
   column = ["Id. rez.", "ISBN", "Tytuł", "Numer egzemplarza", "Data rezerwacji", "Rezerwacja do","Kolejka", "Czy gotowe do odbioru?"];
-  user_type: string;
+  userType: string;
   submitted: bool;
   message: String;
 
@@ -32,18 +32,18 @@ export class BookReservationModule {
   ngOnInit() {
     if (this.app.IsExpired("l,r"))
       return;
-    this.user_type = localStorage.getItem("user_type");
+    this.userType = localStorage.getItem("userType");
     this.GetReservation();
     this.submitted = true;
   }
 
-  RentBook(reservation_id) {
+  RentBook(reservationId) {
     this.submitted = false;
     if (this.app.IsExpired("l"))
       return;
     //błędy wyłapać
-    this.bookService.RentBook(reservation_id).subscribe(data => {
-        this.reservation = this.reservation.filter(reservation => reservation.reservation_id != reservation_id);
+    this.bookService.RentBook(reservationId).subscribe(data => {
+        this.reservation = this.reservation.filter(reservation => reservation.reservationId != reservationId);
           this.message = "Książka została poprawnie wypożyczona";
         },
       response => { this.message = (<any>response).error });
@@ -54,9 +54,9 @@ export class BookReservationModule {
       return;
    
     if (this.app.GetUserType() == "r") {
-      localStorage.setItem("user_id", this.app.GetUserId()) 
+      localStorage.setItem("userId", this.app.GetUserId()) 
     }
-    this.userService.GetReservation(localStorage.getItem("user_id")).subscribe((reservations: any[]) => this.reservation = reservations,
+    this.userService.GetReservation(localStorage.getItem("userId")).subscribe((reservations: any[]) => this.reservation = reservations,
       response => { this.message = (<any>response).error.alert });
   }
 
@@ -65,7 +65,7 @@ export class BookReservationModule {
       return;
     this.submitted = false;
     this.userService.CancelReservation(reservationId).subscribe(data => {
-      this.reservation = this.reservation.filter(reservation => reservation.reservation_id != reservationId);
+      this.reservation = this.reservation.filter(reservation => reservation.reservationId != reservationId);
       this.message="Rezerwacja została anulowana";
     },
       response => { this.message = (<any>response).error.alert });

@@ -66,7 +66,7 @@ namespace LIBRARY_WA.Controllers
 
             if (_userService.IsLoggedCheckData(userData)){
                 var toReturn = _userService.IsLogged(userData);
-                return Ok(new { Token = toReturn.Token, id = toReturn.id, user_type = toReturn.user_type, fullname = toReturn.fullname, expires= toReturn.expires });
+                return Ok(new { Token = toReturn.Token, id = toReturn.id, userType = toReturn.userType, fullname = toReturn.fullname, expires= toReturn.expires });
             }
             else
             {
@@ -135,7 +135,7 @@ namespace LIBRARY_WA.Controllers
             }
 
             var r = _userService.AddUser(user);
-            return CreatedAtAction("AddUser", new { id = r.user_id }, r);
+            return CreatedAtAction("AddUser", new { id = r.UserId }, r);
         }
 
         [HttpDelete("{id}")]

@@ -1,27 +1,27 @@
 export class User {
 
-  user_id: Number;
+  userId: Number;
   login: String;
   password: String;
-  user_type: String;
+  userType: String;
   fullname: String;
-  date_of_birth: Date;
-  phone_number: String;
+  dateOfBirth: Date;
+  phoneNumber: String;
   email: String;
   address: String;
-  is_valid: bool;
+  isValid: bool;
 
   constructor(
-    user_id: Number,
+    userId: Number,
     login: String,
     password: String,
-    user_type: String,
+    userType: String,
     fullName: String,
-    date_of_birth: Date,
+    dateOfBirth: Date,
     phoneNumber: String,
     email: String,
     address: String,
-    is_valid: bool) {
+    isValid: bool) {
   }
 }
 

@@ -53,18 +53,18 @@ export class LoginComponent implements OnInit {
   login() {
       this.userService.IsLogged(this.logedUser).subscribe(response => {
       let token = (<any>response).token;
-      let user_id = (<any>response).id;
+      let userId = (<any>response).id;
       let fullname = (<any>response).fullname;
-      let user_type = (<any>response).user_type;
+      let userType = (<any>response).userType;
       let expires = (<any>response).expires;
       localStorage.setItem("token", token);
-      localStorage.setItem("user_id", user_id);
+      localStorage.setItem("userId", userId);
       localStorage.setItem("user_fullname", fullname);
       localStorage.setItem("expires", expires);
-      localStorage.setItem("user_type", user_type);
-      this.app.SetVariable(user_type,user_id);
+      localStorage.setItem("userType", userType);
+      this.app.SetVariable(userType,userId);
       this.valid = true;
-      this.app.Login(localStorage.getItem("user_type"));
+      this.app.Login(localStorage.getItem("userType"));
         
       }, response => { this.message = (<any>response).error.alert;this.valid=false});
     this.submitted = true;

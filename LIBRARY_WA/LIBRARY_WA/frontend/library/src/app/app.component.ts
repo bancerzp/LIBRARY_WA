@@ -25,19 +25,19 @@ export class AppComponent  {
   public menu: MenuItem[]; //= this.menuLibrarian;
 
   public userFullname;
-  public user_type;
-  public user_id;
+  public userType;
+  public userId;
   public isLogged;
     
   constructor(private router: Router) { }
 
   ngOnInit() {
     this.isLogged = false;
-    if (localStorage.getItem("user_type") == "r") {
+    if (localStorage.getItem("userType") == "r") {
       this.menu = this.menuReader;
       this.isLogged = true;
     }
-    else if (localStorage.getItem("user_type") == "l") {
+    else if (localStorage.getItem("userType") == "l") {
       this.menu = this.menuLibrarian;
       this.isLogged = true;
     }
@@ -58,16 +58,16 @@ export class AppComponent  {
   GetUserId() {
     if (localStorage.getItem('token') == null)
       return;
-    return localStorage.getItem("user_id");
+    return localStorage.getItem("userId");
   }
 
   GetUserType() {
     if (localStorage.getItem('token') == null)
       return;
-    return localStorage.getItem("user_type");
+    return localStorage.getItem("userType");
   }
 
-  IsExpired(user_type) {
+  IsExpired(userType) {
    //false bo nie wygasł token
   //  var token = localStorage.getItem('token');
   
@@ -84,15 +84,15 @@ export class AppComponent  {
       window.location.reload();
       return true;
     } else
-      if (user_type == "l,r")
+      if (userType == "l,r")
         return false;
-      return (!this.GetUserType()==user_type);
+      return (!this.GetUserType()==userType);
   }
 
-  Login(user_type) {
-    if (user_type == "l") {
+  Login(userType) {
+    if (userType == "l") {
       this.menu = this.menuLibrarian;
-    } else if (user_type == "r") {
+    } else if (userType == "r") {
       this.menu = this.menuReader;
     }
     this.isLogged = true;
@@ -100,10 +100,10 @@ export class AppComponent  {
     this.router.navigateByUrl('/');
   }
 
-  SetVariable(user_type, user_id) {
+  SetVariable(userType, userId) {
    
-    this.user_id = user_id;
-    this.user_type = user_type;
+    this.userId = userId;
+    this.userType = userType;
  
   }
 

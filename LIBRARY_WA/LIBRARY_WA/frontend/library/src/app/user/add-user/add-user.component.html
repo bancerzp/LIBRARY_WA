@@ -30,16 +30,16 @@
   </div>
 
   <div class="form-group">
-    <label for="date_of_birth">Data urodzenia</label>
-    <input type="date" data-date-format="yyyy-MM-dd" formControlName="date_of_birth" class="form-control" [(ngModel)]="user.date_of_birth" max="{{maxDate | date:'yyyy-MM-dd'}}" />
-    <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('date_of_birth').hasError('required') ">Pole data urodzenia nie może byc puste</div>
+    <label for="dateOfBirth">Data urodzenia</label>
+    <input type="date" data-date-format="yyyy-MM-dd" formControlName="dateOfBirth" class="form-control" [(ngModel)]="user.dateOfBirth" max="{{maxDate | date:'yyyy-MM-dd'}}" />
+    <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('dateOfBirth').hasError('required') ">Pole data urodzenia nie może byc puste</div>
   </div>
 
   <div class="form-group">
-    <label for="phone_number">Numer telefonu</label>
-    <input type="tel" formControlName="phone_number" class="form-control" [(ngModel)]="user.phone_number" placeholder="format. 000-000-000" />
-    <div class="alert alert-danger " *ngIf="(submitted && addUserForm.get('phone_number').hasError('required')) || (addUserForm.get('phone_number').hasError('required') && addUserForm.get('phone_number').dirty)">Pole telefon musi być wypełnione</div>
-    <div class="alert alert-danger " *ngIf="!submitted && addUserForm.get('phone_number').hasError('pattern') && addUserForm.get('phone_number').dirty && addUserForm.get('phone_number').touched">Nieprawidłowy format numeru telefonu</div>
+    <label for="phoneNumber">Numer telefonu</label>
+    <input type="tel" formControlName="phoneNumber" class="form-control" [(ngModel)]="user.phoneNumber" placeholder="format. 000-000-000" />
+    <div class="alert alert-danger " *ngIf="(submitted && addUserForm.get('phoneNumber').hasError('required')) || (addUserForm.get('phoneNumber').hasError('required') && addUserForm.get('phoneNumber').dirty)">Pole telefon musi być wypełnione</div>
+    <div class="alert alert-danger " *ngIf="!submitted && addUserForm.get('phoneNumber').hasError('pattern') && addUserForm.get('phoneNumber').dirty && addUserForm.get('phoneNumber').touched">Nieprawidłowy format numeru telefonu</div>
   </div>
 
   <div class="form-group">
@@ -49,11 +49,11 @@
   </div>
 
   <div class="form-group" style="font-size:14px;">
-    <label for="user_type">Typ użytkownika:</label><br />
-    <input type="radio" style="width:14px" formControlName="user_type" [(ngModel)]="user.user_type" value="r">Czytelnik
+    <label for="userType">Typ użytkownika:</label><br />
+    <input type="radio" style="width:14px" formControlName="userType" [(ngModel)]="user.userType" value="r">Czytelnik
 
-    <input type="radio" style="width:14px" formControlName="user_type" [(ngModel)]="user.user_type" value="l">Bibliotekarz
-    <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('user_type').hasError('required')">Typ użytkownika nie może byc pusty</div>
+    <input type="radio" style="width:14px" formControlName="userType" [(ngModel)]="user.userType" value="l">Bibliotekarz
+    <div class="alert alert-danger " *ngIf="submitted && addUserForm.get('userType').hasError('required')">Typ użytkownika nie może byc pusty</div>
   </div>
 
   <div class="form-group">

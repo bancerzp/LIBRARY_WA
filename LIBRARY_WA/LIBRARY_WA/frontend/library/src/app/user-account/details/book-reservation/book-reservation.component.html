@@ -17,25 +17,25 @@
   </tr>
   <tbody>
     <tr *ngFor="let reservationInfo of reservation">
-      <td>{{ reservationInfo.reservation_id  }}</td>
+      <td>{{ reservationInfo.reservationId  }}</td>
       <td>{{ reservationInfo.isbn  }}</td>
       <td>{{ reservationInfo.title  }}</td>
-      <td *ngIf=(reservationInfo.is_active)>{{ reservationInfo.volume_id }}</td>
-      <td *ngIf=(!reservationInfo.is_active)></td>
-      <td>{{ reservationInfo.start_date.substring(0,10) }}</td>
-      <td *ngIf=(reservationInfo.is_active)>{{ reservationInfo.expire_date.substring(0,10)  }}</td>
-      <td *ngIf=(!reservationInfo.is_active)></td>
+      <td *ngIf=(reservationInfo.isActive)>{{ reservationInfo.volumeId }}</td>
+      <td *ngIf=(!reservationInfo.isActive)></td>
+      <td>{{ reservationInfo.startDate.substring(0,10) }}</td>
+      <td *ngIf=(reservationInfo.isActive)>{{ reservationInfo.expireDate.substring(0,10)  }}</td>
+      <td *ngIf=(!reservationInfo.isActive)></td>
       <td>{{ reservationInfo.queue+1 }}</td>
-      <td *ngIf=(reservationInfo.is_active)>Tak</td>
-      <td *ngIf=(!reservationInfo.is_active)>Nie</td>
+      <td *ngIf=(reservationInfo.isActive)>Tak</td>
+      <td *ngIf=(!reservationInfo.isActive)>Nie</td>
       <td style="width:auto; min-width:150px">
         <div class="button-group">
-          <a (click)="CancelReservation(reservationInfo.reservation_id)" class='btn btn-danger m-r-5px'style="font-size:12px">
+          <a (click)="CancelReservation(reservationInfo.reservationId)" class='btn btn-danger m-r-5px'style="font-size:12px">
             <span class='glyphicon glyphicon-remove'></span> Anuluj rezerwację.
           </a>
         </div>
         <div class="button-group">
-          <a *ngIf="user_type=='l' && reservationInfo.is_active" (click)="RentBook(reservationInfo.reservation_id)" class='btn btn-info m-r-5px'style="font-size:12px">
+          <a *ngIf="userType=='l' && reservationInfo.isActive" (click)="RentBook(reservationInfo.reservationId)" class='btn btn-info m-r-5px'style="font-size:12px">
             <span class='glyphicon glyphicon-edit'></span> Wypożycz.
           </a>
         </div>

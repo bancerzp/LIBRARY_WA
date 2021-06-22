@@ -11,18 +11,18 @@
     <th *ngFor="let name of column">
       {{name}}
     </th>
-    <th *ngIf="user_type=='l'">Akcje</th>
+    <th *ngIf="userType=='l'">Akcje</th>
   </tr>
   <tbody>
     <tr *ngFor="let rentInfo of rent">
-      <td>{{ rentInfo.rent_id  }}</td>
+      <td>{{ rentInfo.rentId  }}</td>
       <td>{{ rentInfo.isbn  }}</td>
       <td>{{ rentInfo.title  }}</td>
-      <td>{{ rentInfo.volume_id }}</td>
-      <td>{{ rentInfo.start_date.substring(0,10)}}</td>
-      <td>{{ rentInfo.expire_date.substring(0,10)  }}</td>
-      <td *ngIf="user_type=='l'">
-        <a  (click)="ReturnBook(rentInfo.rent_id)" class='btn btn-info m-r-5px' style="font-size:12px">
+      <td>{{ rentInfo.volumeId }}</td>
+      <td>{{ rentInfo.startDate.substring(0,10)}}</td>
+      <td>{{ rentInfo.expireDate.substring(0,10)  }}</td>
+      <td *ngIf="userType=='l'">
+        <a  (click)="ReturnBook(rentInfo.rentId)" class='btn btn-info m-r-5px' style="font-size:12px">
           Zwrot
         </a>
       </td>

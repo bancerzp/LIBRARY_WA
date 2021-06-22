@@ -61,13 +61,13 @@ namespace LIBRARY_WA.Data
                 return BadRequest(ModelState);
             }
 
-            if (_bookService.IfISBNExists(book.isbn))
+            if (_bookService.IfISBNExists(book.Isbn))
             {
                 return BadRequest(new { alert = "Książka o danym ISBN już istnieje w bazie danych." });
             }
             _bookService.AddBook(book);
 
-            return CreatedAtAction("AddBook", new { id = book.book_id }, book);
+            return CreatedAtAction("AddBook", new { id = book.BookId }, book);
         }
 
         [HttpGet("{id}")]
@@ -152,7 +152,7 @@ namespace LIBRARY_WA.Data
             }
 
             Volume_DTO volume = _bookService.AddVolume(id);
-            return CreatedAtAction("AddVolume", new { id = volume.volume_id }, volume);
+            return CreatedAtAction("AddVolume", new { id = volume.VolumeId }, volume);
         }
         /*
                 [HttpGet]
@@ -217,29 +217,29 @@ namespace LIBRARY_WA.Data
 
 
         [HttpPut, Authorize(Roles = "l")] //, 
-        public ActionResult RentBook([FromBody] int[] reservation_id)
+        public ActionResult RentBook([FromBody] int[] reservationId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (!_bookService.IsBlocked(reservation_id[0]))
+            if (!_bookService.IsBlocked(reservationId[0]))
             {
                 return BadRequest(new { alert = "Nie można wypożyczyć książki. Użytkownik jest zablokowany!" });
             }
 
-            string answear = _bookService.RentBookCheckCondition(reservation_id);
+            string answear = _bookService.RentBookCheckCondition(reservationId);
             if (answear != "")
             {
                 return NotFound(new { alert = answear });
             }
-            _bookService.RentBook(reservation_id);
+            _bookService.RentBook(reservationId);
             return Ok();
         }
 
         [HttpPost, Authorize(Roles = "l")] //, , 
-        public async Task<IActionResult> ReturnBook([FromBody] int[] rent_id)
+        public async Task<IActionResult> ReturnBook([FromBody] int[] rentId)
         {
 
             if (!ModelState.IsValid)
@@ -247,24 +247,24 @@ namespace LIBRARY_WA.Data
                 return BadRequest(ModelState);
             }
 
-            if (_bookService.ReturnBookCheckCondition(rent_id))
+            if (_bookService.ReturnBookCheckCondition(rentId))
             {
                 return NotFound(new { alert = "Nie ma takiego wypożyczenia" });
             }
 
-            await _bookService.ReturnBook(rent_id);
+            await _bookService.ReturnBook(rentId);
             return Ok(new { message = "Książka została poprawnie zwrócona" });
         }
 
-        [HttpGet("{user_id}"), Authorize(Roles = "l,r")]
-        public async Task<IActionResult> GetSuggestion([FromRoute] int user_id)
+        [HttpGet("{userId}"), Authorize(Roles = "l,r")]
+        public async Task<IActionResult> GetSuggestion([FromRoute] int userId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _bookService.GetSuggestionCheckCondition(user_id);
-            var suggestion = _bookService.GetSuggestion(user_id);
+            _bookService.GetSuggestionCheckCondition(userId);
+            var suggestion = _bookService.GetSuggestion(userId);
 
             return Ok(suggestion);
         }
@@ -283,7 +283,7 @@ namespace LIBRARY_WA.Data
                 return BadRequest(ModelState);
             }
 
-            if (!_bookService.BookExists(book.book_id))
+            if (!_bookService.BookExists(book.BookId))
             {
                 return NotFound("Nie znaleziono książki!");
             }

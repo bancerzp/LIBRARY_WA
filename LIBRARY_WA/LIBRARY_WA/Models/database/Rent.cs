@@ -6,28 +6,21 @@ namespace LIBRARY_WA.Models
 {
     public class Rent
     {
-        public Rent(int user_id, int book_id, int volume_id, DateTime start_date, DateTime expire_date)
-        {
-           
-            this.user_id = user_id;
-            this.book_id = book_id;
-            this.volume_id = volume_id;
-            this.start_date = start_date;
-            this.expire_date = expire_date;
-        }
-
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int rent_id { get; set; }
+        public int RentId { get; set; }
+        public int UserId { get; set; }
+        public int BookId { get; set; }
+        public int VolumeId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime ExpireDate { get; set; }
 
-        public int user_id { get; set; }
-
-        public int book_id { get; set; }
-
-        public int volume_id { get; set; }
-
-        public DateTime start_date { get; set; }
-
-        public DateTime expire_date { get; set; }
-
+        public Rent(int userId, int bookId, int volumeId, DateTime startDate, DateTime expireDate)
+        {
+            UserId = userId;
+            BookId = bookId;
+            VolumeId = volumeId;
+            StartDate = startDate;
+            ExpireDate = expireDate;
+        }
     }
 }

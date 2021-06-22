@@ -40,12 +40,12 @@ export class AddUserComponent implements OnInit {
       login: [''],
       email: ['', [Validators.email, Validators.required], this.CheckEmailExistsInDB.bind(this)],
       fullname: ['', [Validators.required]],
-      date_of_birth: ['', Validators.required],
-      phone_number: ['',[Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
-      user_type: ['', Validators.required],
+      dateOfBirth: ['', Validators.required],
+      phoneNumber: ['',[Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
+      userType: ['', Validators.required],
       password: [this.user.password, [Validators.minLength(5), Validators.required]],
       address: ['', Validators.required], 
-      is_valid: [true]
+      isValid: [true]
     });
    
   }
@@ -63,7 +63,7 @@ export class AddUserComponent implements OnInit {
     if (this.app.IsExpired("l"))
       return;
     this.submitted = false;
-    this.user.is_valid = true;
+    this.user.isValid = true;
     this.userService.AddUser(this.user).subscribe(
       (data: User) => {this.user = data; },
       //

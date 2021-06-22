@@ -43,12 +43,12 @@ export class AddBookComponent implements OnInit {
       isbn: ['', [Validators.pattern("[0-9]{13}")]],
       //  Validators.required], this.CheckISBNExistsInDB.bind(this)],
       title: ['', [Validators.required, Validators.maxLength(50)]],
-      author_fullname: ['', [Validators.required, Validators.maxLength(100)]],
+      authorFullname: ['', [Validators.required, Validators.maxLength(100)]],
       year: [''],//, [Validators.required, Validators.pattern("[1-9][0-9]{3}")]],
       language:['', [Validators.required, Validators.maxLength(20)]],
       type: ['', [Validators.required, Validators.maxLength(30)]],
       description: ['', [Validators.maxLength(300)]],
-      is_available:true,
+      isAvailable:true,
     });
   }
 
@@ -56,12 +56,12 @@ export class AddBookComponent implements OnInit {
     if (this.app.IsExpired("l"))
       return;
     var m = this.book;
-    m.is_available = true;
+    m.isAvailable = true;
   
     this.id = 0;
     this.submitted = false;
     var added=this.bookService.AddBook(m).subscribe(
-      (data: Book) => { this.id = Number(data.book_id); this.message = "Książka dodana poprawnie " + this.id; this.clearForm();},
+      (data: Book) => { this.id = Number(data.bookId); this.message = "Książka dodana poprawnie " + this.id; this.clearForm();},
       response => { this.message = (<any>response).error.alert });
     this.submitted = true;
     }

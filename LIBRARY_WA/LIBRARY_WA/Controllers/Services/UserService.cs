@@ -27,44 +27,44 @@ namespace LIBRARY_WA.Controllers.Services
 
         public bool IfEmailExists(string email)
         {
-            return _context.User.Where(u => u.email == email).Count() > 0;
+            return _context.User.Where(u => u.Email == email).Count() > 0;
         }
 
         public bool IfLoginExists(string login)
         {
             string login2 = login.Replace("'", "");
-            return _context.User.Where(u => u.login == login2).Count() > 0;
+            return _context.User.Where(u => u.Login == login2).Count() > 0;
         }
 
         public bool IsLoggedCheckData(User_DTO userData)
         {
-            return _context.User.Where(u => u.login == userData.login.Replace("'", "\'") && u.password == userData.password.Replace("'", "\'") ).Count() > 0;
+            return _context.User.Where(u => u.Login == userData.Login.Replace("'", "\'") && u.Password == userData.Password.Replace("'", "\'") ).Count() > 0;
         }
 
         public bool IsBlocked(User_DTO userData)
         {
-            return _context.User.Where(a => a.login == userData.login).SingleOrDefault().is_valid;
+            return _context.User.Where(a => a.Login == userData.Login).SingleOrDefault().IsValid;
         }
 
         public void ChangeUserStatus(Status_DTO status)
         {
-            User us = _context.User.Where(a => a.user_id == status.user_id).SingleOrDefault();
+            User us = _context.User.Where(a => a.UserId == status.UserId).SingleOrDefault();
             _context.Entry(us).State = EntityState.Modified;
-            us.is_valid = status.status;// (values[1]=="true");
+            us.IsValid = status.Status;// (values[1]=="true");
             _context.SaveChanges();
         }
 
-        public (string Token, int id, string user_type, string fullname, DateTime expires) IsLogged(User_DTO userData)
+        public (string Token, int id, string userType, string fullname, DateTime expires) IsLogged(User_DTO userData)
         {
-            User user = _context.User.Where(u => u.login == userData.login.Replace("'", "\'") && u.password == userData.password.Replace("'", "\'")).FirstOrDefault();
+            User user = _context.User.Where(u => u.Login == userData.Login.Replace("'", "\'") && u.Password == userData.Password.Replace("'", "\'")).FirstOrDefault();
 
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
             var claims = new List<Claim>
             {
-                     new Claim(ClaimTypes.Name, user.fullname),
-                     new Claim(ClaimTypes.Role, user.user_type),
-                     new Claim(ClaimTypes.NameIdentifier, user.user_id.ToString())
+                     new Claim(ClaimTypes.Name, user.Fullname),
+                     new Claim(ClaimTypes.Role, user.UserType),
+                     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
             };
 
             var tokeOptions = new JwtSecurityToken(
@@ -76,7 +76,7 @@ namespace LIBRARY_WA.Controllers.Services
             );
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-            return (Token: tokenString, id: user.user_id, user_type: user.user_type, fullname: user.fullname, expires: DateTime.Now.AddHours(5));
+            return (Token: tokenString, id: user.UserId, userType: user.UserType, fullname: user.Fullname, expires: DateTime.Now.AddHours(5));
         }
 
 
@@ -91,13 +91,13 @@ namespace LIBRARY_WA.Controllers.Services
                 return null;
             }
 
-            return new User_DTO(user.user_id, user.login, user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid);
+            return new User_DTO(user.UserId, user.Login, user.Password, user.UserType, user.Fullname, user.DateOfBirth, user.PhoneNumber, user.Email, user.Address, user.IsValid);
         }
 
 
         public List<User_DTO> SearchUser(String[] search)
         {
-            String[] name = { "user_id", "fullname", "email", "login", "phone_number" };
+            String[] name = { "userId", "fullname", "email", "login", "phoneNumber" };
             string sql = "Select * from User where 1=1 ";
             for (int i = 0; i < search.Length; i++)
             {
@@ -118,7 +118,7 @@ namespace LIBRARY_WA.Controllers.Services
             List<User_DTO> user_dto = new List<User_DTO>();
             foreach (User userr in user_db)
             {
-                user_dto.Add(new User_DTO(userr.user_id, userr.login, userr.password, userr.user_type, userr.fullname, userr.date_of_birth, userr.phone_number, userr.email, userr.address, userr.is_valid));
+                user_dto.Add(new User_DTO(userr.UserId, userr.Login, userr.Password, userr.UserType, userr.Fullname, userr.DateOfBirth, userr.PhoneNumber, userr.Email, userr.Address, userr.IsValid));
             }
 
             return user_dto;
@@ -126,7 +126,7 @@ namespace LIBRARY_WA.Controllers.Services
 
         public string AddUserCheckData(User_DTO user)
         {
-            if (_context.User.Where(a => a.email == user.email).Count() > 0)
+            if (_context.User.Where(a => a.Email == user.Email).Count() > 0)
             {
                 return "Dany email już istnieje w bazie danych.";
             }
@@ -135,14 +135,14 @@ namespace LIBRARY_WA.Controllers.Services
 
         public User_DTO AddUser(User_DTO user)
         {
-            User new_user= new User(user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid);
+            User new_user= new User(user.Password, user.UserType, user.Fullname, user.DateOfBirth, user.PhoneNumber, user.Email, user.Address, user.IsValid);
            
             _context.User.Add(new_user);
             _context.SaveChanges();
-            new_user.login = new_user.user_id.ToString().PadLeft(12, '0');
+            new_user.Login = new_user.UserId.ToString().PadLeft(12, '0');
              _context.User.Update(new_user);
             _context.SaveChanges();
-            return new User_DTO(new_user.user_id, new_user.login, new_user.password, new_user.user_type, new_user.fullname, new_user.date_of_birth, new_user.phone_number, new_user.email, new_user.address, new_user.is_valid);
+            return new User_DTO(new_user.UserId, new_user.Login, new_user.Password, new_user.UserType, new_user.Fullname, new_user.DateOfBirth, new_user.PhoneNumber, new_user.Email, new_user.Address, new_user.IsValid);
         }
 
         public string RemoveUserCheckData(int id)
@@ -153,7 +153,7 @@ namespace LIBRARY_WA.Controllers.Services
                 return ("Użytkownik nie istnieje!");
             }
 
-            if (_context.Rent.Where(a => a.user_id == id).Count() > 0)
+            if (_context.Rent.Where(a => a.UserId == id).Count() > 0)
             {
                 return "Nie można usunąć użytkownika , bo ma nieoddane książki!!";
             }
@@ -163,51 +163,51 @@ namespace LIBRARY_WA.Controllers.Services
         public void RemoveUser(int id)
         {
             User user = _context.User.Find(id);
-            Reservation[] reservation = _context.Reservation.Where(a => a.user_id == id).ToArray();
-            int[] bookId = reservation.Select(a => a.book_id).ToArray();
+            Reservation[] reservation = _context.Reservation.Where(a => a.UserId == id).ToArray();
+            int[] bookIds = reservation.Select(a => a.BookId).ToArray();
 
             Reservation[] r;
-            foreach (int book_id in bookId)
+            foreach (int bookId in bookIds)
             {
-                int usqueue = _context.Reservation.Where(a => a.user_id == id && a.book_id == book_id).First().queue;
-                r = _context.Reservation.Where(a => a.book_id == book_id && a.queue > usqueue).ToArray();
+                int usqueue = _context.Reservation.Where(a => a.UserId == id && a.BookId == bookId).First().Queue;
+                r = _context.Reservation.Where(a => a.BookId == bookId && a.Queue > usqueue).ToArray();
                 foreach (Reservation res in reservation)
                 {
-                    res.queue = res.queue - 1;
+                    res.Queue = res.Queue - 1;
                 }
-                _context.Reservation.Remove(_context.Reservation.Where(a => a.user_id == id && a.book_id == book_id).First());
+                _context.Reservation.Remove(_context.Reservation.Where(a => a.UserId == id && a.BookId == bookId).First());
                 _context.SaveChanges();
             }
 
             _context.User.Remove(user);
-           // user.is_valid = false;
+           // user.isValid = false;
             _context.SaveChanges();
         }
 
         public IEnumerable<Rent_DTO> GetRent(int id)
         {
 
-            List<Rent> rent_db = _context.Rent.Where(a => a.user_id == id).ToList();
+            List<Rent> rent_db = _context.Rent.Where(a => a.UserId == id).ToList();
             List<Rent_DTO> rent_dto = new List<Rent_DTO>();
             Book book;
             foreach (Rent rent in rent_db)
             {
-                book = _context.Book.Where(a => a.book_id == rent.book_id).FirstOrDefault();
-                rent_dto.Add(new Rent_DTO(rent.rent_id, rent.user_id, rent.book_id, book.title, book.isbn, rent.volume_id, rent.start_date, rent.expire_date));
+                book = _context.Book.Where(a => a.BookId == rent.BookId).FirstOrDefault();
+                rent_dto.Add(new Rent_DTO(rent.RentId, rent.UserId, rent.BookId, book.Title, book.Isbn, rent.VolumeId, rent.StartDate, rent.ExpireDate));
             }
             return rent_dto;
         }
 
         public IEnumerable<Reservation_DTO> GetReservation(int id)
         {
-            List<Reservation> reservation_db = _context.Reservation.Where(a => a.user_id == id).ToList();
+            List<Reservation> reservation_db = _context.Reservation.Where(a => a.UserId == id).ToList();
             List<Reservation_DTO> reservation_dto = new List<Reservation_DTO>();
 
             Book book;
             foreach (Reservation reservation in reservation_db)
             {
-                book = _context.Book.Where(a => a.book_id == reservation.book_id).FirstOrDefault();
-                reservation_dto.Add(new Reservation_DTO(reservation.reservation_id, reservation.user_id, book.title, book.isbn, reservation.book_id, reservation.volume_id, reservation.start_date, reservation.expire_date, reservation.queue, reservation.is_active));
+                book = _context.Book.Where(a => a.BookId == reservation.BookId).FirstOrDefault();
+                reservation_dto.Add(new Reservation_DTO(reservation.ReservationId, reservation.UserId, book.Title, book.Isbn, reservation.BookId, reservation.VolumeId, reservation.StartDate, reservation.ExpireDate, reservation.Queue, reservation.IsActive));
             }
             return reservation_dto;
 
@@ -216,14 +216,14 @@ namespace LIBRARY_WA.Controllers.Services
 
         public IEnumerable<Renth_DTO> GetRenth(int id)
         {
-            List<Renth> renth_db = _context.Renth.Where(a => a.user_id == id).ToList();
+            List<Renth> renth_db = _context.Renth.Where(a => a.UserId == id).ToList();
             List<Renth_DTO> renth_dto = new List<Renth_DTO>();
 
             Book book;
             foreach (Renth renth in renth_db)
             {
-                book = _context.Book.Where(a => a.book_id == renth.book_id).FirstOrDefault();
-                renth_dto.Add(new Renth_DTO(renth.rent_id_h, renth.user_id, book.title, book.isbn, renth.book_id, renth.volume_id, renth.start_date, renth.end_date));
+                book = _context.Book.Where(a => a.BookId == renth.BookId).FirstOrDefault();
+                renth_dto.Add(new Renth_DTO(renth.RentIdH, renth.UserId, book.Title, book.Isbn, renth.BookId, renth.VolumeId, renth.StartDate, renth.EndDate));
 
             }
             return renth_dto;
@@ -233,22 +233,22 @@ namespace LIBRARY_WA.Controllers.Services
         public bool CancelReservationCheckData(int id)
         {
 
-            return _context.Reservation.Where(a => a.reservation_id == id).Count() > 0;
+            return _context.Reservation.Where(a => a.ReservationId == id).Count() > 0;
         }
 
         public void CancelReservation(int id)
         {
 
             Reservation reservation = _context.Reservation.Find(id);
-            Reservation[] resToChange = _context.Reservation.Where(a => a.book_id == reservation.book_id && a.queue > reservation.queue).ToArray();
+            Reservation[] resToChange = _context.Reservation.Where(a => a.BookId == reservation.BookId && a.Queue > reservation.Queue).ToArray();
             foreach (Reservation res in resToChange)
             {
-                res.queue = res.queue - 1;
-                if (res.queue == 0)
+                res.Queue = res.Queue - 1;
+                if (res.Queue == 0)
                 {
-                    res.is_active = true;
-                    res.expire_date = DateTime.Now.AddMinutes(1);
-                    res.volume_id = reservation.volume_id;
+                    res.IsActive = true;
+                    res.ExpireDate = DateTime.Now.AddMinutes(1);
+                    res.VolumeId = reservation.VolumeId;
                 }
             }
 
@@ -258,18 +258,18 @@ namespace LIBRARY_WA.Controllers.Services
 
 
         public void ResetPassword(User_DTO user) {
-           // _context.User.Remove(_context.User.Where(a => a.user_id == user.user_id).FirstOrDefault());
-            User us = _context.User.Where(a => a.user_id == user.user_id).SingleOrDefault();
+           // _context.User.Remove(_context.User.Where(a => a.userId == user.userId).FirstOrDefault());
+            User us = _context.User.Where(a => a.UserId == user.UserId).SingleOrDefault();
             _context.Entry(us).State = EntityState.Modified;
-            us.password=user.password;
+            us.Password=user.Password;
             _context.SaveChanges();
         }
 
 
         public void UpdateUser(User_DTO user)
         {
-            _context.User.Remove(_context.User.Where(a => a.user_id == user.user_id).FirstOrDefault());
-            User us = new User(user.user_id, user.login, user.password, user.user_type, user.fullname, user.date_of_birth, user.phone_number, user.email, user.address, user.is_valid);
+            _context.User.Remove(_context.User.Where(a => a.UserId == user.UserId).FirstOrDefault());
+            User us = new User(user.UserId, user.Login, user.Password, user.UserType, user.Fullname, user.DateOfBirth, user.PhoneNumber, user.Email, user.Address, user.IsValid);
             //_context.Entry(us).State = EntityState.Modified;
             _context.User.Add(us);
             _context.SaveChanges();

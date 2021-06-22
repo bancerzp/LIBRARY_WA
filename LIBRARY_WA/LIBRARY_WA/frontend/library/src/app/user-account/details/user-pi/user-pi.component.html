@@ -7,8 +7,8 @@
 
 <form [formGroup]="updateUserForm" (ngSubmit)="UpdateUser()">
   <div class="form-group">
-    <label for="user_id">Id użytkownika</label>
-    <input type="text" formControlName="user_id" class="form-control" [(ngModel)]="user.user_id" disabled="disabled" />
+    <label for="userId">Id użytkownika</label>
+    <input type="text" formControlName="userId" class="form-control" [(ngModel)]="user.userId" disabled="disabled" />
   </div>
 
   <div class="form-group" *ngIf="!changePass">
@@ -39,10 +39,10 @@
   </div>
 
   <div class="form-group">
-    <label for="phone_number">Numer telefonu</label>
-    <input type="tel" formControlName="phone_number" class="form-control" [(ngModel)]="user.phone_number" placeholder="format. 000-000-000" />
-    <div class="alert alert-danger " *ngIf="(sumbitted && updateUserForm.get('phone_number').hasError('required')) || (updateUserForm.get('phone_number').hasError('required') && updateUserForm.get('phone_number').dirty)">Pole telefon musi być wypełnione</div>
-    <div class="alert alert-danger " *ngIf="!sumbitted && updateUserForm.get('phone_number').hasError('pattern') && updateUserForm.get('phone_number').dirty && updateUserForm.get('phone_number').touched">Nieprawidłowy format numeru telefonu</div>
+    <label for="phoneNumber">Numer telefonu</label>
+    <input type="tel" formControlName="phoneNumber" class="form-control" [(ngModel)]="user.phoneNumber" placeholder="format. 000-000-000" />
+    <div class="alert alert-danger " *ngIf="(sumbitted && updateUserForm.get('phoneNumber').hasError('required')) || (updateUserForm.get('phoneNumber').hasError('required') && updateUserForm.get('phoneNumber').dirty)">Pole telefon musi być wypełnione</div>
+    <div class="alert alert-danger " *ngIf="!sumbitted && updateUserForm.get('phoneNumber').hasError('pattern') && updateUserForm.get('phoneNumber').dirty && updateUserForm.get('phoneNumber').touched">Nieprawidłowy format numeru telefonu</div>
   </div>
 
   <div class="form-group">
@@ -52,9 +52,9 @@
   </div>
 
   <div class="form-group">
-    <label for="user_type">Typ użytkownika</label>
-    <input type="text" class="form-control" disabled="disabled" *ngIf="user.user_type=='r'" value="Czytelnik" />
-    <input type="text" class="form-control" disabled="disabled" *ngIf="user.user_type=='l'" value="Bibliotekarz" />
+    <label for="userType">Typ użytkownika</label>
+    <input type="text" class="form-control" disabled="disabled" *ngIf="user.userType=='r'" value="Czytelnik" />
+    <input type="text" class="form-control" disabled="disabled" *ngIf="user.userType=='l'" value="Bibliotekarz" />
   </div>
 
   <div class="form-group" *ngIf="!lib">

@@ -4,37 +4,36 @@ namespace LIBRARY_WA.Models
 {
     public class Rent_DTO
     {
-        public Rent_DTO(int user_id, int book_id, string title, string isbn, int volume_id, DateTime start_date, DateTime expire_date)
+        public int RentId { get; set; }
+        public int UserId { get; set; }
+        public int BookId { get; set; }
+        public string Title { get; set; }
+        public string Isbn { get; set; }
+        public int VolumeId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime ExpireDate { get; set; }
+
+        public Rent_DTO(int userId, int bookId, string title, string isbn, int volumeId, DateTime startDate, DateTime expireDate)
         {
-           
-            this.user_id = user_id;
-            this.book_id = book_id;
-            this.title = title;
-            this.isbn = isbn;
-            this.volume_id = volume_id;
-            this.start_date = start_date;
-            this.expire_date = expire_date;
+            UserId = userId;
+            BookId = bookId;
+            Title = title;
+            Isbn = isbn;
+            VolumeId = volumeId;
+            StartDate = startDate;
+            ExpireDate = expireDate;
         }
 
-        public Rent_DTO(int rent_id, int user_id, int book_id, string title, string isbn, int volume_id, DateTime start_date, DateTime expire_date)
+        public Rent_DTO(int rentId, int userId, int bookId, string title, string isbn, int volumeId, DateTime startDate, DateTime expireDate)
         {
-            this.rent_id = rent_id;
-            this.user_id = user_id;
-            this.book_id = book_id;
-            this.title = title;
-            this.isbn = isbn;
-            this.volume_id = volume_id;
-            this.start_date = start_date;
-            this.expire_date = expire_date;
+            RentId = rentId;
+            UserId = userId;
+            BookId = bookId;
+            Title = title;
+            Isbn = isbn;
+            VolumeId = volumeId;
+            StartDate = startDate;
+            ExpireDate = expireDate;
         }
-
-        public int rent_id { get; set; }
-        public int user_id { get; set; }
-        public int book_id { get; set; }
-        public string title { get; set; }
-        public string isbn { get; set; }
-        public int volume_id { get; set; }
-        public DateTime start_date { get; set; }
-        public DateTime expire_date { get; set; }
     }
 }

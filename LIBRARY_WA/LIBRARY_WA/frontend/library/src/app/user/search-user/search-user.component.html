@@ -18,8 +18,8 @@
   </div>
 
   <div class="form-group">
-    <label for="phone_number">Numer telefonu</label>
-    <input type="text" formControlName="phone_number" class="form-control" placeholder="format:123-123-123"/>
+    <label for="phoneNumber">Numer telefonu</label>
+    <input type="text" formControlName="phoneNumber" class="form-control" placeholder="format:123-123-123"/>
   </div>
 
   <div class="form-group">
@@ -46,24 +46,24 @@
   </tr>
   <tbody>
     <tr *ngFor="let userInfo of userData">
-      <td>{{ userInfo.user_id  }}</td>
+      <td>{{ userInfo.userId  }}</td>
       <td>{{ userInfo.fullname  }}</td>
-      <td>{{ userInfo.date_of_birth.substring(0,10)  }}</td>
+      <td>{{ userInfo.dateOfBirth.substring(0,10)  }}</td>
       <td>{{ userInfo.email }}</td>
-      <td>{{ userInfo.phone_number }}</td>
+      <td>{{ userInfo.phoneNumber }}</td>
       <td>{{ userInfo.login  }}</td>
       <td>{{ userInfo.type  }}</td>
       <td *ngIf="userType=='l'" style="width:auto; min-width:150px;">
-        <a (click)="UserAccount(userInfo.user_id)" class='btn btn-info m-r-5px' style="font-size:12px;">
+        <a (click)="UserAccount(userInfo.userId)" class='btn btn-info m-r-5px' style="font-size:12px;">
           <span class="glyphicon glyphicon-edit"></span>Szczegóły
         </a>
-        <a (click)="RemoveUser(userInfo.user_id)" class='btn btn-danger m-r-5px'style="font-size:12px;">
+        <a (click)="RemoveUser(userInfo.userId)" class='btn btn-danger m-r-5px'style="font-size:12px;">
           <span class='glyphicon glyphicon-remove'></span>Usuń
         </a>
-        <a *ngIf="(userInfo.is_valid)" (click)="ChangeUserStatus(userInfo.user_id,false)" class='btn btn-danger m-r-5px'style="font-size:12px;">
+        <a *ngIf="(userInfo.isValid)" (click)="ChangeUserStatus(userInfo.userId,false)" class='btn btn-danger m-r-5px'style="font-size:12px;">
           <span class='glyphicon glyphicon-ban-circle'></span>Zablokuj
         </a>
-        <a *ngIf="!(userInfo.is_valid)" (click)="ChangeUserStatus(userInfo.user_id,true)" class='btn btn-info m-r-5px'style="font-size:12px;">
+        <a *ngIf="!(userInfo.isValid)" (click)="ChangeUserStatus(userInfo.userId,true)" class='btn btn-info m-r-5px'style="font-size:12px;">
           <span class='glyphicon glyphicon-retweet'></span>Odblokuj
         </a>
       </td>

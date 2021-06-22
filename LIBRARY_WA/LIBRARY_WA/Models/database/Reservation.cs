@@ -6,37 +6,37 @@ namespace LIBRARY_WA.Models
 {
     public class Reservation
     {
-        public Reservation(int user_id, int book_id, int volume_id, DateTime start_date, DateTime expire_date, int queue, bool is_active)
-        {
-            this.user_id = user_id;
-            this.book_id = book_id;
-            this.volume_id = volume_id;
-            this.start_date = start_date;
-            this.expire_date = expire_date;
-            this.queue = queue;
-            this.is_active = is_active;
-        }
-
-        public Reservation(int reservation_id, int user_id, int book_id, int volume_id, DateTime start_date, DateTime expire_date, int queue, bool is_active)
-        {
-            this.reservation_id = reservation_id;
-            this.user_id = user_id;
-            this.book_id = book_id;
-            this.volume_id = volume_id;
-            this.start_date = start_date;
-            this.expire_date = expire_date;
-            this.queue = queue;
-            this.is_active = is_active;
-        }
-
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int reservation_id { get; set; }
-        public int user_id { get; set; }
-        public int book_id { get; set; }
-        public int volume_id { get; set; }
-        public DateTime start_date { get; set; }
-        public DateTime expire_date { get; set; }
-        public Int32 queue { get; set; }
-        public bool is_active { get; set; }
+        public int ReservationId { get; set; }
+        public int UserId { get; set; }
+        public int BookId { get; set; }
+        public int VolumeId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime ExpireDate { get; set; }
+        public int Queue { get; set; }
+        public bool IsActive { get; set; }
+
+        public Reservation(int userId, int bookId, int volumeId, DateTime startDate, DateTime expireDate, int queue, bool isActive)
+        {
+            UserId = userId;
+            BookId = bookId;
+            VolumeId = volumeId;
+            StartDate = startDate;
+            ExpireDate = expireDate;
+            Queue = queue;
+            IsActive = isActive;
+        }
+
+        public Reservation(int reservationId, int userId, int bookId, int volumeId, DateTime startDate, DateTime expireDate, int queue, bool isActive)
+        {
+            ReservationId = reservationId;
+            UserId = userId;
+            BookId = bookId;
+            VolumeId = volumeId;
+            StartDate = startDate;
+            ExpireDate = expireDate;
+            Queue = queue;
+            IsActive = isActive;
+        }
     }
 }

@@ -23,68 +23,68 @@ namespace LIBRARY_WA.Controllers.Services
         //TODO
         public List<String> GetAuthor()
         {
-            return _context.Author.Select(a => a.author_fullname).Distinct().ToList();
+            return _context.Author.Select(a => a.AuthorFullname).Distinct().ToList();
         }
 
         public List<String> GetBookType()
         {
-            return _context.Book.Select(a => a.type).Distinct().ToList();
+            return _context.Book.Select(a => a.Type).Distinct().ToList();
         }
 
         public List<String> GetLanguage()
         {
-            return _context.Book.Select(a => a.language).Distinct().ToList();
+            return _context.Book.Select(a => a.Language).Distinct().ToList();
         }
 
         public bool IfISBNExists(string isbn)
         {
-            return _context.Book.Where(a => (a.isbn == isbn.Replace("'", "\'"))).Count() > 0;
+            return _context.Book.Where(a => (a.Isbn == isbn.Replace("'", "\'"))).Count() > 0;
         }
 
-        public bool IsBlocked(int reservation_id)
+        public bool IsBlocked(int reservationId)
         {
-            Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservation_id).SingleOrDefault();
-            return _context.User.Where(a => a.user_id == reservation.user_id).SingleOrDefault().is_valid;
+            Reservation reservation = _context.Reservation.Where(a => a.ReservationId == reservationId).SingleOrDefault();
+            return _context.User.Where(a => a.UserId == reservation.UserId).SingleOrDefault().IsValid;
         }
 
         //BOOK function
         public int AddBook(Book_DTO book)
         {
-            var author = _context.Author.Where((System.Linq.Expressions.Expression<Func<Author, bool>>)(a => a.author_fullname == book.author_fullname)).FirstOrDefault();
+            var author = _context.Author.Where((System.Linq.Expressions.Expression<Func<Author, bool>>)(a => a.AuthorFullname == book.AuthorFullname)).FirstOrDefault();
 
             if (author == null)
             {
-                _context.Author.Add(new Author((string)book.author_fullname));
+                _context.Author.Add(new Author((string)book.AuthorFullname));
             }
-            Book b = new Book(book.title, book.isbn, author.author_id, book.year, book.language, book.type, book.description, true);
+            Book b = new Book(book.Title, book.Isbn, author.AuthorId, book.Year, book.Language, book.Type, book.Description, true);
             _context.Book.Add(b);
             _context.SaveChangesAsync();
             var volume = new Volume
             {
-                is_free = true,
-                book_id = book.book_id
+                IsFree = true,
+                BookId = book.BookId
             };
 
             _context.Volume.Add(volume);
             _context.SaveChanges();
-            return b.book_id;
+            return b.BookId;
         }
 
         public Book_DTO GetBookById(int id)
         {
-            Book book = _context.Book.Where(a => a.book_id == id).FirstOrDefault();
+            Book book = _context.Book.Where(a => a.BookId == id).FirstOrDefault();
             if (book == null)
                 return null;
             else
             {
-                string author_fullname = _context.Author.Where(a => a.author_id == book.author_id).FirstOrDefault().author_fullname;
-                return new Book_DTO(book.book_id, book.title, book.isbn, author_fullname, book.year, book.language, book.type, book.description, book.is_available);
+                string authorFullname = _context.Author.Where(a => a.AuthorId == book.AuthorId).FirstOrDefault().AuthorFullname;
+                return new Book_DTO(book.BookId, book.Title, book.Isbn, authorFullname, book.Year, book.Language, book.Type, book.Description, book.IsAvailable);
             }
         }
 
         public List<Volume_DTO> GetVolumeByBookId(int id)
         {
-            List<Volume> volumes = new List<Volume>(_context.Volume.Where(a => a.book_id == id));
+            List<Volume> volumes = new List<Volume>(_context.Volume.Where(a => a.BookId == id));
             List<Volume_DTO> volumes_dto = new List<Volume_DTO>();
 
             if (volumes.Count == 0)
@@ -94,7 +94,7 @@ namespace LIBRARY_WA.Controllers.Services
 
             foreach (Volume v in volumes)
             {
-                volumes_dto.Add(new Volume_DTO(v.volume_id, v.book_id, v.is_free));
+                volumes_dto.Add(new Volume_DTO(v.VolumeId, v.BookId, v.IsFree));
             }
 
             return volumes_dto;
@@ -102,8 +102,8 @@ namespace LIBRARY_WA.Controllers.Services
 
         public List<Book_DTO> SearchBook(string[] search)
         {
-            string[] name = { "book_id", "ISBN", "title", "author_id", "year", "language", "type" };
-            var sql = "Select * from Book where is_available=true ";
+            string[] name = { "bookId", "ISBN", "title", "author_id", "year", "language", "type" };
+            var sql = "Select * from Book where isAvailable=true ";
             for (int i = 0; i < search.Length; i++)
             {
                 if (search[i] != "%")
@@ -118,7 +118,7 @@ namespace LIBRARY_WA.Controllers.Services
                     }
                     else if (name[i] == "author_id")
                     {
-                        int author = _context.Author.Where(a => a.author_fullname == search[i].Replace("'", "\'")).FirstOrDefault().author_id;
+                        int author = _context.Author.Where(a => a.AuthorFullname == search[i].Replace("'", "\'")).FirstOrDefault().AuthorId;
                         sql += " and author_id= " + author.ToString() + " ";
                     }
                     else
@@ -130,30 +130,30 @@ namespace LIBRARY_WA.Controllers.Services
             }
             List<Book> book_db = _context.Book.FromSql(sql).ToList();
             List<Book_DTO> book_dto = new List<Book_DTO>();
-            string author_fullname;
+            string authorFullname;
             foreach (Book book in book_db)
             {
-                author_fullname = _context.Author.Where(a => a.author_id == book.author_id).FirstOrDefault().author_fullname;
-                book_dto.Add(new Book_DTO(book.book_id, book.title, book.isbn, author_fullname, book.year, book.language, book.type, book.description, book.is_available));
+                authorFullname = _context.Author.Where(a => a.AuthorId == book.AuthorId).FirstOrDefault().AuthorFullname;
+                book_dto.Add(new Book_DTO(book.BookId, book.Title, book.Isbn, authorFullname, book.Year, book.Language, book.Type, book.Description, book.IsAvailable));
             }
 
             return book_dto;
         }
         public bool GetRentById(int id)
         {
-            return _context.Rent.Where(a => a.book_id == id).Count() > 0;
+            return _context.Rent.Where(a => a.BookId == id).Count() > 0;
         }
 
         public void RemoveBook(int id)
         {
-            _context.Reservation.FromSql("DELETE from Reservation where book_id='" + id + "'");
+            _context.Reservation.FromSql("DELETE from Reservation where bookId='" + id + "'");
 
 
-            foreach (Volume volume in _context.Volume.Where(a => a.book_id == id))
+            foreach (Volume volume in _context.Volume.Where(a => a.BookId == id))
             {
                 _context.Volume.Remove(volume);
             }
-            _context.Book.Find(id).is_available = false;
+            _context.Book.Find(id).IsAvailable = false;
             //usuń wszystkie rezerwacje
             _context.SaveChangesAsync();
         }
@@ -161,23 +161,23 @@ namespace LIBRARY_WA.Controllers.Services
         public Volume_DTO AddVolume(int id)
         {
             Volume volume = new Volume();
-            volume.is_free = true;
-            volume.book_id = id;
+            volume.IsFree = true;
+            volume.BookId = id;
             _context.Volume.Add(volume);
             _context.SaveChanges();
-            return new Volume_DTO(volume.volume_id, volume.book_id, volume.is_free);
+            return new Volume_DTO(volume.VolumeId, volume.BookId, volume.IsFree);
         }
 
         public string RemoveVolumeCheckCondition(int id)
         {
-            if (_context.Volume.Where(a => a.volume_id == id).Count() == 0)
+            if (_context.Volume.Where(a => a.VolumeId == id).Count() == 0)
             {
                 return "Egzemplarz o danym id nie istnieje!";
             }
 
-            var volume = _context.Volume.Where(a => a.volume_id == id).FirstOrDefault();
+            var volume = _context.Volume.Where(a => a.VolumeId == id).FirstOrDefault();
 
-            if (_context.Rent.Where(a => a.volume_id == id).Count() > 0)
+            if (_context.Rent.Where(a => a.VolumeId == id).Count() > 0)
             {
                 return "Dany egzemplarz jest wypożyczony. Nie można go usunąć!";
             }
@@ -187,20 +187,20 @@ namespace LIBRARY_WA.Controllers.Services
         // TODO
         public async Task<IActionResult> RemoveVolume(int id)
         {
-            var volume = _context.Volume.Where(a => a.volume_id == id).FirstOrDefault();
-            if (_context.Reservation.Where(a => a.volume_id == id && a.is_active == true).Count() > 0)
+            var volume = _context.Volume.Where(a => a.VolumeId == id).FirstOrDefault();
+            if (_context.Reservation.Where(a => a.VolumeId == id && a.IsActive == true).Count() > 0)
             {
-                Reservation reservation = _context.Reservation.Where(a => a.volume_id == id && a.is_active == true).FirstOrDefault();
+                Reservation reservation = _context.Reservation.Where(a => a.VolumeId == id && a.IsActive == true).FirstOrDefault();
 
-                foreach (Reservation reserv in _context.Reservation.Where(a => a.book_id == volume.book_id && a.is_active == false))
+                foreach (Reservation reserv in _context.Reservation.Where(a => a.BookId == volume.BookId && a.IsActive == false))
                 {
-                    reserv.queue = reserv.queue + 1;
+                    reserv.Queue = reserv.Queue + 1;
                 }
-                if (_context.Volume.Where(a => a.book_id == volume.book_id).Count() > 1)
+                if (_context.Volume.Where(a => a.BookId == volume.BookId).Count() > 1)
                 {
-                    var n = _context.Volume.Where(a => a.book_id == volume.book_id && a.volume_id != id).FirstOrDefault();
-                    Reservation r = new Reservation(reservation.user_id, reservation.book_id, n.volume_id, reservation.start_date, reservation.expire_date, 1, false);
-                    r.reservation_id = reservation.reservation_id;
+                    var n = _context.Volume.Where(a => a.BookId == volume.BookId && a.VolumeId != id).FirstOrDefault();
+                    Reservation r = new Reservation(reservation.UserId, reservation.BookId, n.VolumeId, reservation.StartDate, reservation.ExpireDate, 1, false);
+                    r.ReservationId = reservation.ReservationId;
                     _context.Reservation.Remove(reservation);
                     _context.SaveChanges();
                     _context.Reservation.Add(r);
@@ -222,22 +222,22 @@ namespace LIBRARY_WA.Controllers.Services
         public string ReserveBookCheckCondition(int[] data)
         {
 
-            if (_context.Book.Where(a => a.book_id == data[0]).Count() == 0)
+            if (_context.Book.Where(a => a.BookId == data[0]).Count() == 0)
             {
                 return "Nie znaleziono książki o podanym id";
             }
 
-            if (_context.User.Where(a => a.user_id == (data[1])).Count() == 0)
+            if (_context.User.Where(a => a.UserId == (data[1])).Count() == 0)
             {
                 return "Nie znaleziono użytkownika o podanym id";
             }
 
-            if (_context.Reservation.Where(a => a.book_id == data[0] && a.user_id == data[1]).Count() > 0)
+            if (_context.Reservation.Where(a => a.BookId == data[0] && a.UserId == data[1]).Count() > 0)
             {
                 return "Użytkownik ma już zarezerwowaną tę książkę!";
             }
 
-            if (_context.Volume.Where(a => a.book_id == data[0]).Count() == 0)
+            if (_context.Volume.Where(a => a.BookId == data[0]).Count() == 0)
             {
                 return "Książka nie ma żadnych egzemplarzy!";
             }
@@ -249,100 +249,100 @@ namespace LIBRARY_WA.Controllers.Services
         public ActionResult<Reservation_DTO> ReserveBook(int[] data)
         {
 
-            Book book = _context.Book.Where(a => a.book_id == (data[0])).FirstOrDefault();
+            Book book = _context.Book.Where(a => a.BookId == (data[0])).FirstOrDefault();
 
-            int volume_id = _context.Volume.Where(a => a.book_id == data[0]).FirstOrDefault().volume_id;
+            int volumeId = _context.Volume.Where(a => a.BookId == data[0]).FirstOrDefault().VolumeId;
 
-            DateTime start_date = DateTime.Now;
-            DateTime expire_date;
+            DateTime startDate = DateTime.Now;
+            DateTime expireDate;
             int queue;
-            var is_active = true;
+            var isActive = true;
 
 
-            if (_context.Volume.Where(a => a.book_id == data[0] && a.is_free == true).Count() == 0)
+            if (_context.Volume.Where(a => a.BookId == data[0] && a.IsFree == true).Count() == 0)
             {
-                if (_context.Reservation.Where(a => a.book_id == data[0]).OrderByDescending(a => a.queue).FirstOrDefault() == null)
+                if (_context.Reservation.Where(a => a.BookId == data[0]).OrderByDescending(a => a.Queue).FirstOrDefault() == null)
                     queue = 0;
                 else
-                    queue = _context.Reservation.Where(a => a.book_id == data[0]).OrderByDescending(a => a.queue).FirstOrDefault().queue + 1;
-                is_active = false;
-                expire_date = DateTime.Now;
+                    queue = _context.Reservation.Where(a => a.BookId == data[0]).OrderByDescending(a => a.Queue).FirstOrDefault().Queue + 1;
+                isActive = false;
+                expireDate = DateTime.Now;
             }
             else
             {
-                volume_id = _context.Volume.Where(a => a.book_id == Convert.ToInt32(data[0]) && a.is_free == true).FirstOrDefault().volume_id;
-                expire_date = DateTime.Now.AddDays(14);
-                _context.Volume.Where(a => a.volume_id == volume_id).FirstOrDefault().is_free = false;
+                volumeId = _context.Volume.Where(a => a.BookId == Convert.ToInt32(data[0]) && a.IsFree == true).FirstOrDefault().VolumeId;
+                expireDate = DateTime.Now.AddDays(14);
+                _context.Volume.Where(a => a.VolumeId == volumeId).FirstOrDefault().IsFree = false;
                 queue = 0;
 
             }
 
-            Reservation reservation = new Reservation(data[1], book.book_id, volume_id, start_date, expire_date, queue, is_active);
+            Reservation reservation = new Reservation(data[1], book.BookId, volumeId, startDate, expireDate, queue, isActive);
 
             _context.Reservation.Add(reservation);
             _context.SaveChanges();
 
 
-            Book b = _context.Book.Where(a => a.book_id == reservation.book_id).FirstOrDefault();
-            return new Reservation_DTO(reservation.user_id, b.title, b.isbn, b.book_id, reservation.volume_id, reservation.start_date, reservation.expire_date, reservation.queue + 1, reservation.is_active);
+            Book b = _context.Book.Where(a => a.BookId == reservation.BookId).FirstOrDefault();
+            return new Reservation_DTO(reservation.UserId, b.Title, b.Isbn, b.BookId, reservation.VolumeId, reservation.StartDate, reservation.ExpireDate, reservation.Queue + 1, reservation.IsActive);
         }
 
 
 
-        public string RentBookCheckCondition(int[] reservation_id)
+        public string RentBookCheckCondition(int[] reservationId)
         {
 
-            if (_context.Reservation.Where(a => a.reservation_id == reservation_id[0]).Count() == 0)
+            if (_context.Reservation.Where(a => a.ReservationId == reservationId[0]).Count() == 0)
             {
                 return "Nie ma takiej rezerwacji";
             }
 
-            Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservation_id[0]).FirstOrDefault();
-            if (_context.Volume.Where(a => a.is_free == true).Count() == 0)
+            Reservation reservation = _context.Reservation.Where(a => a.ReservationId == reservationId[0]).FirstOrDefault();
+            if (_context.Volume.Where(a => a.IsFree == true).Count() == 0)
             {
                 return "Nie ma takiego egzemplarza";
             }
             return "";
         }
-        public ActionResult<Rent_DTO> RentBook(int[] reservation_id)
+        public ActionResult<Rent_DTO> RentBook(int[] reservationId)
         {
 
-            Reservation reservation = _context.Reservation.Where(a => a.reservation_id == reservation_id[0]).FirstOrDefault();
+            Reservation reservation = _context.Reservation.Where(a => a.ReservationId == reservationId[0]).FirstOrDefault();
 
-            int volume_id = _context.Volume.Where(a => a.is_free == true).FirstOrDefault().volume_id;
+            int volumeId = _context.Volume.Where(a => a.IsFree == true).FirstOrDefault().VolumeId;
             //zmień is free na false
-            _context.Volume.Where(a => a.is_free == true).FirstOrDefault().is_free = false;
-            Rent rent = new Rent(reservation.user_id, reservation.book_id, volume_id, DateTime.Now, DateTime.Now.AddMonths(1));
+            _context.Volume.Where(a => a.IsFree == true).FirstOrDefault().IsFree = false;
+            Rent rent = new Rent(reservation.UserId, reservation.BookId, volumeId, DateTime.Now, DateTime.Now.AddMonths(1));
             _context.Rent.Add(rent);
             _context.Reservation.Remove(reservation);
             _context.SaveChanges();
-            Book book = _context.Book.Where(a => a.book_id == reservation.book_id).FirstOrDefault();
-            return Ok(new Rent_DTO(reservation.user_id, book.book_id, book.title, book.isbn, reservation.volume_id, reservation.start_date, reservation.expire_date));
+            Book book = _context.Book.Where(a => a.BookId == reservation.BookId).FirstOrDefault();
+            return Ok(new Rent_DTO(reservation.UserId, book.BookId, book.Title, book.Isbn, reservation.VolumeId, reservation.StartDate, reservation.ExpireDate));
         }
 
-        public bool ReturnBookCheckCondition(int[] rent_id)
+        public bool ReturnBookCheckCondition(int[] rentId)
         {
-            return _context.Rent.Where(a => a.rent_id == rent_id[0]).Count() == 0;
+            return _context.Rent.Where(a => a.RentId == rentId[0]).Count() == 0;
         }
 
-        public async Task<IActionResult> ReturnBook(int[] rent_id)
+        public async Task<IActionResult> ReturnBook(int[] rentId)
         {
-            Rent rent = _context.Rent.Where(a => a.rent_id == rent_id[0]).FirstOrDefault();
-            Volume volume = _context.Volume.Where(a => a.volume_id == rent.volume_id).FirstOrDefault();
-            Reservation[] reservations = _context.Reservation.Where(a => a.book_id == rent.book_id).ToArray();
-            Renth renth = new Renth(rent.user_id, rent.book_id, rent.volume_id, rent.start_date, DateTime.Now);
+            Rent rent = _context.Rent.Where(a => a.RentId == rentId[0]).FirstOrDefault();
+            Volume volume = _context.Volume.Where(a => a.VolumeId == rent.VolumeId).FirstOrDefault();
+            Reservation[] reservations = _context.Reservation.Where(a => a.BookId == rent.BookId).ToArray();
+            Renth renth = new Renth(rent.UserId, rent.BookId, rent.VolumeId, rent.StartDate, DateTime.Now);
             //wstaw do historii rezerwacji
             await _context.Renth.AddAsync(renth);
             await _context.SaveChangesAsync();
 
             foreach (Reservation reservation in reservations)
             {
-                reservation.queue = reservation.queue - 1;
-                if (reservation.queue == 0)
+                reservation.Queue = reservation.Queue - 1;
+                if (reservation.Queue == 0)
                 {
-                    reservation.is_active = true;
-                    reservation.expire_date = DateTime.Now.AddDays(8);
-                    reservation.volume_id = volume.volume_id;
+                    reservation.IsActive = true;
+                    reservation.ExpireDate = DateTime.Now.AddDays(8);
+                    reservation.VolumeId = volume.VolumeId;
                 }
             }
 
@@ -352,40 +352,40 @@ namespace LIBRARY_WA.Controllers.Services
             return Ok();
         }
 
-        public bool GetSuggestionCheckCondition(int user_id)
+        public bool GetSuggestionCheckCondition(int userId)
         {
-            return _context.User.Where(a => a.user_id == user_id).Count() == 0;
+            return _context.User.Where(a => a.UserId == userId).Count() == 0;
         }
 
-        public List<Suggestion_DTO> GetSuggestion(int user_id)
+        public List<Suggestion_DTO> GetSuggestion(int userId)
         {
-            var sql = "CALL Get_suggestion(" + user_id + ")";
+            var sql = "CALL Get_suggestion(" + userId + ")";
             _context.Database.ExecuteSqlCommand(sql);
             List<Suggestion> suggestion = _context.Suggestion.ToList();
             List<Suggestion_DTO> suggestion_dto = new List<Suggestion_DTO>();
 
             foreach (Suggestion sug in suggestion)
             {
-                suggestion_dto.Add(new Suggestion_DTO(sug.id, sug.title, sug.author_fullname));
+                suggestion_dto.Add(new Suggestion_DTO(sug.Id, sug.Title, sug.AuthorFullname));
             }
             return (suggestion_dto);
         }
 
         public bool BookExists(int id)
         {
-            return _context.Book.Select(e => e.book_id == id).Count() > 0;
+            return _context.Book.Select(e => e.BookId == id).Count() > 0;
         }
 
         public void UpdateBook(Book_DTO book)
         {
-            if (_context.Author.Where(a => a.author_fullname == book.author_fullname).Count() == 0)
+            if (_context.Author.Where(a => a.AuthorFullname == book.AuthorFullname).Count() == 0)
             {
-                _context.Author.Add(new Author(book.author_fullname));
+                _context.Author.Add(new Author(book.AuthorFullname));
                 _context.SaveChanges();
             }
-            int author_id = _context.Author.Where(a => a.author_fullname == book.author_fullname).FirstOrDefault().author_id;
+            int author_id = _context.Author.Where(a => a.AuthorFullname == book.AuthorFullname).FirstOrDefault().AuthorId;
 
-            Book book_dbo = new Book(book.book_id, book.title, book.isbn, author_id, book.year, book.language, book.type, book.description, book.is_available);
+            Book book_dbo = new Book(book.BookId, book.Title, book.Isbn, author_id, book.Year, book.Language, book.Type, book.Description, book.IsAvailable);
             _context.Entry(book_dbo).State = EntityState.Modified;
             _context.Book.Update(book_dbo);
 
@@ -407,7 +407,7 @@ namespace LIBRARY_WA.Controllers.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (_context.Book.Where(a => a.book_id == book.book_id).Count() == 0)
+                if (_context.Book.Where(a => a.BookId == book.BookId).Count() == 0)
                 {
                     return NotFound();
                 }

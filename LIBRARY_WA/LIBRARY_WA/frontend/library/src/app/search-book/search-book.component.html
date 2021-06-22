@@ -4,8 +4,8 @@
 
 <form [formGroup]="searchBookForm" (ngSubmit)="SearchBook()">
   <div class="form-group">
-    <label for="book_id">Id. książki</label>
-    <input type="text" formControlName="book_id" class="form-control" />
+    <label for="bookId">Id. książki</label>
+    <input type="text" formControlName="bookId" class="form-control" />
   </div>
 
   <div class="form-group">
@@ -19,8 +19,8 @@
   </div>
 
   <div class="form-group">
-    <label for="author_fullname">Imię i nazwisko autora</label>
-    <input type="text" list="author" formControlName="author_fullname" class="form-control" />
+    <label for="authorFullname">Imię i nazwisko autora</label>
+    <input type="text" list="author" formControlName="authorFullname" class="form-control" />
     <datalist id="author">
       <option *ngFor="let author of author" value="{{author}}">{{author}}</option>
     </datalist>
@@ -69,36 +69,36 @@
   </thead>
   <tbody>
     <tr *ngFor="let bookInfo of bookData">
-      <td>{{ bookInfo.book_id  }}</td>
+      <td>{{ bookInfo.bookId  }}</td>
       <td>{{ bookInfo.title  }}</td>
       <td>{{ bookInfo.isbn  }}</td>
-      <td>{{ bookInfo.author_fullname }}</td>
+      <td>{{ bookInfo.authorFullname }}</td>
       <td>{{ bookInfo.year }}</td>
       <td>{{ bookInfo.language  }}</td>
       <td>{{ bookInfo.type  }}</td>
 
       <td *ngIf="userType=='r'" style="width:auto; min-width:150px">
-        <a class='btn btn-info m-r-5px' (click)="ReserveBookReader(bookInfo.book_id)">
+        <a class='btn btn-info m-r-5px' (click)="ReserveBookReader(bookInfo.bookId)">
           <span class='glyphicon glyphicon-edit'></span> Zarezerwuj
         </a>
       </td>
       <td *ngIf="userType=='l'" style="width:auto; min-width:150px">
         <div class="button-group">
-          <button class='btn btn-info m-r-5px' (click)="ReserveBookLibrarian(bookInfo.book_id,user_id)" [disabled]="!user_id" style="font-size:12px">
+          <button class='btn btn-info m-r-5px' (click)="ReserveBookLibrarian(bookInfo.bookId,userId)" [disabled]="!userId" style="font-size:12px">
             <span class='glyphicon glyphicon-check'></span> Zarezerwuj
           </button>
-          <input #user style="width:80px" [(ngModel)]="user_id" />
+          <input #user style="width:80px" [(ngModel)]="userId" />
 
         </div>
         <div class="button-group">
-          <button (click)="EditBook(bookInfo.book_id)" class='btn btn-info m-r-5px'style="font-size:12px">
+          <button (click)="EditBook(bookInfo.bookId)" class='btn btn-info m-r-5px'style="font-size:12px">
             <span class='glyphicon glyphicon-edit'></span> Edytuj
           </button>
-          <button (click)="RemoveBook(bookInfo.book_id)" class='btn btn-danger m-r-5px'style="font-size:12px">
+          <button (click)="RemoveBook(bookInfo.bookId)" class='btn btn-danger m-r-5px'style="font-size:12px">
             <span class='glyphicon glyphicon-remove'></span> Usuń
           </button>
         </div>
-        <button (click)="AddVolume(bookInfo.book_id)" class='btn btn-info m-r-5px'style="font-size:12px">
+        <button (click)="AddVolume(bookInfo.bookId)" class='btn btn-info m-r-5px'style="font-size:12px">
           <span class='glyphicon glyphicon-plus'></span> Dodaj egzemplarz
         </button>
       </td>

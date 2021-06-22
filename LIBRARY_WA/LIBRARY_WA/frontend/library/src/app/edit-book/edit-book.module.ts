@@ -55,16 +55,16 @@ export class EditBookComponent {
     this.GetLanguage();
     this.isbn = this.book.isbn;
     this.editBookForm = this.formBuilder.group({
-      book_id: [this.book.book_id],
+      bookId: [this.book.bookId],
       isbn: [this.book.isbn, [Validators.pattern("[0-9]{13}"),
       Validators.required], this.CheckISBNExistsInDB.bind(this)],
       title: [this.book.title, [Validators.required, Validators.maxLength(50)]],
-      author_fullname: [this.book.author_fullname, [Validators.required, Validators.maxLength(100)]],
+      authorFullname: [this.book.authorFullname, [Validators.required, Validators.maxLength(100)]],
       year: [this.book.year, [Validators.pattern("[1-9][0-9]{3}"), Validators.required]],
       language: [this.book.language, [Validators.required, Validators.maxLength(20)]],
       type: [this.book.type, [Validators.required, Validators.maxLength(30)]],
       description: [this.book.description, [Validators.maxLength(300)]],
-      is_available: [true],
+      isAvailable: [true],
     });
   }
 
@@ -85,7 +85,7 @@ export class EditBookComponent {
   };
 
   GetVolumeByBookId() {
-    return this.bookService.GetVolumeByBookId(localStorage.getItem("book_id")).subscribe((volumes: Volume[]) => { this.volume = volumes });
+    return this.bookService.GetVolumeByBookId(localStorage.getItem("bookId")).subscribe((volumes: Volume[]) => { this.volume = volumes });
   }
 
   RemoveVolume(id) {
@@ -95,7 +95,7 @@ export class EditBookComponent {
     this.displayVolume = false;
     this.bookService.RemoveVolume(id).subscribe(data => {
     this.message="Egzemplarz został poprawnie usunięty";
-      this.volume = this.volume.filter(volume => volume.volume_id != id);
+      this.volume = this.volume.filter(volume => volume.volumeId != id);
     },
       response => { this.message = (<any>response).error.alert});
     this.displayVolume = true;
@@ -113,7 +113,7 @@ export class EditBookComponent {
   GetBookById() {
     if (this.app.IsExpired("l"))
       return;
-    return this.bookService.GetBookById(localStorage.getItem("book_id")).subscribe(
+    return this.bookService.GetBookById(localStorage.getItem("bookId")).subscribe(
       (bookGet: Book) => this.book = bookGet, response => { this.message = (<any>response).error.alert });
   }
 
