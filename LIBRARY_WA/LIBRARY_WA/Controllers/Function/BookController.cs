@@ -26,19 +26,19 @@ namespace LIBRARY_WA.Data
         [HttpGet]
         public List<String> GetAuthor()
         {
-            return _bookService.GetAuthor();
+            return _bookService.GetAuthorsFullname();
         }
 
         [HttpGet]
         public List<String> GetBookType()
         {
-            return _bookService.GetBookType();
+            return _bookService.GetBookTypes();
         }
 
         [HttpGet]
         public List<String> GetLanguage()
         {
-            return _bookService.GetLanguage();
+            return _bookService.GetLanguages();
         }
 
         [HttpGet("{isbn}")]
@@ -131,7 +131,7 @@ namespace LIBRARY_WA.Data
                 return NotFound(new { alert = "Nie znaleziono książki o danym id." });
             }
 
-            if (!_bookService.GetRentById(id))
+            if (!_bookService.IsRentExist(id))
             {
                 return NotFound(new { alert = "Dana książka jest wypożyczona. Nie można jej usunąć" });
             }
@@ -214,8 +214,6 @@ namespace LIBRARY_WA.Data
             return Ok(_bookService.ReserveBook(data));
         }
 
-
-
         [HttpPut, Authorize(Roles = "l")] //, 
         public ActionResult RentBook([FromBody] int[] reservationId)
         {
@@ -270,9 +268,9 @@ namespace LIBRARY_WA.Data
         }
 
 
-        private bool BookExists(int id)
+        private bool BookExists(int bookId)
         {
-            return _bookService.BookExists(id);
+            return _bookService.BookExists(bookId);
         }
 
         [HttpPut, Authorize(Roles = "l")]

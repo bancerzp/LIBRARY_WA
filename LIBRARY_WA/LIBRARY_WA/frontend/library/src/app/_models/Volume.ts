@@ -1,10 +1,10 @@
 export class Volume {
-  volume_id: Number;
-  book_id: Number;
-  is_free: boolean;
+  volumeId: Number;
+  bookId: Number;
+  isFree: boolean;
 
   constructor(volume_id: Number,
-    book_id: Number,
-    is_free: boolean) {
+    bookId: Number,
+    isFree: boolean) {
   }
 }

@@ -68,8 +68,8 @@ namespace LIBRARY_WA.Controllers.Services
             };
 
             var tokeOptions = new JwtSecurityToken(
-                issuer: "http://localhost:5000",
-                audience: "http://localhost:5000",
+                issuer: "http://localhost:5001",
+                audience: "http://localhost:5001",
                 claims: claims,
                 expires: DateTime.Now.AddHours(5),
                 signingCredentials: signinCredentials
@@ -184,10 +184,10 @@ namespace LIBRARY_WA.Controllers.Services
             _context.SaveChanges();
         }
 
-        public IEnumerable<Rent_DTO> GetRent(int id)
+        public IEnumerable<Rent_DTO> GetRents(int userId)
         {
 
-            List<Rent> rent_db = _context.Rent.Where(a => a.UserId == id).ToList();
+            List<Rent> rent_db = _context.Rent.Where(a => a.UserId == userId).ToList();
             List<Rent_DTO> rent_dto = new List<Rent_DTO>();
             Book book;
             foreach (Rent rent in rent_db)
@@ -198,9 +198,9 @@ namespace LIBRARY_WA.Controllers.Services
             return rent_dto;
         }
 
-        public IEnumerable<Reservation_DTO> GetReservation(int id)
+        public IEnumerable<Reservation_DTO> GetReservations(int userId)
         {
-            List<Reservation> reservation_db = _context.Reservation.Where(a => a.UserId == id).ToList();
+            List<Reservation> reservation_db = _context.Reservation.Where(a => a.UserId == userId).ToList();
             List<Reservation_DTO> reservation_dto = new List<Reservation_DTO>();
 
             Book book;
@@ -214,9 +214,9 @@ namespace LIBRARY_WA.Controllers.Services
         }
 
 
-        public IEnumerable<Renth_DTO> GetRenth(int id)
+        public IEnumerable<Renth_DTO> GetRentsHistory(int userId)
         {
-            List<Renth> renth_db = _context.Renth.Where(a => a.UserId == id).ToList();
+            List<Renth> renth_db = _context.Renth.Where(a => a.UserId == userId).ToList();
             List<Renth_DTO> renth_dto = new List<Renth_DTO>();
 
             Book book;

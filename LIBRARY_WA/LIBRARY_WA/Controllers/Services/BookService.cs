@@ -21,17 +21,17 @@ namespace LIBRARY_WA.Controllers.Services
         }
 
         //TODO
-        public List<String> GetAuthor()
+        public List<string> GetAuthorsFullname()
         {
-            return _context.Author.Select(a => a.AuthorFullname).Distinct().ToList();
+            return _context.Author.Select(a => a.AuthorFullname).ToList();
         }
 
-        public List<String> GetBookType()
+        public List<string> GetBookTypes()
         {
             return _context.Book.Select(a => a.Type).Distinct().ToList();
         }
 
-        public List<String> GetLanguage()
+        public List<string> GetLanguages()
         {
             return _context.Book.Select(a => a.Language).Distinct().ToList();
         }
@@ -54,8 +54,9 @@ namespace LIBRARY_WA.Controllers.Services
 
             if (author == null)
             {
-                _context.Author.Add(new Author((string)book.AuthorFullname));
+                _context.Author.Add(new Author(book.AuthorFullname));
             }
+
             Book b = new Book(book.Title, book.Isbn, author.AuthorId, book.Year, book.Language, book.Type, book.Description, true);
             _context.Book.Add(b);
             _context.SaveChangesAsync();
@@ -85,19 +86,18 @@ namespace LIBRARY_WA.Controllers.Services
         public List<Volume_DTO> GetVolumeByBookId(int id)
         {
             List<Volume> volumes = new List<Volume>(_context.Volume.Where(a => a.BookId == id));
-            List<Volume_DTO> volumes_dto = new List<Volume_DTO>();
 
-            if (volumes.Count == 0)
+            if (!volumes.Any())
             {
                 return null;
             }
 
-            foreach (Volume v in volumes)
+            return volumes.Select(volume => new Volume_DTO()
             {
-                volumes_dto.Add(new Volume_DTO(v.VolumeId, v.BookId, v.IsFree));
-            }
-
-            return volumes_dto;
+                VolumeId = volume.VolumeId,
+                BookId = volume.BookId,
+                IsFree = volume.IsFree
+            }).ToList();
         }
 
         public List<Book_DTO> SearchBook(string[] search)
@@ -139,49 +139,50 @@ namespace LIBRARY_WA.Controllers.Services
 
             return book_dto;
         }
-        public bool GetRentById(int id)
+
+        public bool IsRentExist(int rentId)
         {
-            return _context.Rent.Where(a => a.BookId == id).Count() > 0;
+            return _context.Rent.Where(a => a.BookId == rentId).Count() > 0;
         }
 
-        public void RemoveBook(int id)
+        public void RemoveBook(int bookId)
         {
-            _context.Reservation.FromSql("DELETE from Reservation where bookId='" + id + "'");
+            _context.Reservation.FromSql("DELETE from Reservation where bookId='" + bookId + "'");
 
 
-            foreach (Volume volume in _context.Volume.Where(a => a.BookId == id))
+            foreach (Volume volume in _context.Volume.Where(a => a.BookId == bookId))
             {
                 _context.Volume.Remove(volume);
             }
-            _context.Book.Find(id).IsAvailable = false;
+            _context.Book.Find(bookId).IsAvailable = false;
             //usuń wszystkie rezerwacje
             _context.SaveChangesAsync();
         }
 
         public Volume_DTO AddVolume(int id)
         {
-            Volume volume = new Volume();
-            volume.IsFree = true;
-            volume.BookId = id;
+            var volume = new Volume()
+            {
+                IsFree = true,
+                BookId = id
+            };
+
             _context.Volume.Add(volume);
             _context.SaveChanges();
+
             return new Volume_DTO(volume.VolumeId, volume.BookId, volume.IsFree);
         }
 
         public string RemoveVolumeCheckCondition(int id)
         {
-            if (_context.Volume.Where(a => a.VolumeId == id).Count() == 0)
+            if (!_context.Volume.Where(a => a.VolumeId == id).Any())
             {
                 return "Egzemplarz o danym id nie istnieje!";
             }
-
-            var volume = _context.Volume.Where(a => a.VolumeId == id).FirstOrDefault();
-
-            if (_context.Rent.Where(a => a.VolumeId == id).Count() > 0)
+            else
             {
                 return "Dany egzemplarz jest wypożyczony. Nie można go usunąć!";
             }
-            return "";
         }
 
         // TODO

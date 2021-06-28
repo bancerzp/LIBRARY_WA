@@ -19,7 +19,7 @@ namespace LIBRARY_WA.Controllers
     {
         public IConfiguration Configuration { get; }
 
-       
+
         private readonly UserService _userService;
 
         public UserController(UserService _userService, IConfiguration configuration)
@@ -37,7 +37,7 @@ namespace LIBRARY_WA.Controllers
             {
                 return BadRequest();
             }
-           
+
             return Ok(_userService.IfEmailExists(email));
 
         }
@@ -59,14 +59,15 @@ namespace LIBRARY_WA.Controllers
                 return BadRequest(new { alert = "Nieprawidłowe dane logowania" });
             }
 
-            if(!_userService.IsBlocked(userData))
+            if (!_userService.IsBlocked(userData))
             {
                 return BadRequest(new { alert = "Użytkownik jest zablokowany. Prosimy o kontakt z biblioteką." });
             }
 
-            if (_userService.IsLoggedCheckData(userData)){
+            if (_userService.IsLoggedCheckData(userData))
+            {
                 var toReturn = _userService.IsLogged(userData);
-                return Ok(new { Token = toReturn.Token, id = toReturn.id, userType = toReturn.userType, fullname = toReturn.fullname, expires= toReturn.expires });
+                return Ok(new { Token = toReturn.Token, id = toReturn.id, userType = toReturn.userType, fullname = toReturn.fullname, expires = toReturn.expires });
             }
             else
             {
@@ -115,12 +116,12 @@ namespace LIBRARY_WA.Controllers
                 return BadRequest(ModelState);
             }
 
-         
+
             return Ok(_userService.SearchUser(search));
         }
 
-      
-        [HttpPost,Authorize(Roles ="l")]
+
+        [HttpPost, Authorize(Roles = "l")]
         public async Task<IActionResult> AddUser([FromBody] User_DTO user)
         {
             if (!ModelState.IsValid)
@@ -131,7 +132,7 @@ namespace LIBRARY_WA.Controllers
             string message = _userService.AddUserCheckData(user);
             if (message != "")
             {
-                return BadRequest(new { alert= message });
+                return BadRequest(new { alert = message });
             }
 
             var r = _userService.AddUser(user);
@@ -147,7 +148,7 @@ namespace LIBRARY_WA.Controllers
             }
 
             string message = _userService.RemoveUserCheckData(id);
-            if (message!="")
+            if (message != "")
             {
                 return NotFound(new { alert = message });
             }
@@ -164,7 +165,7 @@ namespace LIBRARY_WA.Controllers
             {
                 return BadRequest(ModelState);
             }
-            return Ok(_userService.GetRent(id));
+            return Ok(_userService.GetRents(id));
         }
 
         [HttpGet("{id}"), Authorize]
@@ -175,7 +176,7 @@ namespace LIBRARY_WA.Controllers
             {
                 return BadRequest(ModelState);
             }
-            return Ok(_userService.GetReservation(id));
+            return Ok(_userService.GetReservations(id));
         }
 
         [HttpGet("{id}"), Authorize]
@@ -185,7 +186,7 @@ namespace LIBRARY_WA.Controllers
             {
                 return BadRequest(ModelState);
             }
-            return Ok(_userService.GetRenth(id));
+            return Ok(_userService.GetRentsHistory(id));
         }
 
         [HttpDelete("{id}")]
@@ -196,7 +197,7 @@ namespace LIBRARY_WA.Controllers
                 return BadRequest(ModelState);
             }
 
-           
+
             if (!_userService.CancelReservationCheckData(id))
             {
                 return NotFound(new { alert = "Nie istnieje rezerwacja o danym id!" });
@@ -206,15 +207,15 @@ namespace LIBRARY_WA.Controllers
             return Ok(id);
         }
 
-       
+
         [HttpPut]
-        public ActionResult UpdateUser( [FromBody] User_DTO user)
+        public ActionResult UpdateUser([FromBody] User_DTO user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-         
+
             try
             {
                 _userService.UpdateUser(user);

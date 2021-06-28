@@ -9,7 +9,7 @@ export class User {
   phoneNumber: String;
   email: String;
   address: String;
-  isValid: bool;
+  isValid: Boolean;
 
   constructor(
     userId: Number,
@@ -21,12 +21,6 @@ export class User {
     phoneNumber: String,
     email: String,
     address: String,
-    isValid: bool) {
+    isValid: Boolean) {
   }
 }
-
-       
-   
-
-      
-      

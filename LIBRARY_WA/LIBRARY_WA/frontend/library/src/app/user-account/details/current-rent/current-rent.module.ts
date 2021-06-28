@@ -22,7 +22,7 @@ export class CurrentRentModule {
   column = ["Numer wypożyczenia", "ISBN", "Tytuł", "Numer egzemplarza", "Data wypożyczenia", "Wypożyczenie do"];
   userType: String;
   message: String;
-  submitted: bool;
+  submitted: Boolean;
 
   constructor(
     private userService: UserService,

@@ -27,7 +27,7 @@ export class EditBookComponent {
   public language = [];
   book:Book = new Book(null,null, "", "", "", "", "", "",  true);
   public volume: Volume[] = [];
-  public displayVolume: bool;
+  public displayVolume: Boolean;
   public message: String;
   public isbn: String;
 
@@ -37,7 +37,7 @@ export class EditBookComponent {
   private bookService: BookService,
   private route: ActivatedRoute,
   private app: AppComponent) { }
-  submitted: bool;
+  submitted: Boolean;
   editBookForm: FormGroup;
 
 
@@ -70,7 +70,7 @@ export class EditBookComponent {
 
   CheckISBNExistsInDB(control: FormControl) {
     return this.bookService.IfISBNExists(control.value).pipe(
-      map(((res: bool) => (res == true && this.book.isbn == this.isbn) ? { 'ISBNTaken': false } : null)));
+      map(((res: Boolean) => (res == true && this.book.isbn == this.isbn) ? { 'ISBNTaken': false } : null)));
   }
 
   GetAuthor() {
