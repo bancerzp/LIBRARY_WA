@@ -3,8 +3,8 @@
 </h1>
 <form [formGroup]="editBookForm" (ngSubmit)="UpdateBook()">
   <div class="form-group">
-    <label for="book_id">Id. książki</label>
-    <input type="text" formControlName="book_id" class="form-control" [(ngModel)]="book.book_id" disabled="disabled" />
+    <label for="bookId">Id. książki</label>
+    <input type="text" formControlName="bookId" class="form-control" [(ngModel)]="book.bookId" disabled="disabled" />
   </div>
 
   <div class="form-group">
@@ -24,13 +24,13 @@
   </div>
 
   <div class="form-group">
-    <label for="author_fullname">Imię i nazwisko autora</label>
-    <input type="text" list="author" formControlName="author_fullname" class="form-control" [(ngModel)]="book.author_fullname" maxlength="50"/>
+    <label for="authorFullname">Imię i nazwisko autora</label>
+    <input type="text" list="author" formControlName="authorFullname" class="form-control" [(ngModel)]="book.authorFullname" maxlength="50"/>
     <datalist id="author">
       <option *ngFor="let author of author" value="{{author}}">{{author}}</option>
     </datalist>
-    <div class="alert alert-danger " *ngIf="(sumbitted && (editBookForm.get('author_fullname').hasError('required') || editBookForm.get('author_fullname').hasError('pattern'))) || (editBookForm.get('author_fullname').hasError('required') && editBookForm.get('author_fullname').dirty)">Pole imię i nazwisko nie może byc puste</div>
-    <div class="alert alert-danger " *ngIf="editBookForm.get('author_fullname').hasError('maxLength') && editBookForm.get('author_fullname').dirty && editBookForm.get('author_fullname').touched">Za długa nazwa autora (max.50znaków)</div>
+    <div class="alert alert-danger " *ngIf="(sumbitted && (editBookForm.get('authorFullname').hasError('required') || editBookForm.get('authorFullname').hasError('pattern'))) || (editBookForm.get('authorFullname').hasError('required') && editBookForm.get('authorFullname').dirty)">Pole imię i nazwisko nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf="editBookForm.get('authorFullname').hasError('maxLength') && editBookForm.get('authorFullname').dirty && editBookForm.get('authorFullname').touched">Za długa nazwa autora (max.50znaków)</div>
   </div>
 
   <div class="form-group">
@@ -92,16 +92,16 @@
   </thead>
   <tbody>
     <tr *ngFor="let vol of volume">
-      <td>{{ vol.volume_id  }}</td>
-      <td *ngIf=(vol.is_free)>Nie</td>
-      <td *ngIf=(!vol.is_free)>Tak</td>
+      <td>{{ vol.volumeId  }}</td>
+      <td *ngIf=(vol.isFree)>Nie</td>
+      <td *ngIf=(!vol.isFree)>Tak</td>
      
       <td>
         <div class="button-group">
-          <button (click)="RemoveVolume(vol.volume_id)" class='btn btn-danger m-r-5px' disabled="disabled" *ngIf=!(vol.is_free) >
+          <button (click)="RemoveVolume(vol.volumeId)" class='btn btn-danger m-r-5px' disabled="disabled" *ngIf=!(vol.isFree) >
             <span class='glyphicon glyphicon-remove'></span> Usuń
           </button>
-          <button (click)="RemoveVolume(vol.volume_id)" class='btn btn-danger m-r-5px' *ngIf=(vol.is_free)>
+          <button (click)="RemoveVolume(vol.volumeId)" class='btn btn-danger m-r-5px' *ngIf=(vol.isFree)>
             <span class='glyphicon glyphicon-remove'></span> Usuń
           </button>
         </div>

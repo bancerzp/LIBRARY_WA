@@ -1,17 +1,16 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LIBRARY_WA.Models.database
 {
     public class Author
     {
-        public Author(string author_fullname)
-        {
-            this.author_fullname = author_fullname;
-        }
-
         [Key]
-        public int author_id { get; set; }
-        public string author_fullname { get; set; }
+        public int AuthorId { get; set; }
+        public string AuthorFullname { get; set; }
+
+        public Author(string authorFullname)
+        {
+            AuthorFullname = authorFullname;
+        }
     }
 }

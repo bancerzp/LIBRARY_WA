@@ -43,8 +43,8 @@ export class BookService {
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) } );
   }
 
-  public GetBookById(book_id) {
-    return this.http.get(this.accessPointUrl + "/GetBookById/" + book_id, { headers: this.headers });
+  public GetBookById(bookId) {
+    return this.http.get(this.accessPointUrl + "/GetBookById/" + bookId, { headers: this.headers });
   }
 
   public UpdateBook(book) {
@@ -83,26 +83,26 @@ export class BookService {
   }
   
     //Rezerwacje
-  public ReserveBook(book_id, user_id) {
-    var values = [book_id, user_id]
+  public ReserveBook(bookId, userId) {
+    var values = [bookId, userId]
     return this.http.put(this.accessPointUrl + "/ReserveBook", values,
     { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
-  public RentBook(reservation_id) {
-    var values = [reservation_id]
+  public RentBook(reservationId) {
+    var values = [reservationId]
     return this.http.put(this.accessPointUrl + "/RentBook",values,
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
-  public ReturnBook(rent_id) {
-    var values = [rent_id];
+  public ReturnBook(rentId) {
+    var values = [rentId];
     return this.http.post(this.accessPointUrl + "/ReturnBook",values,
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
-  public GetSuggestion(user_id) {
-    return this.http.get(this.accessPointUrl + "/GetSuggestion/"+user_id,
+  public GetSuggestion(userId) {
+    return this.http.get(this.accessPointUrl + "/GetSuggestion/"+userId,
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
 
   }

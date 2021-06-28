@@ -5,15 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="frontend\library\src\app\_models\rent.ts" />
-    <None Remove="frontend\library\src\app\_models\Renth.ts" />
-    <None Remove="frontend\library\src\app\_models\reservation.ts" />
-    <None Remove="frontend\library\src\app\_models\Status.ts" />
-    <None Remove="frontend\library\src\app\_models\Suggestion.ts" />
-    <None Remove="frontend\library\src\app\_models\Volume.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="frontend\library\src\app\home\cover\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

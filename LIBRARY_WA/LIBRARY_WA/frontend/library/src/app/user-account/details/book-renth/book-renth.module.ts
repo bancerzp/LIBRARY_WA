@@ -37,7 +37,7 @@ export class BookRenthModule {
     if (this.app.IsExpired("l,r"))
       return;
     if (this.app.GetUserType() == "l") {
-      this.name = localStorage.getItem("user_id");
+      this.name = localStorage.getItem("userId");
     }
     else {
      this.name = this.app.GetUserId();

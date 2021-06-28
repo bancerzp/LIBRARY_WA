@@ -2,7 +2,7 @@
 {
     public class Status_DTO
     {
-        public int user_id { get; set; }
-        public bool status { get; set;}
+        public int UserId { get; set; }
+        public bool Status { get; set;}
     }
 }

@@ -20,9 +20,9 @@ import { AppComponent } from '../../../app.component';
 export class CurrentRentModule {
   rent: Rent[];
   column = ["Numer wypożyczenia", "ISBN", "Tytuł", "Numer egzemplarza", "Data wypożyczenia", "Wypożyczenie do"];
-  user_type: String;
+  userType: String;
   message: String;
-  submitted: bool;
+  submitted: Boolean;
 
   constructor(
     private userService: UserService,
@@ -33,7 +33,7 @@ export class CurrentRentModule {
   ngOnInit() {
     if (this.app.IsExpired("l,r"))
       return;
-    this.user_type = this.app.GetUserType();
+    this.userType = this.app.GetUserType();
     this.GetRent();
     this.submitted = true;
   }
@@ -43,31 +43,31 @@ export class CurrentRentModule {
     if (this.app.IsExpired("l,r"))
       return;
     if (this.app.GetUserType() == "r") {
-      localStorage.setItem("user_id", this.app.GetUserId())
+      localStorage.setItem("userId", this.app.GetUserId())
     }
-    this.userService.GetRent(localStorage.getItem("user_id")).subscribe((rents: any[]) => this.rent = rents,
+    this.userService.GetRent(localStorage.getItem("userId")).subscribe((rents: any[]) => this.rent = rents,
       response => { this.message = (<any>response).error });
     this.submitted = true;
   }
 
-  ReturnBook2(rent_id) {
+  ReturnBook2(rentId) {
     this.submitted = false;
     if (this.app.IsExpired("l"))
       return;
-    this.bookService.ReturnBook(rent_id).subscribe(data => {
-      this.rent = this.rent.filter(rent => rent.rent_id != rent_id);
+    this.bookService.ReturnBook(rentId).subscribe(data => {
+      this.rent = this.rent.filter(rent => rent.rentId != rentId);
       this.message = "Książka została poprawnie zwrócona";
     },
       response => { this.message = (<any>response).error });
     this.submitted = true;
   }
 
-  ReturnBook(rent_id) {
+  ReturnBook(rentId) {
     this.submitted = false;
     if (this.app.IsExpired("l"))
       return;
-    this.bookService.ReturnBook(rent_id).subscribe(data => {
-      this.rent = this.rent.filter(rent => rent.rent_id != rent_id);
+    this.bookService.ReturnBook(rentId).subscribe(data => {
+      this.rent = this.rent.filter(rent => rent.rentId != rentId);
       this.message = (<any>data).message; //"Książka została poprawnie zwrócona";
     },
       response => { this.message = (<any>response).error });

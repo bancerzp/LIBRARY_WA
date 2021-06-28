@@ -15,10 +15,10 @@ import { Reservation } from '../_models/reservation';
 export class SearchBookComponent implements OnInit {
   @Output() book = new EventEmitter<Book>();
 
-  submitted: bool;
+  submitted: Boolean;
   userType: string;
   title: String;
-  author_fullname: String;
+  authorFullname: String;
   bookData: Book[] = [];
   public author = [];
   public bookType = [];
@@ -29,7 +29,7 @@ export class SearchBookComponent implements OnInit {
   column: String[] = ["Id. książki", "Tytuł", "ISBN", "Autor", "Rok wydania", "Język wydania", "Rodzaj"];
   columnAddReader: UserAction[] = [new UserAction("Zarezerwuj", "Reserve")]
   columnAddLibrarian: UserAction[] = [new UserAction("Zarezerwuj", "Reserve()"), new UserAction("Edytuj", "Update()"), new UserAction("Usuń", "Delete()"), new UserAction("Dodaj egzemplarz", "AddVolume()")]
-  user_id: String;
+  userId: String;
   message: String;
   reservation: Reservation;
 
@@ -43,7 +43,7 @@ export class SearchBookComponent implements OnInit {
 
 
   ngOnInit() {
-    this.userType = localStorage.getItem("user_type");
+    this.userType = localStorage.getItem("userType");
 
     this.submitted = false;
     //pobranie wartości do list rozwijanych
@@ -52,17 +52,17 @@ export class SearchBookComponent implements OnInit {
     this.GetLanguage();
     
     this.searchBookForm = this.formBuilder.group({
-      book_id: '',
+      bookId: '',
       isbn: [''],
       title: '',
-      author_fullname: [''],
+      authorFullname: [''],
       year: [''],
       language: '',
       type: ''
     });
     if (localStorage.getItem("title") != null) {
       this.searchBookForm.controls['title'].setValue(localStorage.getItem("title"));
-      this.searchBookForm.controls['author_fullname'].setValue(localStorage.getItem("author_fullname"));
+      this.searchBookForm.controls['authorFullname'].setValue(localStorage.getItem("authorFullname"));
       this.SearchBook();
     }
   }
@@ -107,13 +107,13 @@ export class SearchBookComponent implements OnInit {
     return this.bookService.GetLanguage().subscribe((languages: Array<any>) => this.language = languages);
   };
 
-  ReserveBookLibrarian(book_id, user_id) {
+  ReserveBookLibrarian(bookId, userId) {
     this.message = "";
     this.submitted = false;
     if (this.app.IsExpired("l"))
       return;
    
-    this.bookService.ReserveBook(book_id, Number.parseInt(user_id)).subscribe((res: any) => {
+    this.bookService.ReserveBook(bookId, Number.parseInt(userId)).subscribe((res: any) => {
       this.reservation = res;
       this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + (<any>res).value.queue;
     },
@@ -121,12 +121,12 @@ export class SearchBookComponent implements OnInit {
     this.submitted = true;
   }
 
-  ReserveBookReader(book_id) {
+  ReserveBookReader(bookId) {
     this.message = "";
     this.submitted = false;
     if (this.app.IsExpired("r"))
       return;
-    this.bookService.ReserveBook(book_id, this.app.GetUserId()).subscribe((res: any) => {
+    this.bookService.ReserveBook(bookId, this.app.GetUserId()).subscribe((res: any) => {
       this.reservation = res;
       this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + (<any>res).value.queue;
     },
@@ -135,11 +135,11 @@ export class SearchBookComponent implements OnInit {
   }
 
   
-  EditBook(book_id) {
+  EditBook(bookId) {
     this.message = "";
     if (this.app.IsExpired("l"))
       return;
-    localStorage.setItem("book_id", book_id);
+    localStorage.setItem("bookId", bookId);
     this.app.RouteTo("app-edit-book");
   }
 
@@ -151,7 +151,7 @@ export class SearchBookComponent implements OnInit {
     this.submitted = false;
     this.bookService.RemoveBook(id).subscribe(data => {
       this.message = "Książka została poprawnie usunięta.";
-      this.bookData = this.bookData.filter(book => book.book_id != id);
+      this.bookData = this.bookData.filter(book => book.bookId != id);
     },
       response => { this.message = (<any>response).error.alert });
    
@@ -165,7 +165,7 @@ export class SearchBookComponent implements OnInit {
     this.submitted = false;
     this.bookService.AddVolume(id).subscribe(
       (volume: Volume) => {
-      this.message = "Egzemplarz dodany poprawnie: " + volume.volume_id
+      this.message = "Egzemplarz dodany poprawnie: " + volume.volumeId
   },
       response => { this.message = (<any>response).error });
   

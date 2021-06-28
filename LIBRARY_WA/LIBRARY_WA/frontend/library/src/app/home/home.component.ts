@@ -14,8 +14,8 @@ import {  SearchBookComponent } from "../search-book/search-book.component"
 export class HomeComponent implements OnInit {
   
   suggestion: Suggestion[];
-  user_type: String;
-  user_id: String;
+  userType: String;
+  userId: String;
   cover: number;
   classs: string;
 
@@ -29,22 +29,22 @@ export class HomeComponent implements OnInit {
     this.classs = "tile1";
     if (this.app.IsExpired("r"))
       return;
-    if (localStorage.getItem("user_type")=="r")
+    if (localStorage.getItem("userType")=="r")
     this.getSuggestion();
   }
 
   getSuggestion() {
     if (this.app.IsExpired("l,r"))
       return;
-    this.user_type = localStorage.getItem("user_type");
-    this.user_id = localStorage.getItem("user_id");
-    this.bookService.GetSuggestion(this.user_id).subscribe((suggestion: any[]) => this.suggestion = suggestion,
+    this.userType = localStorage.getItem("userType");
+    this.userId = localStorage.getItem("userId");
+    this.bookService.GetSuggestion(this.userId).subscribe((suggestion: any[]) => this.suggestion = suggestion,
       response => { alert((<any>response).error.alert) });
   }
 
-  SearchBook(title, author_fullname) {
+  SearchBook(title, authorFullname) {
     localStorage.setItem("title", title);
-    localStorage.setItem("author_fullname", author_fullname)
+    localStorage.setItem("authorFullname", authorFullname)
     this.app.RouteTo("app-search-book");
     this.searchBook.Redirect();
   }

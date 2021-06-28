@@ -39,7 +39,7 @@ export class SearchUserComponent implements OnInit {
     if (this.app.IsExpired("l"))
       return;
     this.submitted = false;
-    this.userType = localStorage.getItem("user_type");
+    this.userType = localStorage.getItem("userType");
     this.submitted = false;
 
     this.searchUserForm = this.formBuilder.group({
@@ -47,7 +47,7 @@ export class SearchUserComponent implements OnInit {
       user_fullname: '',
       email: ['', Validators.pattern("/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i")],
       login: '',
-      phone_number: ''
+      phoneNumber: ''
     });
   }
 
@@ -77,7 +77,7 @@ export class SearchUserComponent implements OnInit {
       return;
     this.submitted = false;
     this.userService.RemoveUser(id).subscribe(data => {
-      this.userData = this.userData.filter(user => user.user_id != id);
+      this.userData = this.userData.filter(user => user.userId != id);
       this.message = "Użytkownik o id: " + id + " został usunięty";
     },
       response => { this.message = (<any>response).error.alert });
@@ -88,7 +88,7 @@ export class SearchUserComponent implements OnInit {
     if (this.app.IsExpired("l"))
       return;
     this.app.RouteTo("app-user-account");
-    localStorage.setItem("user_id", id)
+    localStorage.setItem("userId", id)
   }
 
   ChangeUserStatus(id,status) {

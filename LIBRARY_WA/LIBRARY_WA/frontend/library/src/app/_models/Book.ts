@@ -1,24 +1,24 @@
 export class Book {
 
-  book_id: Number;
+  bookId: Number;
   title: String;
   isbn: String;
-  author_fullname: String;
+  authorFullname: String;
   year: String;
   language: String;
   type: String;
   description: String;
-  is_available: bool;
+  isAvailable: Boolean;
     
   constructor(
-    book_id: Number,
+    bookId: Number,
     title: String,
     isbn: String,
-    author_fullname: String,
+    authorFullname: String,
     year: String,
     language: String,
     type: String,
     description: String,
-    is_available:bool) { }
+    isAvailable:Boolean) { }
   }
 

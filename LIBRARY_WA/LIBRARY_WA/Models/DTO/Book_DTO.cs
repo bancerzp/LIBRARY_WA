@@ -1,50 +1,50 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace LIBRARY_WA.Models
 {
     public class Book_DTO
     {
-        public Book_DTO(int book_id, string title, string isbn, string author_fullname, string year, string language, string type, string description, bool is_available)
-        {
-            this.book_id = book_id;
-            this.title = title;
-            this.isbn = isbn;
-            this.author_fullname = author_fullname;
-            this.year = year;
-            this.language = language;
-            this.type = type;
-            this.description = description;
-            this.is_available = is_available;
-        }
-
-        public int book_id { get; set; }
+        public int BookId { get; set; }
 
         [MaxLength(50, ErrorMessage = "Za długi tytuł")]
-        public string title { get; set; }
+        public string Title { get; set; }
 
         [RegularExpression(@"\d{13}", ErrorMessage = "Niepoprawny format numer ISBN")]
         [StringLength(13)]
-        public string isbn { get; set; }
+        public string Isbn { get; set; }
 
         [MaxLength(100, ErrorMessage = "Za długie nazwisko")]
-        public string author_fullname { get; set; }
+        public string AuthorFullname { get; set; }
 
         [RegularExpression(@"\d{4}", ErrorMessage = "Niepoprawny format roku wydania książki")]
-        public string year { get; set; }
+        public string Year { get; set; }
 
         [MaxLength(20, ErrorMessage = "Za długi język")]
-        public string language { get; set; }
+        public string Language { get; set; }
 
         [MaxLength(30, ErrorMessage = "Za długi typ")]
-        public string type { get; set; }
+        public string Type { get; set; }
 
         [MaxLength(300)]
         [System.ComponentModel.DefaultValue("Brak opisu")]
-        public string description { get; set; }
+        public string Description { get; set; }
 
 
         //czy istnieje w bibliotece
         [System.ComponentModel.DefaultValue(true)]
-        public bool is_available { get; set; }
+        public bool IsAvailable { get; set; }
+
+        public Book_DTO(int bookId, string title, string isbn, string authorFullname, string year, string language, string type, string description, bool isAvailable)
+        {
+            BookId = bookId;
+            Title = title;
+            Isbn = isbn;
+            AuthorFullname = authorFullname;
+            Year = year;
+            Language = language;
+            Type = type;
+            Description = description;
+            IsAvailable = isAvailable;
+        }
     }
 }

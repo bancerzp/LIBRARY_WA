@@ -1,28 +1,26 @@
-﻿using System;
-
-namespace LIBRARY_WA.Models
+﻿namespace LIBRARY_WA.Models
 {
     public class Volume_DTO
     {
-        public int volume_id { get; set; }
-        public int book_id { get; set; }
-        public bool is_free { get; set; }
-
-        public Volume_DTO(int book_id, bool is_free)
-        {
-            this.book_id = book_id;
-            this.is_free = is_free;
-        }
-
-        public Volume_DTO(int volume_id,int book_id, bool is_free)
-        {
-            this.volume_id = volume_id;
-            this.book_id = book_id;
-            this.is_free = is_free;
-        }
+        public int VolumeId { get; set; }
+        public int BookId { get; set; }
+        public bool IsFree { get; set; }
 
         public Volume_DTO()
         {
+        }
+
+        public Volume_DTO(int bookId, bool isFree)
+        {
+            BookId = bookId;
+            IsFree = isFree;
+        }
+
+        public Volume_DTO(int volumeId, int bookId, bool isFree)
+        {
+            VolumeId = volumeId;
+            BookId = bookId;
+            IsFree = isFree;
         }
     }
 }

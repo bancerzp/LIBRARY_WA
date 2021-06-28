@@ -27,13 +27,13 @@
   </div>
 
   <div class="form-group">
-    <label for="author_fullname">Imię i nazwisko autora</label>
-    <input type="text" list="author" formControlName="author_fullname" class="form-control" [(ngModel)]="book.author_fullname" maxlength="50"/>
+    <label for="authorFullname">Imię i nazwisko autora</label>
+    <input type="text" list="author" formControlName="authorFullname" class="form-control" [(ngModel)]="book.authorFullname" maxlength="50"/>
     <datalist id="author">
       <option *ngFor="let author of author" value="{{author}}">{{author}}</option>
     </datalist>
-    <div class="alert alert-danger " *ngIf="(sumbitted && (addBookForm.get('author_fullname').hasError('required') || addBookForm.get('author_fullname').hasError('pattern'))) || (addBookForm.get('author_fullname').hasError('required') && addBookForm.get('author_fullname').dirty)">Pole imię i nazwisko nie może byc puste</div>
-    <div class="alert alert-danger " *ngIf="addBookForm.get('author_fullname').hasError('maxLength') && addBookForm.get('author_fullname').dirty && addBookForm.get('author_fullname').touched">Za długa nazwa autora (max.50znaków)</div>
+    <div class="alert alert-danger " *ngIf="(sumbitted && (addBookForm.get('authorFullname').hasError('required') || addBookForm.get('authorFullname').hasError('pattern'))) || (addBookForm.get('authorFullname').hasError('required') && addBookForm.get('authorFullname').dirty)">Pole imię i nazwisko nie może byc puste</div>
+    <div class="alert alert-danger " *ngIf="addBookForm.get('authorFullname').hasError('maxLength') && addBookForm.get('authorFullname').dirty && addBookForm.get('authorFullname').touched">Za długa nazwa autora (max.50znaków)</div>
   </div>
 
   <div class="form-group">

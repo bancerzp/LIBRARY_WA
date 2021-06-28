@@ -13,13 +13,13 @@ export class UserService {
   public IsLogged(user) {
     return this.http.post(this.accessPointUrl + '/IsLogged', user, { headers: this.headers });/*.subscribe(response => {
       let token = (<any>response).token;
-      let user_id = (<any>response).id;
+      let userId = (<any>response).id;
       let fullname = (<any>response).fullname;
-      let user_type = (<any>response).user_type
-      localStorage.setItem("jwt", user_id);
-      localStorage.setItem("user_id", user_id);
+      let userType = (<any>response).userType
+      localStorage.setItem("jwt", userId);
+      localStorage.setItem("userId", userId);
       localStorage.setItem("fullname", fullname);
-      c.setItem("user_type", user_type);
+      c.setItem("userType", userType);
       return true;
     }, err => {
       return false;

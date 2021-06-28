@@ -21,16 +21,16 @@ import { AppComponent } from '../../../app.component';
 })
 export class UserPIModule {
   user = new User(null, "", "", "", "", null, "", "", "", true);
-  user_type: String;
+  userType: String;
   updateUserForm: FormGroup;
-  submitted: bool;
-  reset: bool;
+  submitted: Boolean;
+  reset: Boolean;
   pass: String;
-  resetClicked: bool;
+  resetClicked: Boolean;
   message: String;
   email: String;
-  changePass: bool;
-  lib: bool;
+  changePass: Boolean;
+  lib: Boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,24 +47,24 @@ export class UserPIModule {
       return;
 
     this.GetUserById();
-    this.user_type = this.app.GetUserType();
+    this.userType = this.app.GetUserType();
     this.resetClicked = false;
     this.reset = true;
     this.submitted = false;
     this.pass = this.user.password;
     this.email = this.user.email;
 
-    if (this.user_type == 'l') {
+    if (this.userType == 'l') {
       this.user.password = "";
     }
     this.updateUserForm = this.formBuilder.group({
-      user_id: [this.user.user_id],
+      userId: [this.user.userId],
       login: [this.user.login, [Validators.required, Validators.minLength(5)], this.CheckLoginExistsInDB.bind(this)],
       email: [this.user.email, [Validators.email, Validators.required], this.CheckEmailExistsInDB.bind(this)],
       fullname: [this.user.fullname, [Validators.required]],
-      date_of_birth: [this.user.date_of_birth],
-      phone_number: [this.user.phone_number, [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
-      user_type: this.user_type,
+      dateOfBirth: [this.user.dateOfBirth],
+      phoneNumber: [this.user.phoneNumber, [Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{3}"), Validators.required]],
+      userType: this.userType,
       password: [this.user.password],
       password2: '',
       address: [this.user.address, [Validators.required]], 
@@ -73,7 +73,7 @@ export class UserPIModule {
 
   CheckLoginExistsInDB(control: FormControl) {
     return this.userService.IfLoginExists(control.value).pipe(
-      map(((res: bool) => res == true ? { 'loginTaken': false } : null)))
+      map(((res: Boolean) => res == true ? { 'loginTaken': false } : null)))
   };
 
   UpdateUser() {
@@ -98,11 +98,11 @@ export class UserPIModule {
     if (this.app.IsExpired("l,r"))
       return;
     if (this.app.GetUserType()=="r") {
-      localStorage.setItem("user_id", this.app.GetUserId());
+      localStorage.setItem("userId", this.app.GetUserId());
     }
     //czy bibliotekarz przeglada swoje konto czy czytelnika
     
-    this.userService.GetUserById(localStorage.getItem("user_id")).subscribe((user: User) => { this.user = user; this.IfLoginChanged(); this.pass = this.user.password },
+    this.userService.GetUserById(localStorage.getItem("userId")).subscribe((user: User) => { this.user = user; this.IfLoginChanged(); this.pass = this.user.password },
       response => { this.message = (<any>response).error.alert });
     this.lib = (localStorage.getItem("user_fullname") == this.user.fullname);
   }
@@ -126,10 +126,10 @@ export class UserPIModule {
 
   CheckEmailExistsInDB(control: FormControl) {
     return this.userService.IfEmailExists(control.value).pipe(
-      map(((res: bool) => (res == false && control.value==this.email) ? { 'emailTaken': false } : null)))
+      map(((res: Boolean) => (res == false && control.value==this.email) ? { 'emailTaken': false } : null)))
   };
 
   IfLoginChanged() {
-    this.changePass=("000000000000" + this.user.user_id).endsWith(this.user.login.toString());
+    this.changePass=("000000000000" + this.user.userId).endsWith(this.user.login.toString());
   }
 }
