@@ -35,10 +35,6 @@ namespace LIBRARY_WA.Models
         //czy istnieje w bibliotece
         [System.ComponentModel.DefaultValue(true)]
         public bool IsAvailable { get; set; }
-        public Book()
-        {
-
-        }
 
         public Book(int bookId, string title, string isbn, int author_id, string year, string language, string type, string description, bool isAvailable)
         {

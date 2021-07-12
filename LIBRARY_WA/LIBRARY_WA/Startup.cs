@@ -49,10 +49,10 @@ namespace LIBRARY_WA
 
             services.AddTransient<BookService>();
             services.AddTransient<UserService>();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<LibraryContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("LibraryDatabase")
-            ));
+                    options.UseMySql(Configuration.GetConnectionString("LibraryDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,12 +66,11 @@ namespace LIBRARY_WA
             {
                 app.UseHsts();
             }
-            app.UseRouting();
-            app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
-
+            app.UseCors(b => b.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());//("http://localhost:4200"));
+            app.UseMvc();
         }
     }
 }
