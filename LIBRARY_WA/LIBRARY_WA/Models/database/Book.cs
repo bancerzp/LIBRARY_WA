@@ -60,5 +60,10 @@ namespace LIBRARY_WA.Models
             Description = description;
             IsAvailable = isAvailable;
         }
+
+        public Book()
+        {
+
+        }
     }
 }
