@@ -114,7 +114,7 @@ namespace LIBRARY_WA.Controllers.Services
                 }
             }
 
-            List<User> user_db = _context.User.FromSqlRaw(sql).ToList();
+            List<User> user_db = _context.User.FromSql(sql).ToList();
             List<User_DTO> user_dto = new List<User_DTO>();
             foreach (User userr in user_db)
             {
