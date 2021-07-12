@@ -128,7 +128,7 @@ namespace LIBRARY_WA.Controllers.Services
                 }
 
             }
-            List<Book> book_db = _context.Book.FromSql(sql).ToList();
+            List<Book> book_db = _context.Book.FromSqlRaw(sql).ToList();
             List<Book_DTO> book_dto = new List<Book_DTO>();
             string authorFullname;
             foreach (Book book in book_db)
@@ -147,7 +147,7 @@ namespace LIBRARY_WA.Controllers.Services
 
         public void RemoveBook(int bookId)
         {
-            _context.Reservation.FromSql("DELETE from Reservation where bookId='" + bookId + "'");
+            _context.Reservation.FromSqlRaw("DELETE from Reservation where bookId='" + bookId + "'");
 
 
             foreach (Volume volume in _context.Volume.Where(a => a.BookId == bookId))
@@ -361,7 +361,7 @@ namespace LIBRARY_WA.Controllers.Services
         public List<Suggestion_DTO> GetSuggestion(int userId)
         {
             var sql = "CALL Get_suggestion(" + userId + ")";
-            _context.Database.ExecuteSqlCommand(sql);
+            _context.Database.ExecuteSqlRaw(sql);
             List<Suggestion> suggestion = _context.Suggestion.ToList();
             List<Suggestion_DTO> suggestion_dto = new List<Suggestion_DTO>();
 
