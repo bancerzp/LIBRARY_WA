@@ -26,7 +26,7 @@ namespace LIBRARY_WA
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()//WithOrigins("http://localhost:4200")
+                    builder => builder.AllowAnyOrigin()//WithOrigins("http://localhost:4200/")
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
@@ -41,8 +41,8 @@ namespace LIBRARY_WA
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
 
-                        ValidIssuer = "http://localhost:5000",
-                        ValidAudience = "http://localhost:5000",
+                        ValidIssuer = "http://localhost:5000/",
+                        ValidAudience = "http://localhost:5000/",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]))
                     };
                 });

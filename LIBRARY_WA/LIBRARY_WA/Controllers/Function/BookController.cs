@@ -16,29 +16,12 @@ namespace LIBRARY_WA.Data
     public class BookController : ControllerBase
     {
         private BookService _bookService;
+        private RentingService _rentingService;
 
-        public BookController(BookService bookService)
+        public BookController(BookService bookService, RentingService rentingService)
         {
             _bookService = bookService;
-        }
-
-        // get data to combobox
-        [HttpGet]
-        public List<String> GetAuthor()
-        {
-            return _bookService.GetAuthorsFullname();
-        }
-
-        [HttpGet]
-        public List<String> GetBookType()
-        {
-            return _bookService.GetBookTypes();
-        }
-
-        [HttpGet]
-        public List<String> GetLanguage()
-        {
-            return _bookService.GetLanguages();
+            _rentingService = rentingService;
         }
 
         [HttpGet("{isbn}")]
@@ -54,7 +37,7 @@ namespace LIBRARY_WA.Data
         //BOOK function
 
         [HttpPost, Authorize(Roles = "l")]
-        public ActionResult<Book_DTO> AddBook([FromBody] Book_DTO book)
+        public ActionResult<BookDTO> AddBook([FromBody] BookDTO book)
         {
             if (!ModelState.IsValid)
             {
@@ -71,14 +54,14 @@ namespace LIBRARY_WA.Data
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Book_DTO> GetBookById([FromRoute] int id)
+        public ActionResult<BookDTO> GetBookById([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Book_DTO book = _bookService.GetBookById(id);
+            BookDTO book = _bookService.GetBookById(id);
 
             if (book == null)
             {
@@ -89,14 +72,14 @@ namespace LIBRARY_WA.Data
         }
 
         [HttpGet("{id}")]
-        public ActionResult<List<Volume_DTO>> GetVolumeByBookId([FromRoute] int id)
+        public ActionResult<List<VolumeDTO>> GetVolumeByBookId([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            List<Volume_DTO> volume = _bookService.GetVolumeByBookId(id);
+            List<VolumeDTO> volume = _bookService.GetVolumeByBookId(id);
 
             if (volume == null)
             {
@@ -106,9 +89,8 @@ namespace LIBRARY_WA.Data
             return Ok(volume);
         }
 
-
         [HttpPost]
-        public ActionResult<Book_DTO> SearchBook([FromBody] String[] search)
+        public ActionResult<BookDTO> SearchBook([FromBody] String[] search)
         {
             if (!ModelState.IsValid)
             {
@@ -116,7 +98,6 @@ namespace LIBRARY_WA.Data
             }
             return Ok(_bookService.SearchBook(search));
         }
-
 
         [HttpDelete("{id}"), Authorize(Roles = "l")]
         public ActionResult RemoveBook([FromRoute] int id)
@@ -131,7 +112,7 @@ namespace LIBRARY_WA.Data
                 return NotFound(new { alert = "Nie znaleziono książki o danym id." });
             }
 
-            if (!_bookService.IsRentExist(id))
+            if (!_rentingService.IsRentExist(id))
             {
                 return NotFound(new { alert = "Dana książka jest wypożyczona. Nie można jej usunąć" });
             }
@@ -140,18 +121,16 @@ namespace LIBRARY_WA.Data
             return Ok();
         }
 
-
-
         //Volume function
         [HttpPost, Authorize(Roles = "l")]//, ]
-        public ActionResult<Volume_DTO> AddVolume([FromBody] int id)
+        public ActionResult<VolumeDTO> AddVolume([FromBody] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Volume_DTO volume = _bookService.AddVolume(id);
+            VolumeDTO volume = _bookService.AddVolume(id);
             return CreatedAtAction("AddVolume", new { id = volume.VolumeId }, volume);
         }
         /*
@@ -172,7 +151,7 @@ namespace LIBRARY_WA.Data
 
 
         [HttpDelete("{id}"), Authorize(Roles = "l")]//
-        public ActionResult<Volume_DTO> RemoveVolume([FromRoute] int id)
+        public ActionResult<VolumeDTO> RemoveVolume([FromRoute] int id)
         {
             //jeśli ma wypożyczone książki to komunikat, że nie można usunąć użytkownika bo ma nie wszystkie książki oddane, 
             //a jesli usunięty to zmienia isValid na false
@@ -192,68 +171,6 @@ namespace LIBRARY_WA.Data
             return Ok();
         }
 
-
-        [HttpPut, Authorize(Roles = "l,r")]
-        public ActionResult<Reservation_DTO> ReserveBook([FromBody] int[] data)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            string answear = _bookService.ReserveBookCheckCondition(data);
-            if (answear != "")
-            {
-                if (answear == "Użytkownik ma już zarezerwowaną tę książkę!")
-                {
-                    return BadRequest(new { alert = answear });
-                }
-                return NotFound(new { alert = answear });
-            }
-
-
-            return Ok(_bookService.ReserveBook(data));
-        }
-
-        [HttpPut, Authorize(Roles = "l")] //, 
-        public ActionResult RentBook([FromBody] int[] reservationId)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (!_bookService.IsBlocked(reservationId[0]))
-            {
-                return BadRequest(new { alert = "Nie można wypożyczyć książki. Użytkownik jest zablokowany!" });
-            }
-
-            string answear = _bookService.RentBookCheckCondition(reservationId);
-            if (answear != "")
-            {
-                return NotFound(new { alert = answear });
-            }
-            _bookService.RentBook(reservationId);
-            return Ok();
-        }
-
-        [HttpPost, Authorize(Roles = "l")] //, , 
-        public async Task<IActionResult> ReturnBook([FromBody] int[] rentId)
-        {
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (_bookService.ReturnBookCheckCondition(rentId))
-            {
-                return NotFound(new { alert = "Nie ma takiego wypożyczenia" });
-            }
-
-            await _bookService.ReturnBook(rentId);
-            return Ok(new { message = "Książka została poprawnie zwrócona" });
-        }
-
         [HttpGet("{userId}"), Authorize(Roles = "l,r")]
         public async Task<IActionResult> GetSuggestion([FromRoute] int userId)
         {
@@ -267,14 +184,13 @@ namespace LIBRARY_WA.Data
             return Ok(suggestion);
         }
 
-
         private bool BookExists(int bookId)
         {
             return _bookService.BookExists(bookId);
         }
 
         [HttpPut, Authorize(Roles = "l")]
-        public async Task<IActionResult> UpdateBook([FromBody] Book_DTO book)
+        public async Task<IActionResult> UpdateBook([FromBody] BookDTO book)
         {
             if (!ModelState.IsValid)
             {

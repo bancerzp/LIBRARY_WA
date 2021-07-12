@@ -69,11 +69,4 @@ export class LoginComponent implements OnInit {
       }, response => { this.message = (<any>response).error.alert;this.valid=false});
     this.submitted = true;
   }
-
- 
   }
-
-
-
-
-

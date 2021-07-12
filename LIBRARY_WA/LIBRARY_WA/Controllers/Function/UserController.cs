@@ -18,16 +18,13 @@ namespace LIBRARY_WA.Controllers
     public class UserController : ControllerBase
     {
         public IConfiguration Configuration { get; }
-
-
         private readonly UserService _userService;
 
-        public UserController(UserService _userService, IConfiguration configuration)
+        public UserController(UserService userService, IConfiguration configuration)
         {
             Configuration = configuration;
-            this._userService = _userService;
+            _userService = userService;
         }
-
 
         //----Data verifying
         [HttpGet("{email}")]
@@ -45,39 +42,35 @@ namespace LIBRARY_WA.Controllers
         [HttpGet("{login}")]
         public IActionResult IfLoginExists([FromRoute] string login)
         {
-            string login2 = login.Replace("'", "");
             return Ok(_userService.IfLoginExists(login));
         }
 
-
         // GET: api/User
         [HttpPost]
-        public IActionResult IsLogged([FromBody] User_DTO userData)
+        public IActionResult IsLogged([FromBody] UserDTO userData)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(new { alert = "Nieprawidłowe dane logowania" });
             }
 
-            if (!_userService.IsBlocked(userData))
-            {
-                return BadRequest(new { alert = "Użytkownik jest zablokowany. Prosimy o kontakt z biblioteką." });
-            }
+            var user = _userService.GetLoggedInfo(userData.Login, userData.Password);
 
-            if (_userService.IsLoggedCheckData(userData))
-            {
-                var toReturn = _userService.IsLogged(userData);
-                return Ok(new { Token = toReturn.Token, id = toReturn.id, userType = toReturn.userType, fullname = toReturn.fullname, expires = toReturn.expires });
-            }
-            else
+            if (user is null)
             {
                 return Unauthorized();
             }
 
+            if (userData.IsValid)
+            {
+                return BadRequest(new { alert = "Użytkownik jest zablokowany. Prosimy o kontakt z biblioteką." });
+            }
+
+            return Ok(user);
         }
 
         [HttpPut, Authorize(Roles = "l")]
-        public ActionResult ChangeUserStatus(Status_DTO status)
+        public ActionResult ChangeUserStatus(StatusDTO status)
         {
             if (!ModelState.IsValid)
             {
@@ -98,7 +91,7 @@ namespace LIBRARY_WA.Controllers
 
             var user = _userService.GetUserById(id);
 
-            if (user == null)
+            if (user is null)
             {
                 return NotFound(new { alert = "Użytkownik o danym id nie istnieje!" });
             }
@@ -106,23 +99,20 @@ namespace LIBRARY_WA.Controllers
             return Ok(user);
         }
 
-
-
-        [HttpPost, Authorize(Roles = "l")]
-        public ActionResult<User_DTO> SearchUser([FromBody] String[] search)
+        [HttpPost]
+      //  [HttpPost, Authorize(Roles = "l")]
+        public ActionResult<UserDTO> SearchUser([FromBody] String[] search)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-
             return Ok(_userService.SearchUser(search));
         }
 
-
         [HttpPost, Authorize(Roles = "l")]
-        public async Task<IActionResult> AddUser([FromBody] User_DTO user)
+        public async Task<IActionResult> AddUser([FromBody] UserDTO user)
         {
             if (!ModelState.IsValid)
             {
@@ -157,9 +147,8 @@ namespace LIBRARY_WA.Controllers
             return Ok();
         }
 
-
         [HttpGet("{id}"), Authorize]
-        public ActionResult<IEnumerable<Rent_DTO>> GetRent([FromRoute] int id)
+        public ActionResult<IEnumerable<RentDTO>> GetRent([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -169,7 +158,7 @@ namespace LIBRARY_WA.Controllers
         }
 
         [HttpGet("{id}"), Authorize]
-        public ActionResult<IEnumerable<Reservation_DTO>> GetReservation([FromRoute] int id)
+        public ActionResult<IEnumerable<ReservationDTO>> GetReservation([FromRoute] int id)
         {
 
             if (!ModelState.IsValid)
@@ -180,7 +169,7 @@ namespace LIBRARY_WA.Controllers
         }
 
         [HttpGet("{id}"), Authorize]
-        public ActionResult<IEnumerable<Renth_DTO>> GetRenth([FromRoute] int id)
+        public ActionResult<IEnumerable<RenthDTO>> GetRenth([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -207,9 +196,8 @@ namespace LIBRARY_WA.Controllers
             return Ok(id);
         }
 
-
         [HttpPut]
-        public ActionResult UpdateUser([FromBody] User_DTO user)
+        public ActionResult UpdateUser([FromBody] UserDTO user)
         {
             if (!ModelState.IsValid)
             {
@@ -228,13 +216,12 @@ namespace LIBRARY_WA.Controllers
         }
 
         [HttpPut]
-        public ActionResult ResetPassword([FromBody] User_DTO user)
+        public ActionResult ResetPassword([FromBody] UserDTO user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
 
             try
             {
@@ -242,7 +229,6 @@ namespace LIBRARY_WA.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-
             }
 
             return NoContent();

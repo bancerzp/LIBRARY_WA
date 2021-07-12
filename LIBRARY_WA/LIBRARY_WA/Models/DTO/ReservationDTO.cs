@@ -2,7 +2,7 @@
 
 namespace LIBRARY_WA.Models
 {
-    public class Reservation_DTO
+    public class ReservationDTO
     {
         public int ReservationId { get; set; }
         public int UserId { get; set; }
@@ -16,7 +16,7 @@ namespace LIBRARY_WA.Models
         public int Queue { get; set; }
         public bool IsActive { get; set; }
 
-        public Reservation_DTO(int userId,string title,string isbn, int bookId, int volumeId, DateTime startDate, DateTime expireDate, int queue,bool isActive)
+        public ReservationDTO(int userId,string title,string isbn, int bookId, int volumeId, DateTime startDate, DateTime expireDate, int queue,bool isActive)
         {
             UserId = userId;
             Isbn = isbn;
@@ -29,7 +29,7 @@ namespace LIBRARY_WA.Models
             Title = title;
         }
 
-        public Reservation_DTO(int reservationId, int userId, string title, string isbn, int bookId, int volumeId, DateTime startDate, DateTime expireDate, int queue, bool isActive)
+        public ReservationDTO(int reservationId, int userId, string title, string isbn, int bookId, int volumeId, DateTime startDate, DateTime expireDate, int queue, bool isActive)
         {
             ReservationId = reservationId;
             UserId = userId;

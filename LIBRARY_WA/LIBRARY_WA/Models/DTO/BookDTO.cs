@@ -2,7 +2,7 @@
 
 namespace LIBRARY_WA.Models
 {
-    public class Book_DTO
+    public class BookDTO
     {
         public int BookId { get; set; }
 
@@ -34,7 +34,7 @@ namespace LIBRARY_WA.Models
         [System.ComponentModel.DefaultValue(true)]
         public bool IsAvailable { get; set; }
 
-        public Book_DTO(int bookId, string title, string isbn, string authorFullname, string year, string language, string type, string description, bool isAvailable)
+        public BookDTO(int bookId, string title, string isbn, string authorFullname, string year, string language, string type, string description, bool isAvailable)
         {
             BookId = bookId;
             Title = title;

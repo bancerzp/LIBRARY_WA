@@ -2,7 +2,7 @@
 
 namespace LIBRARY_WA.Models
 {
-    public class Rent_DTO
+    public class RentDTO
     {
         public int RentId { get; set; }
         public int UserId { get; set; }
@@ -13,7 +13,7 @@ namespace LIBRARY_WA.Models
         public DateTime StartDate { get; set; }
         public DateTime ExpireDate { get; set; }
 
-        public Rent_DTO(int userId, int bookId, string title, string isbn, int volumeId, DateTime startDate, DateTime expireDate)
+        public RentDTO(int userId, int bookId, string title, string isbn, int volumeId, DateTime startDate, DateTime expireDate)
         {
             UserId = userId;
             BookId = bookId;
@@ -24,7 +24,7 @@ namespace LIBRARY_WA.Models
             ExpireDate = expireDate;
         }
 
-        public Rent_DTO(int rentId, int userId, int bookId, string title, string isbn, int volumeId, DateTime startDate, DateTime expireDate)
+        public RentDTO(int rentId, int userId, int bookId, string title, string isbn, int volumeId, DateTime startDate, DateTime expireDate)
         {
             RentId = rentId;
             UserId = userId;

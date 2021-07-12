@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LIBRARY_WA.Models
 {
-    public class User_DTO
+    public class UserDTO
     {
         public int UserId { get; set; }
         [MinLength(5)]
@@ -18,7 +18,7 @@ namespace LIBRARY_WA.Models
         public string Address { get; set; }
         public bool IsValid { get; set; }
 
-        public User_DTO(int userId, string login, string password, string userType, string fullname, DateTime dateOfBirth, string phoneNumber, string email, string address, bool isValid)
+        public UserDTO(int userId, string login, string password, string userType, string fullname, DateTime dateOfBirth, string phoneNumber, string email, string address, bool isValid)
         {
             UserId = userId;
             Login = login;
