@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using LIBRARY_WA.Models;
+using Library.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
-using LIBRARY_WA.Models.DTO;
+using Library.Models.DTO;
 
-namespace LIBRARY_WA.Controllers.Services
+namespace Library.Services
 {
     public class UserService
     {

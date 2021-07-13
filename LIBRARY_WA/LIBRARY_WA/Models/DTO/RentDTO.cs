@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LIBRARY_WA.Models
+namespace Library.Models
 {
     public class RentDTO
     {

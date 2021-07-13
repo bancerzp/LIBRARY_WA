@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LIBRARY_WA.Models;
+using Library.Models;
 using Microsoft.EntityFrameworkCore.Internal;
-using LIBRARY_WA.Models.database;
+using Library.Models.database;
 
-namespace LIBRARY_WA.Controllers.Services
+namespace Library.Services
 {
     public class BookService : ControllerBase
     {

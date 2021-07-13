@@ -1,9 +1,9 @@
-﻿using LIBRARY_WA.Controllers.Services;
+﻿using Library.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 
-namespace LIBRARY_WA.Controllers.Function
+namespace Library.Controllers
 {
     public class DictionaryController
     {

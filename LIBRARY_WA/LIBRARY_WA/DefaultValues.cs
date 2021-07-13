@@ -1,4 +1,4 @@
-﻿namespace LIBRARY_WA
+﻿namespace Library
 {
     public static class DefaultValues
     {

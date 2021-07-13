@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 
-namespace LIBRARY_WA.Controllers.Services
+namespace Library.Services
 {
     public class DictionaryService : ControllerBase
     {

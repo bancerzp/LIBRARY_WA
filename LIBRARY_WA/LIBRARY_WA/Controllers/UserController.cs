@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LIBRARY_WA.Models;
+using Library.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
-using LIBRARY_WA.Controllers.Services;
-using LIBRARY_WA.Models.DTO;
+using Library.Services;
+using Library.Models.DTO;
 
-namespace LIBRARY_WA.Controllers
+namespace Library.Controllers
 {
     [EnableCors("CorsPolicy")]
     [Route("api/[controller]/[action]")]

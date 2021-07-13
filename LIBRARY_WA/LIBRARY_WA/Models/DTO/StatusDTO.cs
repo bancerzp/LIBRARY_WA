@@ -1,4 +1,4 @@
-﻿namespace LIBRARY_WA.Models.DTO
+﻿namespace Library.Models.DTO
 {
     public class StatusDTO
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace LIBRARY_WA.Models
+namespace Library.Models
 {
     public class UserDTO
     {

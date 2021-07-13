@@ -1,4 +1,4 @@
-﻿namespace LIBRARY_WA.Models
+﻿namespace Library.Models
 {
     public class VolumeDTO
     {

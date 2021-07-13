@@ -1,10 +1,10 @@
-﻿using LIBRARY_WA.Models;
+﻿using Library.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 
-namespace LIBRARY_WA.Controllers.Services
+namespace Library.Services
 {
     public class ReservationService : ControllerBase
     {

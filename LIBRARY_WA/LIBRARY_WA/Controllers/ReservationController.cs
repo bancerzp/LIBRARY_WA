@@ -1,10 +1,10 @@
-﻿using LIBRARY_WA.Controllers.Services;
-using LIBRARY_WA.Models;
+﻿using Library.Services;
+using Library.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LIBRARY_WA.Controllers.Function
+namespace Library.Controllers
 {
     [EnableCors("CorsPolicy")]
     [Route("api/[controller]/[action]")]

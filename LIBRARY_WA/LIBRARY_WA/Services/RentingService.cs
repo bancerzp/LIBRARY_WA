@@ -1,11 +1,11 @@
-﻿using LIBRARY_WA.Models;
+﻿using Library.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LIBRARY_WA.Controllers.Services
+namespace Library.Services
 {
     public class RentingService : ControllerBase
     {

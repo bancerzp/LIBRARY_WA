@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using LIBRARY_WA.Models;
-using LIBRARY_WA.Models.database;
+using Library.Models;
+using Library.Models.database;
 
 public class LibraryContext : DbContext
 {
