@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Library.Models
 {
-    public class Book
+    public class BookDTO
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BookId { get; set; }
 
         [MaxLength(50, ErrorMessage = "Za długi tytuł")]
@@ -16,7 +14,7 @@ namespace Library.Models
         public string Isbn { get; set; }
 
         [MaxLength(100, ErrorMessage = "Za długie nazwisko")]
-        public int AuthorId { get; set; }
+        public string AuthorFullname { get; set; }
 
         [RegularExpression(@"\d{4}", ErrorMessage = "Niepoprawny format roku wydania książki")]
         public string Year { get; set; }
@@ -36,34 +34,17 @@ namespace Library.Models
         [System.ComponentModel.DefaultValue(true)]
         public bool IsAvailable { get; set; }
 
-        public Book(int bookId, string title, string isbn, int author_id, string year, string language, string type, string description, bool isAvailable)
+        public BookDTO(int bookId, string title, string isbn, string authorFullname, string year, string language, string type, string description, bool isAvailable)
         {
             BookId = bookId;
             Title = title;
             Isbn = isbn;
-            AuthorId = author_id;
+            AuthorFullname = authorFullname;
             Year = year;
             Language = language;
             Type = type;
             Description = description;
             IsAvailable = isAvailable;
-        }
-
-        public Book(string title, string isbn, int author_id, string year, string language, string type, string description, bool isAvailable)
-        {
-            Title = title;
-            Isbn = isbn;
-            AuthorId = author_id;
-            Year = year;
-            Language = language;
-            Type = type;
-            Description = description;
-            IsAvailable = isAvailable;
-        }
-
-        public Book()
-        {
-
         }
     }
 }

@@ -4,6 +4,8 @@ import { Reservation } from '../../../_models/reservation';
 import { UserService } from '../../../_services/user.service';
 import { AppComponent } from '../../../app.component';
 import { BookService } from '../../../_services/book.service';
+import { RentService } from '../../../_services/rent.service';
+import { ReservationService } from '../../../_services/reservation.service';
 
 @Component({
   selector: 'app-book-reservation',
@@ -26,7 +28,9 @@ export class BookReservationModule {
   constructor(
     private userService: UserService,
     private app: AppComponent,
-    private bookService: BookService) {
+    private bookService: BookService,
+    private rentService: RentService,
+    private reservationService: ReservationService) {
   }
 
   ngOnInit() {
@@ -42,7 +46,7 @@ export class BookReservationModule {
     if (this.app.IsExpired("l"))
       return;
     //błędy wyłapać
-    this.bookService.RentBook(reservationId).subscribe(data => {
+    this.rentService.RentBook(reservationId).subscribe(data => {
         this.reservation = this.reservation.filter(reservation => reservation.reservationId != reservationId);
           this.message = "Książka została poprawnie wypożyczona";
         },
@@ -56,7 +60,7 @@ export class BookReservationModule {
     if (this.app.GetUserType() == "r") {
       localStorage.setItem("userId", this.app.GetUserId()) 
     }
-    this.userService.GetReservation(localStorage.getItem("userId")).subscribe((reservations: any[]) => this.reservation = reservations,
+    this.reservationService.GetReservation(localStorage.getItem("userId")).subscribe((reservations: any[]) => this.reservation = reservations,
       response => { this.message = (<any>response).error.alert });
   }
 
@@ -64,7 +68,7 @@ export class BookReservationModule {
     if (this.app.IsExpired("l,r"))
       return;
     this.submitted = false;
-    this.userService.CancelReservation(reservationId).subscribe(data => {
+    this.reservationService.CancelReservation(reservationId).subscribe(data => {
       this.reservation = this.reservation.filter(reservation => reservation.reservationId != reservationId);
       this.message="Rezerwacja została anulowana";
     },

@@ -2,6 +2,7 @@ import { NgModule, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Rent } from '../../../_models/Rent';
 import { UserService } from '../../../_services/user.service';
+import { RentService } from '../../../_services/rent.service';
 import { BookService } from '../../../_services/book.service';
 import { AppComponent } from '../../../app.component';
 
@@ -27,6 +28,7 @@ export class CurrentRentModule {
   constructor(
     private userService: UserService,
     private bookService: BookService,
+    private rentService: RentService,
     private app: AppComponent,) {
   }
 
@@ -45,7 +47,7 @@ export class CurrentRentModule {
     if (this.app.GetUserType() == "r") {
       localStorage.setItem("userId", this.app.GetUserId())
     }
-    this.userService.GetRent(localStorage.getItem("userId")).subscribe((rents: any[]) => this.rent = rents,
+    this.rentService.GetRent(localStorage.getItem("userId")).subscribe((rents: any[]) => this.rent = rents,
       response => { this.message = (<any>response).error });
     this.submitted = true;
   }
@@ -54,7 +56,7 @@ export class CurrentRentModule {
     this.submitted = false;
     if (this.app.IsExpired("l"))
       return;
-    this.bookService.ReturnBook(rentId).subscribe(data => {
+    this.rentService.ReturnBook(rentId).subscribe(data => {
       this.rent = this.rent.filter(rent => rent.rentId != rentId);
       this.message = "Książka została poprawnie zwrócona";
     },
@@ -66,7 +68,7 @@ export class CurrentRentModule {
     this.submitted = false;
     if (this.app.IsExpired("l"))
       return;
-    this.bookService.ReturnBook(rentId).subscribe(data => {
+    this.rentService.ReturnBook(rentId).subscribe(data => {
       this.rent = this.rent.filter(rent => rent.rentId != rentId);
       this.message = (<any>data).message; //"Książka została poprawnie zwrócona";
     },

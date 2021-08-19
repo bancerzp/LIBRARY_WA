@@ -1,14 +1,14 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Library.Models
 {
-    public class Reservation
+    public class ReservationDTO
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ReservationId { get; set; }
         public int UserId { get; set; }
+        public string Title { get; set; }
+
+        public string Isbn { get; set; }
         public int BookId { get; set; }
         public int VolumeId { get; set; }
         public DateTime StartDate { get; set; }
@@ -16,21 +16,25 @@ namespace Library.Models
         public int Queue { get; set; }
         public bool IsActive { get; set; }
 
-        public Reservation(int userId, int bookId, int volumeId, DateTime startDate, DateTime expireDate, int queue, bool isActive)
+        public ReservationDTO(int userId,string title,string isbn, int bookId, int volumeId, DateTime startDate, DateTime expireDate, int queue,bool isActive)
         {
             UserId = userId;
+            Isbn = isbn;
             BookId = bookId;
             VolumeId = volumeId;
             StartDate = startDate;
             ExpireDate = expireDate;
             Queue = queue;
             IsActive = isActive;
+            Title = title;
         }
 
-        public Reservation(int reservationId, int userId, int bookId, int volumeId, DateTime startDate, DateTime expireDate, int queue, bool isActive)
+        public ReservationDTO(int reservationId, int userId, string title, string isbn, int bookId, int volumeId, DateTime startDate, DateTime expireDate, int queue, bool isActive)
         {
             ReservationId = reservationId;
             UserId = userId;
+            Title = title;
+            Isbn = isbn;
             BookId = bookId;
             VolumeId = volumeId;
             StartDate = startDate;

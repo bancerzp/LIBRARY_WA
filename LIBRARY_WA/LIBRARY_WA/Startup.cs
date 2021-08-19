@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using LIBRARY_WA.Controllers.Services;
+using Library.Services;
 
-namespace LIBRARY_WA
+namespace Library
 {
     public class Startup
     {
@@ -26,7 +26,7 @@ namespace LIBRARY_WA
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()//WithOrigins("http://localhost:4200")
+                    builder => builder.AllowAnyOrigin()//WithOrigins("http://localhost:4200/")
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
@@ -41,18 +41,21 @@ namespace LIBRARY_WA
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
 
-                        ValidIssuer = "http://localhost:5000",
-                        ValidAudience = "http://localhost:5000",
+                        ValidIssuer = "http://localhost:5000/",
+                        ValidAudience = "http://localhost:5000/",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]))
                     };
                 });
 
             services.AddTransient<BookService>();
             services.AddTransient<UserService>();
+            services.AddTransient<ReservationService>();
+            services.AddTransient<DictionaryService>();
+            services.AddTransient<RentingService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<LibraryContext>(options =>
-                    options.UseMySql(Configuration.GetConnectionString("LibraryDatabase")));
+                    options.UseSqlServer(Configuration.GetConnectionString("LibraryDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

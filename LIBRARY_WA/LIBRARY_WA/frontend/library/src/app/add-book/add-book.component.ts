@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BookService } from '../_services/book.service';
+import { DictionaryService } from '../_services/dictionary.service';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { Http } from '@angular/http';
 import { map } from 'rxjs/operators';
@@ -11,7 +12,7 @@ import { AppComponent } from '../app.component';
   selector: 'app-add-book',
   templateUrl: './add-book.component.html',
   styleUrls: ['./add-book.component.css'],
-  providers: [BookService, AppComponent]
+  providers: [BookService, AppComponent, DictionaryService]
 })
 export class AddBookComponent implements OnInit {
   addBookForm: FormGroup;
@@ -28,6 +29,7 @@ export class AddBookComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private http: Http,
     private bookService: BookService,
+    private dictionaryService: DictionaryService,
     private app: AppComponent) { }
 
   ngOnInit() {
@@ -80,14 +82,13 @@ export class AddBookComponent implements OnInit {
   }
 
   GetAuthor() {
-    return this.bookService.GetAuthor().subscribe((authors: any[]) => this.author = authors);
+    return this.dictionaryService.GetAuthor().subscribe((authors: any[]) => this.author = authors);
   }
   GetBookType() {
-    return this.bookService.GetBookType().subscribe((types: any[]) => this.bookType = types);
+    return this.dictionaryService.GetBookType().subscribe((types: any[]) => this.bookType = types);
   };
 
   GetLanguage() {
-    return this.bookService.GetLanguage().subscribe((languages: any[]) => this.language = languages);
+    return this.dictionaryService.GetLanguage().subscribe((languages: any[]) => this.language = languages);
   };
- 
 }

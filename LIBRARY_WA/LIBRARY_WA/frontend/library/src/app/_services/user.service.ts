@@ -74,12 +74,6 @@ export class UserService {
   public GetUserById(id) {
     return this.http.get(this.accessPointUrl + "/GetUserById/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
-  public GetRent(id) {
-    return this.http.get(this.accessPointUrl + "/GetRent/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
-  }
-  public GetReservation(id) {
-    return this.http.get(this.accessPointUrl + "/GetReservation/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
-  }
 
   public GetRenth(id) {
     return this.http.get(this.accessPointUrl + "/GetRenth/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
@@ -92,9 +86,4 @@ export class UserService {
   public update(payload) {
     return this.http.put(this.accessPointUrl + '/' + payload.id, payload, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
-
-  public CancelReservation(id) {
-    return this.http.delete(this.accessPointUrl + "/CancelReservation/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
-  }
-  
 }

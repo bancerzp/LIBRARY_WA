@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LIBRARY_WA.Models.database
+namespace Library.Models.database
 {
     public class Author
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AuthorId { get; set; }
         public string AuthorFullname { get; set; }
 

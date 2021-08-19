@@ -7,6 +7,9 @@ import { Routes, RouterModule } from '@angular/router';
 //services
 import { UserService } from './_services/user.service';
 import { BookService } from './_services/book.service';
+import { DictionaryService } from './_services/dictionary.service';
+import { RentService } from './_services/rent.service';
+import { ReservationService } from './_services/reservation.service';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -130,7 +133,7 @@ export const appRoutes: Routes = [
     HttpModule,
     HttpClientModule
   ],
-  providers: [UserService, BookService],
+  providers: [UserService, BookService, DictionaryService, RentService, ReservationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
