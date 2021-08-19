@@ -3,6 +3,8 @@ import {  FormBuilder, FormGroup } from '@angular/forms';
 import { Http, Response } from '@angular/http';
 import { BookService } from '../_services/book.service';
 import { Book } from '../_models/book';
+import { DictionaryService } from '../_services/dictionary.service';
+import { ReservationService } from '../_services/reservation.service';
 import { Volume } from '../_models/Volume';
 import { AppComponent } from '../app.component';
 import { Reservation } from '../_models/reservation';
@@ -10,7 +12,7 @@ import { Reservation } from '../_models/reservation';
   selector: 'app-search-book',
   templateUrl: './search-book.component.html',
   styleUrls: ['./search-book.component.css'],
-  providers: [BookService, AppComponent, SearchBookComponent]
+  providers: [BookService, AppComponent, SearchBookComponent, DictionaryService,ReservationService]
 })
 export class SearchBookComponent implements OnInit {
   @Output() book = new EventEmitter<Book>();
@@ -38,9 +40,10 @@ export class SearchBookComponent implements OnInit {
     private http: Http,
     private bookService: BookService,
     private app: AppComponent,
+    private dictionaryService: DictionaryService,
+    private reservationService: ReservationService,
   ) {
   }
-
 
   ngOnInit() {
     this.userType = localStorage.getItem("userType");
@@ -85,26 +88,24 @@ export class SearchBookComponent implements OnInit {
     this.submitted = true;
      this.bookService.SearchBook(this.values).subscribe((data: Book[]) => { this.bookData = data },
       response => { this.message = (<any>response).error.alert });
-   
   }
 
   clearForm() {
     Object.keys(this.searchBookForm.controls).forEach((name) => {
       this.searchBookForm.controls[name].setValue("");
     });
-
   }
 
   GetAuthor() {
-    return this.bookService.GetAuthor().subscribe((authors: Array<any>) => this.author = authors);
+    return this.dictionaryService.GetAuthor().subscribe((authors: Array<any>) => this.author = authors);
   }
 
   GetBookType() {
-    return this.bookService.GetBookType().subscribe((types: Array<any>) => this.bookType = types);
+    return this.dictionaryService.GetBookType().subscribe((types: Array<any>) => this.bookType = types);
   };
 
   GetLanguage() {
-    return this.bookService.GetLanguage().subscribe((languages: Array<any>) => this.language = languages);
+    return this.dictionaryService.GetLanguage().subscribe((languages: Array<any>) => this.language = languages);
   };
 
   ReserveBookLibrarian(bookId, userId) {
@@ -113,7 +114,7 @@ export class SearchBookComponent implements OnInit {
     if (this.app.IsExpired("l"))
       return;
    
-    this.bookService.ReserveBook(bookId, Number.parseInt(userId)).subscribe((res: any) => {
+    this.reservationService.ReserveBook(bookId, Number.parseInt(userId)).subscribe((res: any) => {
       this.reservation = res;
       this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + (<any>res).value.queue;
     },
@@ -126,14 +127,13 @@ export class SearchBookComponent implements OnInit {
     this.submitted = false;
     if (this.app.IsExpired("r"))
       return;
-    this.bookService.ReserveBook(bookId, this.app.GetUserId()).subscribe((res: any) => {
+    this.reservationService.ReserveBook(bookId, this.app.GetUserId()).subscribe((res: any) => {
       this.reservation = res;
       this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + (<any>res).value.queue;
     },
       response => { this.message = (<any>response).error.alert });
     this.submitted = true;
   }
-
   
   EditBook(bookId) {
     this.message = "";
@@ -186,5 +186,4 @@ export class UserAction {
     this.text = text;
     this.action = action;
   }
-
 }

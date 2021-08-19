@@ -1,10 +1,13 @@
 ﻿using Library.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 
 namespace Library.Controllers
 {
+    [EnableCors("CorsPolicy")]
+    [Route("api/[controller]/[action]")]
+    [ApiController]
     public class DictionaryController
     {
         private DictionaryService _dictionaryService;
@@ -14,7 +17,6 @@ namespace Library.Controllers
             _dictionaryService = dictionaryService;
         }
 
-        // get data to combobox
         [HttpGet]
         public List<string> GetAuthor()
         {
@@ -32,6 +34,5 @@ namespace Library.Controllers
         {
             return _dictionaryService.GetLanguages();
         }
-
     }
 }

@@ -27,7 +27,7 @@ namespace Library.Services
             }
 
             var reservation = _context.Reservation.Where(a => a.ReservationId == reservationId[0]).FirstOrDefault();
-            if (_context.Volume.Where(a => a.IsFree == true).Count() == 0)
+            if (_context.Volumes.Where(a => a.IsFree == true).Count() == 0)
             {
                 return "Nie ma takiego egzemplarza";
             }
@@ -38,30 +38,30 @@ namespace Library.Services
         {
             var reservation = _context.Reservation.Where(a => a.ReservationId == reservationId[0]).FirstOrDefault();
 
-            int volumeId = _context.Volume.Where(a => a.IsFree == true).FirstOrDefault().VolumeId;
+            int volumeId = _context.Volumes.Where(a => a.IsFree == true).FirstOrDefault().VolumeId;
             //zmień is free na false
-            _context.Volume.Where(a => a.IsFree == true).FirstOrDefault().IsFree = false;
+            _context.Volumes.Where(a => a.IsFree == true).FirstOrDefault().IsFree = false;
             Rent rent = new Rent(reservation.UserId, reservation.BookId, volumeId, DateTime.Now, DateTime.Now.AddMonths(1));
-            _context.Rent.Add(rent);
+            _context.Rents.Add(rent);
             _context.Reservation.Remove(reservation);
             _context.SaveChanges();
-            Book book = _context.Book.Where(a => a.BookId == reservation.BookId).FirstOrDefault();
+            Book book = _context.Books.Where(a => a.BookId == reservation.BookId).FirstOrDefault();
             return Ok(new RentDTO(reservation.UserId, book.BookId, book.Title, book.Isbn, reservation.VolumeId, reservation.StartDate, reservation.ExpireDate));
         }
 
         public bool ReturnBookCheckCondition(int[] rentId)
         {
-            return _context.Rent.Where(a => a.RentId == rentId[0]).Count() == 0;
+            return _context.Rents.Where(a => a.RentId == rentId[0]).Count() == 0;
         }
 
         public async Task<IActionResult> ReturnBook(int[] rentId)
         {
-            Rent rent = _context.Rent.Where(a => a.RentId == rentId[0]).FirstOrDefault();
-            Volume volume = _context.Volume.Where(a => a.VolumeId == rent.VolumeId).FirstOrDefault();
+            Rent rent = _context.Rents.Where(a => a.RentId == rentId[0]).FirstOrDefault();
+            Volume volume = _context.Volumes.Where(a => a.VolumeId == rent.VolumeId).FirstOrDefault();
             Reservation[] reservations = _context.Reservation.Where(a => a.BookId == rent.BookId).ToArray();
             Renth renth = new Renth(rent.UserId, rent.BookId, rent.VolumeId, rent.StartDate, DateTime.Now);
             //wstaw do historii rezerwacji
-            await _context.Renth.AddAsync(renth);
+            await _context.RentsHistory.AddAsync(renth);
             await _context.SaveChangesAsync();
 
             foreach (Reservation reservation in reservations)
@@ -76,7 +76,7 @@ namespace Library.Services
             }
 
             //usuń z rent
-            _context.Rent.Remove(rent);
+            _context.Rents.Remove(rent);
             _context.SaveChanges();
             return Ok();
         }
@@ -84,12 +84,12 @@ namespace Library.Services
         public bool IsUserBlocked(int reservationId)
         {
             Reservation reservation = _context.Reservation.Where(a => a.ReservationId == reservationId).SingleOrDefault();
-            return _context.User.Where(a => a.UserId == reservation.UserId).SingleOrDefault().IsValid;
+            return _context.Users.Where(a => a.UserId == reservation.UserId).SingleOrDefault().IsValid;
         }
 
         public bool IsRentExist(int rentId)
         {
-            return _context.Rent.Where(a => a.BookId == rentId).Any();
+            return _context.Rents.Where(a => a.BookId == rentId).Any();
         }
     }
 }

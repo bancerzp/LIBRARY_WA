@@ -8,12 +8,12 @@ public class LibraryContext : DbContext
              : base(options)
     {
     }
-    public DbSet<Book> Book { get; set; }
-    public DbSet<User> User { get; set; }
-    public DbSet<Volume> Volume { get; set; }
+    public DbSet<Book> Books { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Volume> Volumes { get; set; }
     public DbSet<Reservation> Reservation { get; set; }
-    public DbSet<Rent> Rent { get; set; }
-    public DbSet<Renth> Renth { get; set; }
+    public DbSet<Rent> Rents { get; set; }
+    public DbSet<Renth> RentsHistory { get; set; }
     public DbSet<Suggestion> Suggestion { get; set; }
-    public DbSet<Author> Author { get; set; }
+    public DbSet<Author> Authors { get; set; }
 }

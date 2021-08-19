@@ -19,28 +19,13 @@ export class BookService {
     this.headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token")  });
   }
   
-  //get data to combobox
-  public GetAuthor() {
-    return this.http.get(this.accessPointUrl + "/GetAuthor", { headers: this.headers });
-  }
-  
-  public GetBookType() {
-    return this.http.get(this.accessPointUrl + "/GetBookType", { headers: this.headers });
-  }
-
-  public GetLanguage() {
-    return this.http.get(this.accessPointUrl + "/GetLanguage", { headers: this.headers });
-  }
-
   public IfISBNExists(ISBN) {
     return this.http.get(this.accessPointUrl + '/IfISBNExists/' + ISBN, { headers: this.headers });
   }
 
   //Book function
-
   public AddBook(book) {
-    return this.http.post(this.accessPointUrl + "/AddBook", book,
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) } );
+    return this.http.post(this.accessPointUrl + "/AddBook", book, { headers: this.headers });
   }
 
   public GetBookById(bookId) {
@@ -48,57 +33,31 @@ export class BookService {
   }
 
   public UpdateBook(book) {
-    return this.http.put(this.accessPointUrl +"/UpdateBook", book,
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+    return this.http.put(this.accessPointUrl +"/UpdateBook", book, { headers: this.headers });
   }
 
   public SearchBook(book) {
-    return this.http.post(this.accessPointUrl + "/SearchBook", book,
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+    return this.http.post(this.accessPointUrl + "/SearchBook", book, { headers: this.headers });
   }
 
   public RemoveBook(id) {
-    return this.http.delete(this.accessPointUrl + "/RemoveBook/" + id,
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+    return this.http.delete(this.accessPointUrl + "/RemoveBook/" + id, { headers: this.headers });
   }
 
   //Volume function
   public AddVolume(id) {
-    return this.http.post(this.accessPointUrl + "/AddVolume/" , id,
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+    return this.http.post(this.accessPointUrl + "/AddVolume/" , id, { headers: this.headers });
   }
 
   public GetVolume() {
-    return this.http.post(this.accessPointUrl + "/GetVolume",
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+    return this.http.post(this.accessPointUrl + "/GetVolume", { headers: this.headers });
   }
 
   public GetVolumeByBookId(id) {
-    return this.http.get(this.accessPointUrl + "/GetVolumeByBookId/"+id,
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+    return this.http.get(this.accessPointUrl + "/GetVolumeByBookId/"+id, { headers: this.headers });
   }
   public RemoveVolume(id) {
-  return this.http.delete(this.accessPointUrl + "/RemoveVolume/" + id,
-    { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
-  }
-  
-    //Rezerwacje
-  public ReserveBook(bookId, userId) {
-    var values = [bookId, userId]
-    return this.http.put(this.accessPointUrl + "/ReserveBook", values,
-    { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
-  }
-
-  public RentBook(reservationId) {
-    var values = [reservationId]
-    return this.http.put(this.accessPointUrl + "/RentBook",values,
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
-  }
-
-  public ReturnBook(rentId) {
-    var values = [rentId];
-    return this.http.post(this.accessPointUrl + "/ReturnBook",values,
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
+  return this.http.delete(this.accessPointUrl + "/RemoveVolume/" + id, { headers: this.headers });
   }
 
   public GetSuggestion(userId) {
@@ -106,5 +65,4 @@ export class BookService {
       { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
 
   }
-  
 }

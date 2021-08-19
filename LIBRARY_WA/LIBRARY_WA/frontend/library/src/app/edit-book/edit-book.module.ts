@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Http } from '@angular/http';
 import { BookService } from '../_services/book.service';
+import { DictionaryService } from '../_services/dictionary.service';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Book } from '../_models/book';
@@ -12,7 +13,7 @@ import { AppComponent } from '../app.component';
 @Component({
   selector: 'app-edit-book',
   templateUrl: './edit-book.component.html',
-  providers: [BookService, AppComponent]
+  providers: [BookService, AppComponent,DictionaryService]
 })
 
 @NgModule({
@@ -31,10 +32,10 @@ export class EditBookComponent {
   public message: String;
   public isbn: String;
 
-
   constructor(private formBuilder: FormBuilder,
   private http: Http,
   private bookService: BookService,
+  private dictionaryService: DictionaryService,
   private route: ActivatedRoute,
   private app: AppComponent) { }
   submitted: Boolean;
@@ -74,14 +75,14 @@ export class EditBookComponent {
   }
 
   GetAuthor() {
-    return this.bookService.GetAuthor().subscribe((authors: any[]) => this.author = authors);
+    return this.dictionaryService.GetAuthor().subscribe((authors: any[]) => this.author = authors);
   }
   GetBookType() {
-    return this.bookService.GetBookType().subscribe((types: any[]) => this.bookType = types);
+    return this.dictionaryService.GetBookType().subscribe((types: any[]) => this.bookType = types);
   };
 
   GetLanguage() {
-    return this.bookService.GetLanguage().subscribe((languages: any[]) => this.language = languages);
+    return this.dictionaryService.GetLanguage().subscribe((languages: any[]) => this.language = languages);
   };
 
   GetVolumeByBookId() {
@@ -107,7 +108,6 @@ export class EditBookComponent {
     this.bookService.UpdateBook(this.book).subscribe(data => {
       this.message=("Książki została poprawnie zapisana");
     }, response => { this.message = (<any>response).error });
-
   }
 
   GetBookById() {
@@ -116,5 +116,4 @@ export class EditBookComponent {
     return this.bookService.GetBookById(localStorage.getItem("bookId")).subscribe(
       (bookGet: Book) => this.book = bookGet, response => { this.message = (<any>response).error.alert });
   }
-
 }

@@ -16,17 +16,17 @@ namespace Library.Services
 
         public List<string> GetAuthorsFullname()
         {
-            return _context.Author.Select(a => a.AuthorFullname).ToList();
+            return _context.Authors.Select(a => a.AuthorFullname).ToList();
         }
 
         public List<string> GetBookTypes()
         {
-            return _context.Book.Select(a => a.Type).Distinct().ToList();
+            return _context.Books.Select(a => a.Type).Distinct().ToList();
         }
 
         public List<string> GetLanguages()
         {
-            return _context.Book.Select(a => a.Language).Distinct().ToList();
+            return _context.Books.Select(a => a.Language).Distinct().ToList();
         }
     }
 }

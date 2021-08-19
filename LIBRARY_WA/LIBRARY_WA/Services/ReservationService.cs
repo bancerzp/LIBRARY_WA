@@ -20,9 +20,9 @@ namespace Library.Services
         public ActionResult<ReservationDTO> ReserveBook(int[] data)
         {
 
-            Book book = _context.Book.Where(a => a.BookId == (data[0])).FirstOrDefault();
+            Book book = _context.Books.Where(a => a.BookId == (data[0])).FirstOrDefault();
 
-            int volumeId = _context.Volume.Where(a => a.BookId == data[0]).FirstOrDefault().VolumeId;
+            int volumeId = _context.Volumes.Where(a => a.BookId == data[0]).FirstOrDefault().VolumeId;
 
             var startDate = DateTime.Now;
             DateTime expireDate;
@@ -30,7 +30,7 @@ namespace Library.Services
             var isActive = true;
 
 
-            if (_context.Volume.Where(a => a.BookId == data[0] && a.IsFree == true).Count() == 0)
+            if (_context.Volumes.Where(a => a.BookId == data[0] && a.IsFree == true).Count() == 0)
             {
                 if (_context.Reservation.Where(a => a.BookId == data[0]).OrderByDescending(a => a.Queue).FirstOrDefault() == null)
                     queue = 0;
@@ -41,9 +41,9 @@ namespace Library.Services
             }
             else
             {
-                volumeId = _context.Volume.Where(a => a.BookId == Convert.ToInt32(data[0]) && a.IsFree == true).FirstOrDefault().VolumeId;
+                volumeId = _context.Volumes.Where(a => a.BookId == Convert.ToInt32(data[0]) && a.IsFree == true).FirstOrDefault().VolumeId;
                 expireDate = DateTime.Now.AddDays(14);
-                _context.Volume.Where(a => a.VolumeId == volumeId).FirstOrDefault().IsFree = false;
+                _context.Volumes.Where(a => a.VolumeId == volumeId).FirstOrDefault().IsFree = false;
                 queue = 0;
 
             }
@@ -54,19 +54,19 @@ namespace Library.Services
             _context.SaveChanges();
 
 
-            Book b = _context.Book.Where(a => a.BookId == reservation.BookId).FirstOrDefault();
+            Book b = _context.Books.Where(a => a.BookId == reservation.BookId).FirstOrDefault();
             return new ReservationDTO(reservation.UserId, b.Title, b.Isbn, b.BookId, reservation.VolumeId, reservation.StartDate, reservation.ExpireDate, reservation.Queue + 1, reservation.IsActive);
         }
 
         public string ReserveBookCheckCondition(int[] data)
         {
 
-            if (_context.Book.Where(a => a.BookId == data[0]).Count() == 0)
+            if (_context.Books.Where(a => a.BookId == data[0]).Count() == 0)
             {
                 return "Nie znaleziono książki o podanym id";
             }
 
-            if (_context.User.Where(a => a.UserId == (data[1])).Count() == 0)
+            if (_context.Users.Where(a => a.UserId == (data[1])).Count() == 0)
             {
                 return "Nie znaleziono użytkownika o podanym id";
             }
@@ -76,7 +76,7 @@ namespace Library.Services
                 return "Użytkownik ma już zarezerwowaną tę książkę!";
             }
 
-            if (_context.Volume.Where(a => a.BookId == data[0]).Count() == 0)
+            if (_context.Volumes.Where(a => a.BookId == data[0]).Count() == 0)
             {
                 return "Książka nie ma żadnych egzemplarzy!";
             }

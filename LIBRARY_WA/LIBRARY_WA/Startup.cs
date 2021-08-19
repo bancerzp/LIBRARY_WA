@@ -49,6 +49,9 @@ namespace Library
 
             services.AddTransient<BookService>();
             services.AddTransient<UserService>();
+            services.AddTransient<ReservationService>();
+            services.AddTransient<DictionaryService>();
+            services.AddTransient<RentingService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<LibraryContext>(options =>

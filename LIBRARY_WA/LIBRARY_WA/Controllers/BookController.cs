@@ -36,7 +36,7 @@ namespace Library.Controllers
 
         //BOOK function
 
-        [HttpPost, Authorize(Roles = "l")]
+        [HttpPost]//, Authorize(Roles = "l")]
         public ActionResult<BookDTO> AddBook([FromBody] BookDTO book)
         {
             if (!ModelState.IsValid)
@@ -182,11 +182,6 @@ namespace Library.Controllers
             var suggestion = _bookService.GetSuggestion(userId);
 
             return Ok(suggestion);
-        }
-
-        private bool BookExists(int bookId)
-        {
-            return _bookService.BookExists(bookId);
         }
 
         [HttpPut, Authorize(Roles = "l")]
