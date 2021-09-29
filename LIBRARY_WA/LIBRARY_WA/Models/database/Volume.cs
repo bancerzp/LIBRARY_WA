@@ -5,7 +5,7 @@ namespace Library.Models
 {
     public class Volume
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         public int VolumeId { get; set; }
         public int BookId { get; set; }
         public bool IsFree { get; set; }
