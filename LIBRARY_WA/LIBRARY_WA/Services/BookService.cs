@@ -81,7 +81,7 @@ namespace Library.Services
         public List<BookDTO> SearchBook(string[] search)
         {
             string[] name = { "bookId", "ISBN", "title", "author_id", "year", "language", "type" };
-            var sql = "Select * from Book where isAvailable=true ";
+            var sql = "Select * from Books where isAvailable=1 ";
             for (int i = 0; i < search.Length; i++)
             {
                 if (search[i] != "%")
