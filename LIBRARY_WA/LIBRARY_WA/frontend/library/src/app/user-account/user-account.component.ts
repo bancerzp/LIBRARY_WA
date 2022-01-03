@@ -1,9 +1,6 @@
+import { appRoutes } from '../app.module'
 import { Component, OnInit, NgModule } from '@angular/core';
-import { AppModule, appRoutes } from '../app.module'
 import { RouterModule } from '@angular/router';
-import { Renth } from '../_models/Renth';
-import { Rent } from '../_models/Rent';
-import { Reservation } from '../_models/reservation';
 import { User } from '../_models/User';
 
 @Component({
@@ -16,9 +13,6 @@ import { User } from '../_models/User';
   imports: [RouterModule.forRoot(appRoutes)]
 })
 export class UserAccountComponent implements OnInit {
-  rentData: Rent[];
-  renthData: Renth[];
-  reservationData: Reservation[];
   userData: User[];
   constructor() { }
 

@@ -1,11 +1,11 @@
-import { NgModule, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-import { Http } from '@angular/http';
 import { UserService } from '../../../_services/user.service';
 import { map } from 'rxjs/operators';
 import { User } from '../../../_models/User';
 import { AppComponent } from '../../../app.component';
+import { Http } from '@angular/http';
+import { Component, NgModule } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-pi',

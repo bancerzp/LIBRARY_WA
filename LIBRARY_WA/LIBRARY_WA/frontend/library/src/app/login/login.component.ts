@@ -1,13 +1,10 @@
-import { Component, OnInit, Output, EventEmitter, NgModule } from '@angular/core';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
-import { FormGroup, FormsModule, FormBuilder, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import { UserService } from '../_services/user.service';
 import { User } from '../_models/User';
 import { appRoutes } from '../app.module';
 import { AppComponent } from "../app.component";
+import { Component, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',

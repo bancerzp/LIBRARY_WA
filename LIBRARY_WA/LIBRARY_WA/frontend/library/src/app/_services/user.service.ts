@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UserService {
@@ -73,10 +73,6 @@ export class UserService {
   //-------------------------user Account
   public GetUserById(id) {
     return this.http.get(this.accessPointUrl + "/GetUserById/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
-  }
-
-  public GetRenth(id) {
-    return this.http.get(this.accessPointUrl + "/GetRenth/" + id, { headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': "Bearer " + localStorage.getItem("token") }) });
   }
 
   public remove(payload) {

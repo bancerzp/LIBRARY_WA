@@ -163,100 +163,14 @@ namespace Library.Services
                 return ("Użytkownik nie istnieje!");
             }
 
-            if (_context.Rents.Where(a => a.UserId.Equals(id)).Any())
-            {
-                return "Nie można usunąć użytkownika , bo ma nieoddane książki!!";
-            }
             return "";
         }
 
         public void RemoveUser(int id)
         {
             User user = _context.Users.Find(id);
-            var reservation = _context.Reservation.Where(a => a.UserId.Equals(id)).ToArray();
-            var bookIds = reservation.Select(a => a.BookId).ToArray();
-
-            Reservation[] r;
-            foreach (int bookId in bookIds)
-            {
-                int usqueue = _context.Reservation.Where(a => a.UserId == id && a.BookId == bookId).First().Queue;
-                r = _context.Reservation.Where(a => a.BookId == bookId && a.Queue > usqueue).ToArray();
-                foreach (Reservation res in reservation)
-                {
-                    res.Queue--;
-                }
-                _context.Reservation.Remove(_context.Reservation.Where(a => a.UserId == id && a.BookId == bookId).First());
-                _context.SaveChanges();
-            }
-
             _context.Users.Remove(user);
             // user.isValid = false;
-            _context.SaveChanges();
-        }
-
-        public IEnumerable<RentDTO> GetRents(int userId)
-        {
-            List<Rent> rent_db = _context.Rents.Where(a => a.UserId == userId).ToList();
-            List<RentDTO> RentDTO = new List<RentDTO>();
-            Book book;
-            foreach (Rent rent in rent_db)
-            {
-                book = _context.Books.Where(a => a.BookId == rent.BookId).FirstOrDefault();
-                RentDTO.Add(new RentDTO(rent.RentId, rent.UserId, rent.BookId, book.Title, book.Isbn, rent.VolumeId, rent.StartDate, rent.ExpireDate));
-            }
-            return RentDTO;
-        }
-
-        public IEnumerable<ReservationDTO> GetReservations(int userId)
-        {
-            List<Reservation> reservation_db = _context.Reservation.Where(a => a.UserId == userId).ToList();
-            var ReservationDTO = new List<ReservationDTO>();
-
-            Book book;
-            foreach (Reservation reservation in reservation_db)
-            {
-                book = _context.Books.Where(a => a.BookId.Equals(reservation.BookId)).FirstOrDefault();
-                ReservationDTO.Add(new ReservationDTO(reservation.ReservationId, reservation.UserId, book.Title, book.Isbn, reservation.BookId, reservation.VolumeId, reservation.StartDate, reservation.ExpireDate, reservation.Queue, reservation.IsActive));
-            }
-            return ReservationDTO;
-        }
-
-        public IEnumerable<RenthDTO> GetRentsHistory(int userId)
-        {
-            List<Renth> renth_db = _context.RentsHistory.Where(a => a.UserId == userId).ToList();
-            var renth_dto = new List<RenthDTO>();
-
-            Book book;
-            foreach (Renth renth in renth_db)
-            {
-                book = _context.Books.Where(a => a.BookId.Equals(renth.BookId)).FirstOrDefault();
-                renth_dto.Add(new RenthDTO(renth.RentIdH, renth.UserId, book.Title, book.Isbn, renth.BookId, renth.VolumeId, renth.StartDate, renth.EndDate));
-
-            }
-            return renth_dto;
-        }
-
-        public bool CancelReservationCheckData(int id)
-        {
-            return _context.Reservation.Where(reservation => reservation.ReservationId.Equals(id)).Any();
-        }
-
-        public void CancelReservation(int id)
-        {
-            Reservation reservation = _context.Reservation.Find(id);
-            var resToChange = _context.Reservation.Where(a => a.BookId == reservation.BookId && a.Queue > reservation.Queue).ToArray();
-            foreach (Reservation res in resToChange)
-            {
-                res.Queue--;
-                if (res.Queue == 0)
-                {
-                    res.IsActive = true;
-                    res.ExpireDate = DateTime.Now.AddMinutes(1);
-                    res.VolumeId = reservation.VolumeId;
-                }
-            }
-
-            _context.Reservation.Remove(reservation);
             _context.SaveChanges();
         }
 

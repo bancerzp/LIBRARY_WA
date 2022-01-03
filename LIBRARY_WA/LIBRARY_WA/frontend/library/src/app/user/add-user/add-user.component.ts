@@ -1,10 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormsModule, FormBuilder, Validators, AbstractControl, FormControl } from '@angular/forms';
-import { Http } from '@angular/http';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { User } from '../../_models/User';
 import { UserService } from '../../_services/user.service';
 import { map } from 'rxjs/operators';
 import { AppComponent } from '../../app.component';
+import { Http } from '@angular/http';
 
 @Component({
   selector: 'app-add-user',

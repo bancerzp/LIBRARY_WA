@@ -2,14 +2,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
 //services
 import { UserService } from './_services/user.service';
 import { BookService } from './_services/book.service';
 import { DictionaryService } from './_services/dictionary.service';
-import { RentService } from './_services/rent.service';
-import { ReservationService } from './_services/reservation.service';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -23,11 +20,9 @@ import { UserAccountComponent } from './user-account/user-account.component';
 import { SearchUserComponent } from './user/search-user/search-user.component';
 import { SearchBookComponent } from './search-book/search-book.component';
 import { UserComponent } from './user/user.component';
-import { BookReservationModule } from './user-account/details/book-reservation/book-reservation.module';
-import { BookRenthModule } from './user-account/details/book-renth/book-renth.module';
-import { CurrentRentModule } from './user-account/details/current-rent/current-rent.module';
 import { UserPIModule } from './user-account/details/user-pi/user-pi.module';
 import { EditBookComponent } from './edit-book/edit-book.module';
+import { HttpModule } from '@angular/http';
 
 export const appRoutes: Routes = [
 
@@ -77,28 +72,8 @@ export const appRoutes: Routes = [
     component: UserAccountComponent,
     children: [
       {
-
-        path: 'app-book-reservation',
-        component: BookReservationModule
-
-      },
-      {
-        path: 'app-book-renth',
-        component: BookRenthModule
-      },
-    {
-
-      path: 'app-current-rent',
-      component: CurrentRentModule
-
-      },
-      {
         path: 'app-user-pi',
         component: UserPIModule
-      },
-    {
-        path: '',
-      component: CurrentRentModule
       }]
   },
   {
@@ -118,11 +93,8 @@ export const appRoutes: Routes = [
     UserAccountComponent,
     SearchUserComponent,
     SearchBookComponent,
-    CurrentRentModule,
     UserComponent,
     UserPIModule,
-    BookReservationModule,
-    BookRenthModule,
     EditBookComponent
   ],
   imports: [
@@ -133,7 +105,7 @@ export const appRoutes: Routes = [
     HttpModule,
     HttpClientModule
   ],
-  providers: [UserService, BookService, DictionaryService, RentService, ReservationService],
+  providers: [UserService, BookService, DictionaryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

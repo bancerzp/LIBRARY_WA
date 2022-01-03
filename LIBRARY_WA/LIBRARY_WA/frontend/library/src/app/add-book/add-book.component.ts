@@ -1,13 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BookService } from '../_services/book.service';
 import { DictionaryService } from '../_services/dictionary.service';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-import { Http } from '@angular/http';
 import { map } from 'rxjs/operators';
 import { Book } from '../_models/book';
-import { Router } from '@angular/router';
-import { ComboBoxComponent } from 'ng2-combobox';
 import { AppComponent } from '../app.component';
+import { Http } from '@angular/http';
 @Component({
   selector: 'app-add-book',
   templateUrl: './add-book.component.html',
@@ -18,7 +16,7 @@ export class AddBookComponent implements OnInit {
   addBookForm: FormGroup;
   id: number;
   column: String[] = ["Id. książki", "ISBN", "Tytuł", "Autor", "Rok wydania", "Język wydania", "Rodzaj"];
-  public author=[];
+  public author = [];
   public bookType = [];
   public language = [];
 
@@ -37,8 +35,8 @@ export class AddBookComponent implements OnInit {
       return;
     this.submitted = false;
     this.message = "";
-    this.GetBookType();  
-    this.GetAuthor();    
+    this.GetBookType();
+    this.GetAuthor();
     this.GetLanguage();
     this.book = new Book(null, "", "", "", "", "", "", "", true);
     this.addBookForm = this.formBuilder.group({
@@ -47,10 +45,10 @@ export class AddBookComponent implements OnInit {
       title: ['', [Validators.required, Validators.maxLength(50)]],
       authorFullname: ['', [Validators.required, Validators.maxLength(100)]],
       year: [''],//, [Validators.required, Validators.pattern("[1-9][0-9]{3}")]],
-      language:['', [Validators.required, Validators.maxLength(20)]],
+      language: ['', [Validators.required, Validators.maxLength(20)]],
       type: ['', [Validators.required, Validators.maxLength(30)]],
       description: ['', [Validators.maxLength(300)]],
-      isAvailable:true,
+      isAvailable: true,
     });
   }
 
@@ -59,21 +57,21 @@ export class AddBookComponent implements OnInit {
       return;
     var m = this.book;
     m.isAvailable = true;
-  
+
     this.id = 0;
     this.submitted = false;
-    var added=this.bookService.AddBook(m).subscribe(
-      (data: Book) => { this.id = Number(data.bookId); this.message = "Książka dodana poprawnie " + this.id; this.clearForm();},
+    var added = this.bookService.AddBook(m).subscribe(
+      (data: Book) => { this.id = Number(data.bookId); this.message = "Książka dodana poprawnie " + this.id; this.clearForm(); },
       response => { this.message = (<any>response).error.alert });
     this.submitted = true;
-    }
+  }
 
   clearForm() {
     Object.keys(this.addBookForm.controls).forEach((name) => {
       this.addBookForm.controls[name].setValue("");
       this.addBookForm.controls[name].reset();
     });
-    
+
   }
 
   CheckISBNExistsInDB(control: FormControl) {

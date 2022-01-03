@@ -1,7 +1,4 @@
-import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { Http } from '@angular/http';
 import { BookService } from '../_services/book.service';
 import { DictionaryService } from '../_services/dictionary.service';
 import { map } from 'rxjs/operators';
@@ -9,6 +6,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Book } from '../_models/book';
 import { Volume } from '../_models/Volume';
 import { AppComponent } from '../app.component';
+import { Http } from '@angular/http';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, NgModule } from '@angular/core';
 
 @Component({
   selector: 'app-edit-book',

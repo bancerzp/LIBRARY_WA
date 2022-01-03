@@ -1,11 +1,10 @@
-﻿uusing System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Library.Models;
+using Library.Models.database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Library.Models;
-using Microsoft.EntityFrameworkCore.Internal;
-using Library.Models.database;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Library.Services
 {
@@ -120,9 +119,6 @@ namespace Library.Services
 
         public void RemoveBook(int bookId)
         {
-            _context.Reservation.FromSql("DELETE from Reservation where bookId='" + bookId + "'");
-
-
             foreach (Volume volume in _context.Volumes.Where(a => a.BookId == bookId))
             {
                 _context.Volumes.Remove(volume);
@@ -162,30 +158,6 @@ namespace Library.Services
         public async Task<IActionResult> RemoveVolume(int id)
         {
             var volume = _context.Volumes.Where(a => a.VolumeId == id).FirstOrDefault();
-            if (_context.Reservation.Where(a => a.VolumeId == id && a.IsActive == true).Any())
-            {
-                Reservation reservation = _context.Reservation.Where(a => a.VolumeId == id && a.IsActive == true).FirstOrDefault();
-
-                foreach (Reservation reserv in _context.Reservation.Where(a => a.BookId == volume.BookId && a.IsActive == false))
-                {
-                    reserv.Queue = reserv.Queue + 1;
-                }
-                if (_context.Volumes.Where(a => a.BookId == volume.BookId).Count() > 1)
-                {
-                    var n = _context.Volumes.Where(a => a.BookId == volume.BookId && a.VolumeId != id).FirstOrDefault();
-                    Reservation r = new Reservation(reservation.UserId, reservation.BookId, n.VolumeId, reservation.StartDate, reservation.ExpireDate, 1, false);
-                    r.ReservationId = reservation.ReservationId;
-                    _context.Reservation.Remove(reservation);
-                    _context.SaveChanges();
-                    _context.Reservation.Add(r);
-                }
-                else
-                {
-                    _context.Reservation.Remove(reservation);
-                }
-
-                _context.SaveChanges();
-            }
 
             _context.Volumes.Remove(volume);
             await _context.SaveChangesAsync();
@@ -196,20 +168,6 @@ namespace Library.Services
         public bool GetSuggestionCheckCondition(int userId)
         {
             return _context.Users.Where(a => a.UserId == userId).Count() == 0;
-        }
-
-        public List<SuggestionDTO> GetSuggestion(int userId)
-        {
-            var sql = "CALL Get_suggestion(" + userId + ")";
-            _context.Database.ExecuteSqlCommand(sql);
-            List<Suggestion> suggestion = _context.Suggestion.ToList();
-            List<SuggestionDTO> SuggestionDTO = new List<SuggestionDTO>();
-
-            foreach (Suggestion sug in suggestion)
-            {
-                SuggestionDTO.Add(new SuggestionDTO(sug.Id, sug.Title, sug.AuthorFullname));
-            }
-            return (SuggestionDTO);
         }
 
         public bool BookExists(int id)

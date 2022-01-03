@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -145,55 +144,6 @@ namespace Library.Controllers
 
             _userService.RemoveUser(id);
             return Ok();
-        }
-
-        [HttpGet("{id}"), Authorize]
-        public ActionResult<IEnumerable<RentDTO>> GetRent([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            return Ok(_userService.GetRents(id));
-        }
-
-        [HttpGet("{id}"), Authorize]
-        public ActionResult<IEnumerable<ReservationDTO>> GetReservation([FromRoute] int id)
-        {
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            return Ok(_userService.GetReservations(id));
-        }
-
-        [HttpGet("{id}"), Authorize]
-        public ActionResult<IEnumerable<RenthDTO>> GetRenth([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            return Ok(_userService.GetRentsHistory(id));
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> CancelReservation([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-
-            if (!_userService.CancelReservationCheckData(id))
-            {
-                return NotFound(new { alert = "Nie istnieje rezerwacja o danym id!" });
-            }
-
-            _userService.CancelReservation(id);
-            return Ok(id);
         }
 
         [HttpPut]

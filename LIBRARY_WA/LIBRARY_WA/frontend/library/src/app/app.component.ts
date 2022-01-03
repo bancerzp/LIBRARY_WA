@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'angular2-jwt';
 
@@ -8,8 +8,8 @@ import { JwtHelper } from 'angular2-jwt';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent  {
- 
+export class AppComponent {
+
   public login: MenuItem = { title: 'Logowanie', path: 'app-login', href: '#login' };
   public addUser: MenuItem = { title: 'Dodaj użytkownika', path: 'app-add-user', href: '#addUser' };
   public addBook: MenuItem = { title: 'Dodaj książkę', path: 'app-add-book', href: '#addBook' };
@@ -19,7 +19,7 @@ export class AppComponent  {
   public searchBook: MenuItem = { title: 'Wyszukaj książkę', path: 'app-search-book', href: '#searchBook' };
   public searchUser: MenuItem = { title: 'Wyszukaj użytkownika', path: 'app-search-user', href: '#searchUser' };
 
-  public menuReader: MenuItem[]=[this.searchBook,this.user];
+  public menuReader: MenuItem[] = [this.searchBook, this.user];
   public menuGuest: MenuItem[] = [this.login, this.searchBook];
   public menuLibrarian: MenuItem[] = [this.users, this.searchBook, this.addBook, this.userData];
   public menu: MenuItem[]; //= this.menuLibrarian;
@@ -28,7 +28,7 @@ export class AppComponent  {
   public userType;
   public userId;
   public isLogged;
-    
+
   constructor(private router: Router) { }
 
   ngOnInit() {
@@ -68,13 +68,13 @@ export class AppComponent  {
   }
 
   IsExpired(userType) {
-   //false bo nie wygasł token
-  //  var token = localStorage.getItem('token');
-  
+    //false bo nie wygasł token
+    //  var token = localStorage.getItem('token');
+
     if (localStorage.getItem('token') == null) {
       this.Logout();
       window.location.reload();
-    //  this.router.navigateByUrl('/app-login');
+      //  this.router.navigateByUrl('/app-login');
       return true;
     }
     let jwtHelper: JwtHelper = new JwtHelper();
@@ -86,7 +86,7 @@ export class AppComponent  {
     } else
       if (userType == "l,r")
         return false;
-      return (!this.GetUserType()==userType);
+    return (!this.GetUserType() == userType);
   }
 
   Login(userType) {
@@ -101,22 +101,22 @@ export class AppComponent  {
   }
 
   SetVariable(userType, userId) {
-   
+
     this.userId = userId;
     this.userType = userType;
- 
+
   }
 
   RouteTo(path) {
     this.router.navigateByUrl(path)
   }
-  }
+}
 
 export class MenuItem {
   title: string;
   path: string;
   href: string;
-  
+
 }
 
 //w zależności od otrzymanego typu osoby menu=.

@@ -217,21 +217,6 @@ h1 {
     white-space: normal;
   }
 
-.renthTable, .rentTable, .reservationTable {
-  border: 1px solid;
-  border-radius: 10px;
-  border-color: brown;
-  border-bottom-style: groove;
-  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
-  margin: auto;
-  font-size:12px;
-  text-align: center;
-  overflow: hidden;
-  width: 115%;
-  white-space: normal;
-}
-
-
 tr :hover {
   background-color: grey;
 }

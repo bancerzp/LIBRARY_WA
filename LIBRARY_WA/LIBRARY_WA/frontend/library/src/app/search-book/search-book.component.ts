@@ -1,18 +1,16 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import {  FormBuilder, FormGroup } from '@angular/forms';
-import { Http, Response } from '@angular/http';
 import { BookService } from '../_services/book.service';
 import { Book } from '../_models/book';
 import { DictionaryService } from '../_services/dictionary.service';
-import { ReservationService } from '../_services/reservation.service';
 import { Volume } from '../_models/Volume';
 import { AppComponent } from '../app.component';
-import { Reservation } from '../_models/reservation';
+import { Http } from '@angular/http';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-search-book',
   templateUrl: './search-book.component.html',
   styleUrls: ['./search-book.component.css'],
-  providers: [BookService, AppComponent, SearchBookComponent, DictionaryService,ReservationService]
+  providers: [BookService, AppComponent, SearchBookComponent, DictionaryService]
 })
 export class SearchBookComponent implements OnInit {
   @Output() book = new EventEmitter<Book>();
@@ -28,20 +26,16 @@ export class SearchBookComponent implements OnInit {
   public values = [];
   public userAction = [];
   searchBookForm: FormGroup;
-  column: String[] = ["Id. książki", "Tytuł", "ISBN", "Autor", "Rok wydania", "Język wydania", "Rodzaj"];
-  columnAddReader: UserAction[] = [new UserAction("Zarezerwuj", "Reserve")]
-  columnAddLibrarian: UserAction[] = [new UserAction("Zarezerwuj", "Reserve()"), new UserAction("Edytuj", "Update()"), new UserAction("Usuń", "Delete()"), new UserAction("Dodaj egzemplarz", "AddVolume()")]
+  column: String[] = ["Id. książki", "Tytuł", "ISBN", "Autor", "Rok wydania", "Język wydania"];
   userId: String;
-  message: String;
-  reservation: Reservation;
+  message: String
 
   constructor(
     private formBuilder: FormBuilder,
     private http: Http,
     private bookService: BookService,
     private app: AppComponent,
-    private dictionaryService: DictionaryService,
-    private reservationService: ReservationService,
+    private dictionaryService: DictionaryService
   ) {
   }
 
@@ -108,33 +102,6 @@ export class SearchBookComponent implements OnInit {
     return this.dictionaryService.GetLanguage().subscribe((languages: Array<any>) => this.language = languages);
   };
 
-  ReserveBookLibrarian(bookId, userId) {
-    this.message = "";
-    this.submitted = false;
-    if (this.app.IsExpired("l"))
-      return;
-   
-    this.reservationService.ReserveBook(bookId, Number.parseInt(userId)).subscribe((res: any) => {
-      this.reservation = res;
-      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + (<any>res).value.queue;
-    },
-      response => { this.message = (<any>response).error.alert });
-    this.submitted = true;
-  }
-
-  ReserveBookReader(bookId) {
-    this.message = "";
-    this.submitted = false;
-    if (this.app.IsExpired("r"))
-      return;
-    this.reservationService.ReserveBook(bookId, this.app.GetUserId()).subscribe((res: any) => {
-      this.reservation = res;
-      this.message = "Książka została zarezerwowana. Miejsce w kolejce: " + (<any>res).value.queue;
-    },
-      response => { this.message = (<any>response).error.alert });
-    this.submitted = true;
-  }
-  
   EditBook(bookId) {
     this.message = "";
     if (this.app.IsExpired("l"))

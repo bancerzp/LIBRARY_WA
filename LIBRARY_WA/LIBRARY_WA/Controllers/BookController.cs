@@ -16,12 +16,10 @@ namespace Library.Controllers
     public class BookController : ControllerBase
     {
         private BookService _bookService;
-        private RentingService _rentingService;
 
-        public BookController(BookService bookService, RentingService rentingService)
+        public BookController(BookService bookService)
         {
             _bookService = bookService;
-            _rentingService = rentingService;
         }
 
         [HttpGet("{isbn}")]
@@ -112,11 +110,6 @@ namespace Library.Controllers
                 return NotFound(new { alert = "Nie znaleziono książki o danym id." });
             }
 
-            if (!_rentingService.IsRentExist(id))
-            {
-                return NotFound(new { alert = "Dana książka jest wypożyczona. Nie można jej usunąć" });
-            }
-
             _bookService.RemoveBook(id);
             return Ok();
         }
@@ -169,19 +162,6 @@ namespace Library.Controllers
 
             _bookService.RemoveVolume(id);
             return Ok();
-        }
-
-        [HttpGet("{userId}"), Authorize(Roles = "l,r")]
-        public async Task<IActionResult> GetSuggestion([FromRoute] int userId)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            _bookService.GetSuggestionCheckCondition(userId);
-            var suggestion = _bookService.GetSuggestion(userId);
-
-            return Ok(suggestion);
         }
 
         [HttpPut, Authorize(Roles = "l")]

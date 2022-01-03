@@ -1,9 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
 import { User } from '../../_models/User';
 import { UserService } from '../../_services/user.service';
 import { AppComponent } from '../../app.component';
